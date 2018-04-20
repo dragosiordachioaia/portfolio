@@ -17,6 +17,15 @@
   z-index: 1;
 }
 
+#hi-dot {
+  transform-origin: 20px 110px;
+  transform: scale(0,0);
+  position: absolute;
+  display: block;
+  bottom: 0;
+  right: -0.22em;
+}
+
 #nice {
   color: #C43865;
   position: absolute;
