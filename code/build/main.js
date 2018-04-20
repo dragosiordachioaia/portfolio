@@ -31,8 +31,28 @@ function frame1() {
             TweenMax.to($('#first-half'), 0.7, {right: '0', backgroundColor: '#31ceb7', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
               var andthis = $('#andthis');
               andthis.css('display', 'inline');
-              TweenMax.to(iam, 0.5, {left: '0', delay: 0.5, ease: Power2.easeInOut});
-              TweenMax.to($('#first-half'), 0.5, {left: '-50%', delay: 0.5, ease: Power2.easeInOut});
+              TweenMax.to($('#first-half'), 0.5, {top: '-50%', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
+                TweenMax.to(iam, 0.5, {top: '40%', color: '#31ceb7', delay: 0.5, ease: Power2.easeInOut});
+                TweenMax.to(andthis, 0.5, {top: '52%', delay: 0.5, ease: Power2.easeInOut});
+                TweenMax.to($('#first-half'), 0.5, {height: '4px', top: '50%', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
+                  TweenMax.to($('#first-half'), 0.2, {top: '0%', height: '100vh', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
+                    iam.hide();
+                    andthis.hide();
+                    TweenMax.to($('#first-half'), 0.5, {backgroundColor: '#ff5e59', ease: Power2.easeInOut});
+                    var iswhatido = $('#iswhatido');
+                    var thisElement = $('#this');
+                    iswhatido.show();
+
+                    TweenMax.to(iswhatido, 1.5, {top: '45%', delay: 0.5, ease: Bounce.easeOut, onComplete: function() {
+                      thisElement.show();
+                      TweenMax.to(thisElement, 0.5, {top: '9%', delay: 0.5, ease: Power2.easeInOut});
+                      TweenMax.to(iswhatido, 0.5, {top: '15%', scale: 0.6, delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
+
+                      }});
+                    }});
+                  }});
+                }});
+              }});
             }});
           }});
         }});

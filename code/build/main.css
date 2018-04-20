@@ -50,25 +50,51 @@
 }
 
 #iamdragos .inside {
-  padding-right: 10px;
+  padding-right: 30px;
 }
 
 #andthis {
   color: #31ceb7;
   position: fixed;
-  top: 20%;
+  right: 0;
   width: 50%;
-  left: 50%;
+  top: 75%;
   font-size: 3em;
   z-index: 0;
   display: none;
-  text-align: left;
+  text-align: right;
   font-weight: 100;
   letter-spacing: 2px;
 }
 
 #andthis .inside {
-  padding-left: 10px;
+  padding-right: 30px;
+}
+
+#iswhatido {
+  color: #fff;
+  position: fixed;
+  top: -200px;
+  left: 0;
+  width: 100%;
+  font-size: 5em;
+  z-index: 0;
+  display: none;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+#this {
+  color: #fff;
+  position: fixed;
+  top: -200px;
+  left: 0;
+  width: 100%;
+  font-size: 3em;
+  z-index: 0;
+  display: none;
+  text-align: center;
+  letter-spacing: 2px;
 }
 
 h1, h2, h3, h4, h5, h6 {
