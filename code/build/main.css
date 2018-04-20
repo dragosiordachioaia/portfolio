@@ -4,7 +4,7 @@
   right: 50%;
   width: 0;
   height: 100vh;
-  background-color: #C43865;
+  background-color: #7A62C4;
 }
 
 #hi {
@@ -27,7 +27,7 @@
 }
 
 #nice {
-  color: #C43865;
+  color: #7A62C4;
   position: absolute;
   bottom: 47.4%;
   left: 25%;
@@ -54,7 +54,7 @@
 }
 
 #andthis {
-  color: #ff5e59;
+  color: #E5A12B;
   position: fixed;
   right: 0;
   width: 50%;
