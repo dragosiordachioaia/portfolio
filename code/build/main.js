@@ -1,6 +1,21 @@
 frame1();
 
 function frame1() {
+  // console.log('here');
+  $('#sections li').on('mouseenter', function() {
+    $('#sections li').css('color', '#000');
+    $(this).css('color', '#fff');
+    TweenMax.to($('body'), 0.5, {backgroundColor: '#000'});
+    // $('#sections li:not(:last-child)').css('border-right-color', '#000');
+  });
+
+  $('#sections li').on('mouseleave', function() {
+    $('#sections li').css('color', '#000');
+    TweenMax.to($('body'), 0.5, {backgroundColor: '#fff'});
+    // $('#sections li:not(:last-child)').css('border-right-color', '#000');
+  });
+
+
   TweenMax.to($('#first-half'), 0.7, {width: '100vw', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
     var halfWidth = $(window).width();
     var hi = $('#hi');
@@ -44,10 +59,20 @@ function frame1() {
                     iswhatido.show();
                     TweenMax.to(iswhatido, 1.5, {top: '45%', ease: Bounce.easeOut, onComplete: function() {
                       thisElement.show();
-                      TweenMax.to($('#first-half'), 1, {backgroundColor: '#fff', delay: 0.15, ease: Power2.easeInOut});
-                      TweenMax.to(thisElement, 0.5, {top: '9%', color: '#85C149', delay: 0.5, ease: Power2.easeInOut});
-                      TweenMax.to(iswhatido, 0.5, {top: '15%', color: '#85C149', scale: 0.6, delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
-
+                      TweenMax.to($('#first-half'), 1, {backgroundColor: 'fff', delay: 0.15, ease: Power2.easeInOut});
+                      // TweenMax.to(thisElement, 0.5, {top: '9%', color: '#444', delay: 0.5, ease: Power2.easeInOut});
+                      TweenMax.to(iswhatido, 1, {top: '15%'/*, color: '#444'*/, opacity: 0, scale: 0.6, delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
+                        var sections = $('#sections');
+                        sections.show();
+                        TweenMax.to(sections, 1, {opacity: 1});
+                        var sectionElements = $('#sections li');
+                        sectionElements.each(function(index, elem) {
+                        //   console.log(index, elem);
+                          TweenMax.to($(this).find('span'), 3, {opacity: 1, delay: index * 1.5});
+                        });
+                        // TweenMax.to($(this).find('span'), 2, {opacity: 1, top: 0, delay: 1});
+                        // TweenMax.to(thisElement, 0.5, {opacity: 0, delay: 0.5});
+                        // TweenMax.to(iswhatido, 0.5, {opacity: 0, delay: 0.5});
                       }});
                     }});
                   }});
