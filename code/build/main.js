@@ -28,17 +28,17 @@ function frame1() {
           hi.hide();
           TweenMax.to(nice, 0.2, {left: niceStartLeft, ease: Power2.easeOut, onComplete: function() {
             nice.hide();
-            TweenMax.to($('#first-half'), 0.7, {right: '0', backgroundColor: '#31ceb7', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
+            TweenMax.to($('#first-half'), 0.7, {right: '0', backgroundColor: '#ff5e59', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
               var andthis = $('#andthis');
               andthis.css('display', 'inline');
               TweenMax.to($('#first-half'), 0.5, {top: '-50%', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
-                TweenMax.to(iam, 0.5, {top: '40%', color: '#31ceb7', delay: 0.5, ease: Power2.easeInOut});
+                TweenMax.to(iam, 0.5, {top: '40%', color: '#ff5e59', delay: 0.5, ease: Power2.easeInOut});
                 TweenMax.to(andthis, 0.5, {top: '52%', delay: 0.5, ease: Power2.easeInOut});
                 TweenMax.to($('#first-half'), 0.5, {height: '4px', top: '50%', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
                   TweenMax.to($('#first-half'), 0.2, {top: '0%', height: '100vh', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
                     iam.hide();
                     andthis.hide();
-                    TweenMax.to($('#first-half'), 0.5, {backgroundColor: '#ff5e59', ease: Power2.easeInOut});
+                    TweenMax.to($('#first-half'), 0.5, {backgroundColor: '#7A285C', ease: Power2.easeInOut});
                     var iswhatido = $('#iswhatido');
                     var thisElement = $('#this');
                     iswhatido.show();
