@@ -1,21 +1,45 @@
-frame1();
+// startAnimation();
+addSectionInteraction(true);
 
-function frame1() {
-  // console.log('here');
+var inBlackMode = false;
+
+function addSectionInteraction(instant) {
+  if(instant) {
+    $('#sections').css({
+      display: 'block',
+      opacity: 1,
+    });
+    $('#sections li span').css('opacity', 1);
+    $('#iamdragos').hide();
+  }
+
   $('#sections li').on('mouseenter', function() {
+    if(inBlackMode) return;
+
     $('#sections li').css('color', '#000');
     $(this).css('color', '#fff');
     TweenMax.to($('body'), 0.5, {backgroundColor: '#000'});
-    // $('#sections li:not(:last-child)').css('border-right-color', '#000');
   });
 
   $('#sections li').on('mouseleave', function() {
+    if(inBlackMode) return;
+
     $('#sections li').css('color', '#000');
     TweenMax.to($('body'), 0.5, {backgroundColor: '#fff'});
-    // $('#sections li:not(:last-child)').css('border-right-color', '#000');
   });
 
+  $('#sections li').on('click', function(e) {
+    inBlackMode = true;
+    var crtTop = $(this).offset().top;
+    $(this).css('top', (-crtTop - 45) + 'px');
 
+    var projectsHeight = $(window).height() - 100;
+
+    TweenMax.to($('#projects-frontend'), 1, {height: projectsHeight + 'px', delay: 1, ease: Power2.easeInOut});
+  });
+}
+
+function startAnimation() {
   TweenMax.to($('#first-half'), 0.7, {width: '100vw', delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
     var halfWidth = $(window).width();
     var hi = $('#hi');
