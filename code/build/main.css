@@ -1,7 +1,7 @@
 #first-half {
   position: absolute;
   top: 0;
-  left: 0;
+  right: 50%;
   width: 0;
   height: 100vh;
   background-color: #C43865;
@@ -10,8 +10,9 @@
 #hi {
   color: #fff;
   position: absolute;
+  display: inline;
   bottom: 70%;
-  left: 50%;
+  right: 100%;
   font-size: 8em;
   z-index: 1;
 }
