@@ -48,10 +48,19 @@ function addSectionInteraction(instant) {
     TweenMax.to(button, 1, {top: targetTop, left: targetLeft, delay: 0, ease: Power2.easeInOut});
 
     var projectsHeight = $(window).height() - 50;
-
-    TweenMax.to($('#projects-frontend'), 1, {height: projectsHeight + 'px', delay: 1, ease: Power2.easeInOut});
+    $('#projects-frontend').css('height', projectsHeight);
+    var projectElementWidth = $('#projects-frontend li span').first().width();
+    $('#projects-frontend li span').css('height', (projectElementWidth * 9/16) + 'px');
+    TweenMax.to($('#projects-frontend li'), 0, {scale: 0});
+    $('#projects-frontend li').each(function(index, projectElement) {
+      // projectElement.css()
+      // TweenMax.to($(projectElement), 0, {scale: 0, delay: index * 0.5 + 1, onComplete: function() {
+        $(projectElement).css('display', 'inline-block');
+        TweenMax.to($(projectElement), 0.5, {scale: 1, delay: index * 0.5 + 1});
+      // }});
+    });
+    // TweenMax.to($('#projects-frontend'), 1, {height: projectsHeight + 'px', delay: 1, ease: Power2.easeInOut});
     TweenMax.to($('body'), 0.7, {backgroundColor: '#31CEB7', ease: Power2.easeInOut});
-
   });
 }
 

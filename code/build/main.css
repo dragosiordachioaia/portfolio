@@ -191,8 +191,57 @@ body {
   height: 0;
   overflow: hidden;
   list-style-type: none;
+  padding: 0;
 }
 
 #projects-frontend li {
   display: none;
+  display: inline-block;
+  width: 33.33%;
+  box-sizing: border-box;
+  margin-right: -5px;
+  padding-right: 20px;
+  margin-bottom: 15px;
+}
+
+#projects-frontend li:first-child {
+  padding-left: 20px;
+}
+
+#projects-frontend li span {
+  display: inline-block;
+  color: #31CEB7;
+  text-align: center;
+  background-color: #fff;
+  height: 200px;
+  line-height: 200px;
+  width: 100%;
+  cursor: pointer;
+  background-size: cover;
+  border: 10px solid #A1E8DE;
+  box-sizing: border-box;
+}
+
+.project-fifa14 {
+  background-image: url('graphics/portfolio/fifa14.png');
+}
+
+.project-totalconquest {
+  background-image: url('graphics/portfolio/totalconquest.jpg');
+}
+
+.project-kiosk {
+  background-image: url('graphics/portfolio/kiosk.jpg');
+}
+
+.project-ftbo {
+  background-image: url('graphics/portfolio/ftbo_home.png');
+}
+
+.project-plexiled {
+  background-image: url('graphics/portfolio/plexiled.png');
+}
+
+.project-charts {
+  background-image: url('graphics/portfolio/charts.png');
 }
