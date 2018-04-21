@@ -1,5 +1,6 @@
-// startAnimation();
-addSectionInteraction(true);
+startAnimation();
+addSectionInteraction(false);
+// addSectionInteraction(true);
 
 var inBlackMode = false;
 
@@ -49,8 +50,8 @@ function addSectionInteraction(instant) {
 
     var projectsHeight = $(window).height() - 50;
     $('#projects-frontend').css('height', projectsHeight);
-    var projectElementWidth = $('#projects-frontend li span').first().width();
-    $('#projects-frontend li span').css('height', (projectElementWidth * 9/16) + 'px');
+    var projectElementWidth = $('#projects-frontend li .content').first().width();
+    $('#projects-frontend li .content').css('height', (projectElementWidth * 9/16) + 'px');
     TweenMax.to($('#projects-frontend li'), 0, {scale: 0});
     $('#projects-frontend li').each(function(index, projectElement) {
       // projectElement.css()

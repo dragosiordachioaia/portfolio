@@ -208,7 +208,7 @@ body {
   padding-left: 20px;
 }
 
-#projects-frontend li span {
+#projects-frontend li .content {
   display: inline-block;
   color: #31CEB7;
   text-align: center;
@@ -220,6 +220,38 @@ body {
   background-size: cover;
   border: 10px solid #A1E8DE;
   box-sizing: border-box;
+  position: relative;
+}
+
+#projects-frontend li .title {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 0;
+  color: #fff;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  letter-spacing: 4px;
+  line-height: 168px;
+  left: 0;
+}
+
+#projects-frontend li button {
+  outline: 0;
+  border: 3px solid rgb(49, 206, 183);
+  color: #fff;
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 1em;
+  padding: 10px 20px;
+  letter-spacing: 4px;
+  font-weight: 500;
+  border-radius: 20px;
+}
+
+#projects-frontned .content:hover .title {
+  opacity: 1;
 }
 
 .project-fifa14 {
