@@ -30,12 +30,28 @@ function addSectionInteraction(instant) {
 
   $('#sections li').on('click', function(e) {
     inBlackMode = true;
-    var crtTop = $(this).offset().top;
-    $(this).css('top', (-crtTop - 45) + 'px');
+    var button = $(this);
+    var crtTop = button.offset().top;
+    var crtLeft = button.offset().left;
+    var targetLeft = - crtLeft + button.text().length * 11 - 120;
+    var targetTop = -crtTop - 35;
 
-    var projectsHeight = $(window).height() - 100;
+    $('#sections li').each(function() {
+      if($(this).attr('id') !== button.attr('id')) {
+        $(this).css('opacity', 0);
+      }
+    });
+    button.css({
+      visibility: 'visible',
+    });
+
+    TweenMax.to(button, 1, {top: targetTop, left: targetLeft, delay: 0, ease: Power2.easeInOut});
+
+    var projectsHeight = $(window).height() - 50;
 
     TweenMax.to($('#projects-frontend'), 1, {height: projectsHeight + 'px', delay: 1, ease: Power2.easeInOut});
+    TweenMax.to($('body'), 0.7, {backgroundColor: '#31CEB7', ease: Power2.easeInOut});
+
   });
 }
 
@@ -71,13 +87,13 @@ function startAnimation() {
               var andthis = $('#andthis');
               andthis.css('display', 'inline');
               TweenMax.to($('#first-half'), 0.5, {top: '-50%', ease: Power2.easeInOut, onComplete: function() {
-                TweenMax.to(iam, 0.5, {top: '40%', color: '#E5A12B', ease: Power2.easeInOut});
-                TweenMax.to(andthis, 0.5, {top: '52%', ease: Power2.easeInOut});
-                TweenMax.to($('#first-half'), 0.5, {height: '4px', top: '50%', ease: Power2.easeInOut, onComplete: function() {
+                TweenMax.to(iam, 0.7, {top: '40%', color: '#E5A12B', ease: Power2.easeInOut});
+                TweenMax.to(andthis, 0.7, {top: '52%', ease: Power2.easeInOut});
+                TweenMax.to($('#first-half'), 0.7, {height: '4px', top: '50%', ease: Power2.easeInOut, onComplete: function() {
                   TweenMax.to($('#first-half'), 0.2, {top: '0%', height: '100vh', delay: 0.2, ease: Power2.easeInOut, onComplete: function() {
                     iam.hide();
                     andthis.hide();
-                    TweenMax.to($('#first-half'), 0.5, {backgroundColor: '#85C149', ease: Power2.easeInOut});
+                    TweenMax.to($('#first-half'), 0.8, {backgroundColor: '#85C149', ease: Power2.easeInOut});
                     var iswhatido = $('#iswhatido');
                     var thisElement = $('#this');
                     iswhatido.show();
