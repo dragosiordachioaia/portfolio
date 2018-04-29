@@ -1,14 +1,42 @@
-// startAnimation();
+var graphics = [
+  'mountain',
+  'fair_fence',
+  'fair',
+  'container_ship',
+  'macbook',
+  'smokestacks',
+  'residential',
+  'theatre',
+  'wind_turbines',
+  'tennis',
+  'cars',
+  'farm',
+  'orchard',
+  'plexiled',
+  'generic_building_1',
+  'generic_tree_1',
+  'travel',
+  'generic_building_2',
+  'chairs',
+  'people',
+  'stadium',
+  'gameloft',
+  'mcdonalds',
+  'clouds',
+  'sun'
+];
+
+openMap();
+startAnimation();
 // addSectionInteraction(false);
 // addSectionInteraction(true);
-openMap();
 
-var elements = ['map-content'];
 var inBlackMode = false;
 
 function openMap() {
   $(window).resize(repositionMap);
   repositionMap();
+  createMapElements();
   $('#map-content').css('opacity', 1);
 }
 
@@ -17,6 +45,15 @@ function repositionMap() {
   console.log(mapHeight);
   $('#map-content').css({
     top: ($(window).height() - mapHeight)/2 + 'px',
+  });
+}
+
+function createMapElements() {
+  graphics.forEach(function(element, index) {
+    setTimeout(function() {
+      var elemStr = '<img class="graphic-element" src="graphics/map/' + element + '.png" id="' + element + '"/>';
+      var newElement = $('#map-content').append($(elemStr));
+    }, index * 200);
   });
 }
 
@@ -126,16 +163,17 @@ function startAnimation() {
                     TweenMax.to(iswhatido, 1.5, {top: '45%', ease: Bounce.easeOut, onComplete: function() {
                       thisElement.show();
                       TweenMax.to($('#first-half'), 1, {backgroundColor: 'fff', delay: 0.15, ease: Power2.easeInOut});
-                      // TweenMax.to(thisElement, 0.5, {top: '9%', color: '#444', delay: 0.5, ease: Power2.easeInOut});
+                      setTimeout(showMap, 1000);
                       TweenMax.to(iswhatido, 1, {top: '15%'/*, color: '#444'*/, opacity: 0, scale: 0.6, delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
-                        var sections = $('#sections');
-                        sections.show();
-                        TweenMax.to(sections, 1, {opacity: 1});
-                        var sectionElements = $('#sections li');
-                        sectionElements.each(function(index, elem) {
-                        //   console.log(index, elem);
-                          TweenMax.to($(this).find('span'), 3, {opacity: 1, delay: index * 1.5});
-                        });
+                        console.log('done');
+
+                        // var sections = $('#sections');
+                        // sections.show();
+                        // TweenMax.to(sections, 1, {opacity: 1});
+                        // var sectionElements = $('#sections li');
+                        // sectionElements.each(function(index, elem) {
+                        //   TweenMax.to($(this).find('span'), 3, {opacity: 1, delay: index * 1.5});
+                        // });
                         // TweenMax.to($(this).find('span'), 2, {opacity: 1, top: 0, delay: 1});
                         // TweenMax.to(thisElement, 0.5, {opacity: 0, delay: 0.5});
                         // TweenMax.to(iswhatido, 0.5, {opacity: 0, delay: 0.5});
@@ -150,4 +188,13 @@ function startAnimation() {
       }});
     }});
   }});
+}
+
+function showMap() {
+  TweenMax.to($('#map'), 0.5, {opacity: 1});
+  $('.graphic-element').each(function(index, element) {
+    setTimeout(function() {
+      TweenMax.to($(element), 0.3, {opacity: 1, delay: index * 0.1});
+    }, index * 200);
+  });
 }

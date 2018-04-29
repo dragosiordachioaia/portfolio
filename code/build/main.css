@@ -298,11 +298,16 @@ body {
   background-size: cover;
 }
 
+#map {
+  opacity: 0;
+}
+
 #map-content {
   position: absolute;
   top: 0;
   left: 0;
   opacity: 0;
+  width: 100%;
 }
 
 #map #bg {
@@ -313,7 +318,15 @@ body {
   left: 0; */
 }
 
-#map #bg_map {
+#bg-map {
+  position: relative !important;
+}
+
+img.graphic-element {
   width: 100%;
   height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
 }
