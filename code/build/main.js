@@ -1,30 +1,44 @@
 var graphics = [
   'mountain',
+  'buildings',
   'fair_fence',
   'fair',
   'container_ship',
+  'big_ship',
   'macbook',
-  'smokestacks',
-  'residential',
-  'theatre',
-  'wind_turbines',
-  'tennis',
+  // 'smokestacks',
+  // 'residential',
+  // 'theatre',
+  // 'wind_turbines',
+  // 'tennis',
   'cars',
-  'farm',
-  'orchard',
-  'plexiled',
-  'generic_building_1',
-  'generic_tree_1',
-  'travel',
-  'generic_building_2',
-  'chairs',
+  //'farm',
+  //'orchard',
+  //'plexiled',
+  // 'generic_building_1',
+  // 'generic_tree_1',
+  // 'travel',
+  // 'generic_building_2',
+  // 'chairs',
   'people',
-  'stadium',
-  'gameloft',
-  'mcdonalds',
+
+  // 'stadium',
+  // 'gameloft',
+  // 'mcdonalds',
   'clouds',
-  'sun'
+  'sun',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9'
 ];
+
+// graphics = [];
 
 openMap();
 startAnimation();
@@ -42,7 +56,6 @@ function openMap() {
 
 function repositionMap() {
   var mapHeight = $('#map-content').height();
-  console.log(mapHeight);
   $('#map-content').css({
     top: ($(window).height() - mapHeight)/2 + 'px',
   });
@@ -142,7 +155,7 @@ function startAnimation() {
       TweenMax.to(nice, 0.3, {left: niceEndLeft, delay: 1, ease: Power2.easeOut, onComplete: function() {
         var iam = $('#iamdragos');
         hi.css('z-index', 0);
-        TweenMax.to(hi, 0.2, {right: hiStartRight, delay: 1.5, onComplete: function() {
+        TweenMax.to(hi, 0.2, {right: hiStartRight, delay: 0.5, onComplete: function() {
           hi.hide();
           TweenMax.to(nice, 0.2, {left: niceStartLeft, ease: Power2.easeOut, onComplete: function() {
             nice.hide();
@@ -160,11 +173,26 @@ function startAnimation() {
                     var iswhatido = $('#iswhatido');
                     var thisElement = $('#this');
                     iswhatido.show();
+                    $('#first-half').css({
+                      'z-index': 1,
+                    });
+                    $(iswhatido).css({
+                      'z-index': 2,
+                    });
+                    $('#map').css({
+                      'z-index': -1,
+                      top: 0,
+                    });
                     TweenMax.to(iswhatido, 1.5, {top: '45%', ease: Bounce.easeOut, onComplete: function() {
                       thisElement.show();
-                      TweenMax.to($('#first-half'), 1, {backgroundColor: 'fff', delay: 0.15, ease: Power2.easeInOut});
-                      setTimeout(showMap, 1000);
-                      TweenMax.to(iswhatido, 1, {top: '15%'/*, color: '#444'*/, opacity: 0, scale: 0.6, delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
+                      TweenMax.to($('#first-half'), 0.4, {top: '100vh', delay: 0.2, ease: Power2.easeIn});
+                      // TweenMax.to($('#map'), 1, {top: '0', delay: 0.15, ease: Power2.easeInOut});
+                      // $('#map').css({top: 0});
+                      // TweenMax.to($('#first-half'), 0.3, {scale: 0, delay: 0.15, ease: Power2.easeInOut});
+
+                      setTimeout(showMap, 1200);
+                      // TweenMax.to(iswhatido, 1, {top: '15%'/*, color: '#444'*/, opacity: 0, scale: 0.6, delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
+                      TweenMax.to(iswhatido, 0.4, {top: '145%'/*, color: '#444'*/, delay: 0.15, ease: Back.easeIn, onComplete: function() {
                         console.log('done');
 
                         // var sections = $('#sections');
@@ -191,8 +219,21 @@ function startAnimation() {
 }
 
 function showMap() {
-  TweenMax.to($('#map'), 0.5, {opacity: 1});
+  // TweenMax.to($('#map'), 0.5, {opacity: 1});
+  // $('#map').css({'opacity': 1});
   $('.graphic-element').each(function(index, element) {
-    TweenMax.to($(element), Math.random()*0.3+0.2, {top: 0, delay: index * 0.1});
+    var delay = 0;
+    // if(index === 0) {
+    //   delay = 0.5;
+    // } else if(index === 1) {
+    //   delay = 1;
+    // } else {
+    //   delay = 1.5 + index * 0.2;
+    // }
+    delay = 0.3 + index * 0.1;
+    // TweenMax.to($(element), 0.8, {top: 0, delay: delay, ease: Bounce.easeOut});
+    setTimeout(function() {
+      $(element).css({top: 0});
+    }, delay * 1000);
   });
 }

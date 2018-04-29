@@ -287,7 +287,9 @@ body {
   height: 100vh;
 
   /* The image used */
-  background-image: url("./graphics/map/bg.jpg");
+  /* background-image: url("./graphics/map/bg.jpg"); */
+  /* background-color: #37c5c7; */
+  background-color: #37aac7;
 
   /* Full height */
   height: 100%;
@@ -296,10 +298,11 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-#map {
-  opacity: 0;
+  top: 100vh;
+  position: fixed;
+  top: -100vh;
+  z-index: -1;
+  /* transition: top 1000ms; */
 }
 
 #map-content {
@@ -336,6 +339,7 @@ img.graphic-element {
   top: -120%;
   left: 0;
   opacity: 1;
+  transition: top 500ms;
   /* filter: blur(3px); */
 }
 
