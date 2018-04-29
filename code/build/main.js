@@ -1,8 +1,24 @@
-startAnimation();
-addSectionInteraction(false);
+// startAnimation();
+// addSectionInteraction(false);
 // addSectionInteraction(true);
+openMap();
 
+var elements = ['map-content'];
 var inBlackMode = false;
+
+function openMap() {
+  $(window).resize(repositionMap);
+  repositionMap();
+  $('#map-content').css('opacity', 1);
+}
+
+function repositionMap() {
+  var mapHeight = $('#map-content').height();
+  console.log(mapHeight);
+  $('#map-content').css({
+    top: ($(window).height() - mapHeight)/2 + 'px',
+  });
+}
 
 function addSectionInteraction(instant) {
   if(instant) {
