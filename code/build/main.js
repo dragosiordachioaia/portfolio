@@ -193,8 +193,6 @@ function startAnimation() {
 function showMap() {
   TweenMax.to($('#map'), 0.5, {opacity: 1});
   $('.graphic-element').each(function(index, element) {
-    setTimeout(function() {
-      TweenMax.to($(element), 0.3, {opacity: 1, delay: index * 0.1});
-    }, index * 200);
+    TweenMax.to($(element), Math.random()*0.3+0.2, {top: 0, delay: index * 0.1});
   });
 }
