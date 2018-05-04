@@ -311,6 +311,7 @@ body {
   left: 0;
   opacity: 0;
   width: 100%;
+  max-width: 1100px;
 }
 
 #map #bg {
@@ -336,11 +337,9 @@ img.graphic-element {
   width: 100%;
   height: auto;
   position: absolute;
-  top: -120%;
+  top: -100vh;
   left: 0;
   opacity: 1;
-  transition: top 500ms;
-  /* filter: blur(3px); */
 }
 
 #sun {
@@ -353,7 +352,7 @@ img.graphic-element {
 }
 
 @keyframes pulse {
-    0% {transform: scale(100% 100%);}
-    50% {transform: scale(70% 70%);}
-    100% {transform: scale(100% 100%);}
+  0% {transform: scale(100% 100%);}
+  50% {transform: scale(70% 70%);}
+  100% {transform: scale(100% 100%);}
 }

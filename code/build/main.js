@@ -1,17 +1,17 @@
-var graphics = [
-  'mountain',
-  'buildings',
-  'fair_fence',
-  'fair',
-  'container_ship',
-  'big_ship',
-  'macbook',
+var graphicsBlur = [
+  //'mountain',
+  //'buildings',
+  //'fair_fence',
+  //'fair',
+  //'container_ship',
+  //'big_ship',
+  //'macbook',
   // 'smokestacks',
   // 'residential',
   // 'theatre',
   // 'wind_turbines',
   // 'tennis',
-  'cars',
+  //'cars',
   //'farm',
   //'orchard',
   //'plexiled',
@@ -20,25 +20,32 @@ var graphics = [
   // 'travel',
   // 'generic_building_2',
   // 'chairs',
-  'people',
+  //'people',
 
   // 'stadium',
   // 'gameloft',
   // 'mcdonalds',
-  'clouds',
-  'sun',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9'
+  //'clouds',
+  //'sun',
+  // '1',
+  // '2',
+  // '3',
+  // '4',
+  // '5',
+  // '6',
+  // '7',
+  // '8',
+  // '9'
+  'buildings_blur_sd',
+  'clouds_blur_sd',
+  'sun_blur_sd',
 ];
 
-// graphics = [];
+var graphicsClear = [
+  'buildings_clear_sd',
+  'clouds_clear_sd',
+  'sun_clear_sd',
+];
 
 openMap();
 startAnimation();
@@ -56,15 +63,23 @@ function openMap() {
 
 function repositionMap() {
   var mapHeight = $('#map-content').height();
+  var mapWidth= $('#map-content').width();
   $('#map-content').css({
     top: ($(window).height() - mapHeight)/2 + 'px',
+    left: ($(window).width() - mapWidth - 20)/2 + 'px',
   });
 }
 
 function createMapElements() {
-  graphics.forEach(function(element, index) {
+  graphicsBlur.forEach(function(element, index) {
     setTimeout(function() {
-      var elemStr = '<img class="graphic-element" src="graphics/map/' + element + '.png" id="' + element + '"/>';
+      var elemStr = '<img class="graphic-element element-blur" src="graphics/map/blur/' + element + '.png" id="' + element + '"/>';
+      var newElement = $('#map-content').append($(elemStr));
+    }, index * 200);
+  });
+  graphicsClear.forEach(function(element, index) {
+    setTimeout(function() {
+      var elemStr = '<img class="graphic-element element-clear" src="graphics/map/clear/' + element + '.png" id="' + element + '"/>';
       var newElement = $('#map-content').append($(elemStr));
     }, index * 200);
   });
@@ -190,7 +205,7 @@ function startAnimation() {
                       // $('#map').css({top: 0});
                       // TweenMax.to($('#first-half'), 0.3, {scale: 0, delay: 0.15, ease: Power2.easeInOut});
 
-                      setTimeout(showMap, 1200);
+                      setTimeout(showMap, 1000);
                       // TweenMax.to(iswhatido, 1, {top: '15%'/*, color: '#444'*/, opacity: 0, scale: 0.6, delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
                       TweenMax.to(iswhatido, 0.4, {top: '145%'/*, color: '#444'*/, delay: 0.15, ease: Back.easeIn, onComplete: function() {
                         console.log('done');
@@ -219,21 +234,17 @@ function startAnimation() {
 }
 
 function showMap() {
-  // TweenMax.to($('#map'), 0.5, {opacity: 1});
-  // $('#map').css({'opacity': 1});
-  $('.graphic-element').each(function(index, element) {
-    var delay = 0;
-    // if(index === 0) {
-    //   delay = 0.5;
-    // } else if(index === 1) {
-    //   delay = 1;
-    // } else {
-    //   delay = 1.5 + index * 0.2;
-    // }
-    delay = 0.3 + index * 0.1;
-    // TweenMax.to($(element), 0.8, {top: 0, delay: delay, ease: Bounce.easeOut});
-    setTimeout(function() {
-      $(element).css({top: 0});
-    }, delay * 1000);
+  var blurElements = $('.element-blur');
+  var clearElements = $('.element-clear');
+
+  var tweenEndTime = 0.3 + (blurElements.length-1) * 0.2;
+  blurElements.each(function(index, element) {
+    var delay = 0.3 + index * 0.2;
+    TweenMax.to($(element), 0.4, {delay: delay, top: 0, ease: Strong.easeOut, onComplete: function() {
+      var id = $(element).attr('id');
+      var clearID = id.split('blur').join('clear');
+      $(element).hide();
+      $('#' + clearID).css({top: 0});
+    }});
   });
 }
