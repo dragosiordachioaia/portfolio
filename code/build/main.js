@@ -18,15 +18,13 @@ var graphicsClear = [
 var markers = [
   {
     name: '1',
-    left: '30%',
-    top: '80%',
+    left: '46%',
+    top: '64%',
   }
 ];
 
 openMap();
 startAnimation();
-// addSectionInteraction(false);
-// addSectionInteraction(true);
 
 var inBlackMode = false;
 
@@ -35,8 +33,9 @@ function openMap() {
     centerMapH();
     setTimeout(centerMapV, 200);
   });
-  centerMapH();
   createMapElements();
+  setTimeout(centerMapH, 500);
+
   mapContent.css('opacity', 1);
 }
 
@@ -47,20 +46,27 @@ function centerMapH() {
 
   var windowWidth = $(window).width();
   var windowHeight = $(window).height();
-  var targetWidth = Math.min(windowWidth, 1100);
+  var targetWidth = windowWidth;//Math.min(windowWidth, 1100);
 
   if(!initialMapWidth) {
     initialMapWidth = mapContent.width();
     initialMapHeight = mapContent.height();
+    mapContent.css({width: '95%'});
   }
 
   var targetScale = targetWidth / initialMapWidth;
+  // console.log('initialMapWidth: ', initialMapWidth);
+  // console.log('targetWidth: ', targetWidth);
+  // console.log('windowWidth: ', windowWidth);
+  // console.log('targetScale: ', targetScale);
   if(targetScale * initialMapHeight >= windowHeight * 0.95) {
     targetScale = windowHeight / initialMapHeight * 0.95;
   }
   crtScale = targetScale;
 
-  TweenMax.to(mapContent, 0, {scale: targetScale});
+  // mapContent.css({transform: 'scale('+targetScale+')'})
+  var newScaleStr = 'translate(-33%, -92%) scale('+targetScale/1.96+')';
+  $('.element-marker-clear').css('transform', newScaleStr)
   setTimeout(function() {
     var targetLeft = ((windowWidth - targetWidth - 20)/2) * targetScale + 'px';
     $(mapContent).css({left: '-10px'});
@@ -87,83 +93,22 @@ function createMapElements() {
     }, index * 200);
   });
   markers.forEach(function(element, index) {
-    setTimeout(function() {
-      var elemStr = '<img class="marker element-marker-blur" src="graphics/map/blur/' + element.name + '.png" id="' + element.name + '-blur'+ '"/>';
-      var newElement = mapContent.append($(elemStr));
-      newElement.css({
-        left: element.left
+    // setTimeout(function() {
+      // var elemStr = '<img class="marker element-marker-blur" src="graphics/map/blur/' + element.name + '.png" id="' + element.name + '-blur"/>';
+      // var newElement = $(elemStr);
+      // mapContent.append(newElement);
+      // $(newElement).css({left: element.left});
+      // $(newElement).attr({'data-end-top': element.top});
+
+      var elemStrClear = '<img class="marker element-marker-clear" src="graphics/map/clear/' + element.name + '.png" id="' + element.name + '-clear"/>';
+      var newElementClear = $(elemStrClear);
+      mapContent.append(newElementClear);
+      $(newElementClear).css({
+        left: element.left,
+        // top: element.top
       });
-      newElement.attr({
-        'data-end-top': element.top,
-      })
-    }, index * 200);
-  });
-  // markers.forEach(function(element, index) {
-  //   setTimeout(function() {
-  //     var elemStr = '<img class="graphic-element element-marker-clear" src="graphics/map/clear/' + element + '.png" id="' + element + '-clear' + '"/>';
-  //     var newElement = mapContent.append($(elemStr));
-  //   }, index * 200);
-  // });
-}
-
-function addSectionInteraction(instant) {
-  if(instant) {
-    $('#sections').css({
-      display: 'block',
-      opacity: 1,
-    });
-    $('#sections li span').css('opacity', 1);
-    $('#iamdragos').hide();
-  }
-
-  $('#sections li').on('mouseenter', function() {
-    if(inBlackMode) return;
-
-    $('#sections li').css('color', '#000');
-    $(this).css('color', '#fff');
-    TweenMax.to($('body'), 0.5, {backgroundColor: '#000'});
-  });
-
-  $('#sections li').on('mouseleave', function() {
-    if(inBlackMode) return;
-
-    $('#sections li').css('color', '#000');
-    TweenMax.to($('body'), 0.5, {backgroundColor: '#fff'});
-  });
-
-  $('#sections li').on('click', function(e) {
-    inBlackMode = true;
-    var button = $(this);
-    var crtTop = button.offset().top;
-    var crtLeft = button.offset().left;
-    var targetLeft = - crtLeft + button.text().length * 11 - 120;
-    var targetTop = -crtTop - 35;
-
-    $('#sections li').each(function() {
-      if($(this).attr('id') !== button.attr('id')) {
-        $(this).css('opacity', 0);
-      }
-    });
-    button.css({
-      visibility: 'visible',
-    });
-
-    TweenMax.to(button, 1, {top: targetTop, left: targetLeft, delay: 0, ease: Power2.easeInOut});
-
-    var projectsHeight = $(window).height() - 50;
-    $('#projects-frontend').css('height', projectsHeight);
-    var projectElementWidth = $('#projects-frontend li .content').first().width();
-    $('#projects-frontend li .content').css('height', (projectElementWidth * 9/16) + 'px');
-    TweenMax.to($('#projects-frontend li'), 0, {scale: 0});
-    $('#projects-frontend li').each(function(index, projectElement) {
-      // projectElement.css()
-      // TweenMax.to($(projectElement), 0, {scale: 0, delay: index * 0.5 + 1, onComplete: function() {
-        $(projectElement).css('display', 'inline-block');
-        TweenMax.to($(projectElement), 0.5, {scale: 1, delay: index * 0.5 + 1});
-      // }});
-    });
-    // TweenMax.to($('#projects-frontend'), 1, {height: projectsHeight + 'px', delay: 1, ease: Power2.easeInOut});
-    TweenMax.to($('body'), 0.7, {backgroundColor: '#31CEB7', ease: Power2.easeInOut});
+      $(newElementClear).attr({'data-end-top': element.top});
+    // }, index * 200);
   });
 }
 
@@ -216,7 +161,7 @@ function startAnimation() {
                       'z-index': 2,
                     });
                     $('#map').css({
-                      'z-index': -1,
+                      //'z-index': -1,
                       top: '0',
                     });
                     mapContent.css({
@@ -225,25 +170,8 @@ function startAnimation() {
                     TweenMax.to(iswhatido, 1.5, {top: '45%', ease: Bounce.easeOut, onComplete: function() {
                       thisElement.show();
                       TweenMax.to($('#first-half'), 0.4, {top: '100vh', delay: 0.2, ease: Power2.easeIn});
-                      // TweenMax.to($('#map'), 1, {top: '0', delay: 0.15, ease: Power2.easeInOut});
-                      // $('#map').css({top: 0});
-                      // TweenMax.to($('#first-half'), 0.3, {scale: 0, delay: 0.15, ease: Power2.easeInOut});
-
-
-                      // TweenMax.to(iswhatido, 1, {top: '15%'/*, color: '#444'*/, opacity: 0, scale: 0.6, delay: 0.5, ease: Power2.easeInOut, onComplete: function() {
-                      TweenMax.to(iswhatido, 0.4, {top: '145%'/*, color: '#444'*/, delay: 0.15, ease: Back.easeIn, onComplete: function() {
+                      TweenMax.to(iswhatido, 0.4, {top: '145%', delay: 0.15, ease: Back.easeIn, onComplete: function() {
                         showMap();
-
-                        // var sections = $('#sections');
-                        // sections.show();
-                        // TweenMax.to(sections, 1, {opacity: 1});
-                        // var sectionElements = $('#sections li');
-                        // sectionElements.each(function(index, elem) {
-                        //   TweenMax.to($(this).find('span'), 3, {opacity: 1, delay: index * 1.5});
-                        // });
-                        // TweenMax.to($(this).find('span'), 2, {opacity: 1, top: 0, delay: 1});
-                        // TweenMax.to(thisElement, 0.5, {opacity: 0, delay: 0.5});
-                        // TweenMax.to(iswhatido, 0.5, {opacity: 0, delay: 0.5});
                       }});
                     }});
                   }});
@@ -263,12 +191,18 @@ function showMap() {
   $('.graphic-element').css({opacity: 0});
   centerMapV();
   setTimeout(function() {
-    TweenMax.to(mapContent, 0, {scale: 0.5});
+    // TweenMax.to(mapContent, 0, {scale: 0.5});
+    mapContent.css({transform: 'scale(0.5)'})
     setTimeout(function() {
       // mapContent.css({opacity: 1});
-      TweenMax.to(mapContent, 1, {scale: crtScale, ease: Elastic.easeOut, onComplete: function() {
+      var props = {
+        scale: 0.5,
+      };
+      TweenMax.to(props, 1, {scale: 1, ease: Elastic.easeOut, onComplete: function() {
         $('.graphic-element').css({opacity: 1});
         showMapElements();
+      },onUpdate: function() {
+        $(mapContent).css({transform: 'scale('+props.scale+')'})
       }});
       TweenMax.to(mapContent, 0.5, {opacity: 1});
     });
@@ -278,7 +212,7 @@ function showMap() {
 function showMapElements() {
   var blurElements = $('.element-blur');
   var clearElements = $('.element-clear');
-  var markerElements = $('.element-marker-blur');
+  var markerElements = $('.element-marker-clear');
 
   var tweenEndTime = (blurElements.length-1) * 0.3;
   blurElements.each(function(index, element) {
@@ -295,12 +229,20 @@ function showMapElements() {
   setTimeout(function() {
     markerElements.each(function(index, element) {
       var delay = index * 0.1;
-      // TweenMax.to($(element), 1.5, {delay: delay, top: $(element).attr('data-end-top'), ease: Bounce.easeOut, onComplete: function() {
+      var endTop = $(element).attr('data-end-top');
+      console.log('endTop: ', endTop);
+      console.log($(element));
+      TweenMax.to($(element), 1.5, {delay: delay, top: endTop, ease: Bounce.easeOut, onComplete: function() {
         // var id = $(element).attr('id');
         // var clearID = id.split('blur').join('clear');
+        // var clearElement = $('#' + clearID);
         // $(element).hide();
-        // $('#' + clearID).css({top: 0});
-      // }});
+        // console.log('clearElement: ', clearElement);
+        // console.log('clearID: ', clearID);
+        // console.log('crtScale:', crtScale);
+        // // TweenMax.to(clearElement, 0, {scale: crtScale});
+        // clearElement.css({opacity: 1});
+      }});
     });
   }, tweenEndTime * 1000 + 1200);
 }
