@@ -307,12 +307,12 @@ body {
 
 #map-content {
   position: absolute;
-  top: 0;
+  top: -150vh;
   left: 0;
   opacity: 0;
   width: 100%;
   transform-origin: 50% 50%;
-  max-width: 1100px;
+  /* max-width: 1100px; */
 }
 
 #map #bg {
@@ -340,6 +340,12 @@ img.graphic-element {
   position: absolute;
   top: -200vh;
   left: 0;
+  opacity: 0;
+}
+
+img.marker {
+  position: absolute;
+  top: -200vh;
   opacity: 1;
 }
 

@@ -1,41 +1,9 @@
-var graphicsBlur = [
-  //'mountain',
-  //'buildings',
-  //'fair_fence',
-  //'fair',
-  //'container_ship',
-  //'big_ship',
-  //'macbook',
-  // 'smokestacks',
-  // 'residential',
-  // 'theatre',
-  // 'wind_turbines',
-  // 'tennis',
-  //'cars',
-  //'farm',
-  //'orchard',
-  //'plexiled',
-  // 'generic_building_1',
-  // 'generic_tree_1',
-  // 'travel',
-  // 'generic_building_2',
-  // 'chairs',
-  //'people',
+var initialMapWidth;
+var initialMapHeight;
+var crtScale = 0;
+var mapContent = $('#map-content');
 
-  // 'stadium',
-  // 'gameloft',
-  // 'mcdonalds',
-  //'clouds',
-  //'sun',
-  // '1',
-  // '2',
-  // '3',
-  // '4',
-  // '5',
-  // '6',
-  // '7',
-  // '8',
-  // '9'
+var graphicsBlur = [
   'buildings_blur_sd',
   'clouds_blur_sd',
   'sun_blur_sd',
@@ -48,15 +16,11 @@ var graphicsClear = [
 ];
 
 var markers = [
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9'
+  {
+    name: '1',
+    left: '30%',
+    top: '80%',
+  }
 ];
 
 openMap();
@@ -69,51 +33,77 @@ var inBlackMode = false;
 function openMap() {
   $(window).resize(function(){
     centerMapH();
-    centerMapV();
+    setTimeout(centerMapV, 200);
   });
   centerMapH();
   createMapElements();
-  $('#map-content').css('opacity', 1);
+  mapContent.css('opacity', 1);
 }
 
 function centerMapH() {
-  var mapWidth= $('#map-content').width();
-  TweenMax.to($('#map-content'), 0.3, {
-    left: ($(window).width() - mapWidth - 20)/2 + 'px',
-  });
+  if($('#bg-map').width() < 100) {
+    setTimeout(centerMapH, 100);
+  }
+
+  var windowWidth = $(window).width();
+  var windowHeight = $(window).height();
+  var targetWidth = Math.min(windowWidth, 1100);
+
+  if(!initialMapWidth) {
+    initialMapWidth = mapContent.width();
+    initialMapHeight = mapContent.height();
+  }
+
+  var targetScale = targetWidth / initialMapWidth;
+  if(targetScale * initialMapHeight >= windowHeight * 0.95) {
+    targetScale = windowHeight / initialMapHeight * 0.95;
+  }
+  crtScale = targetScale;
+
+  TweenMax.to(mapContent, 0, {scale: targetScale});
+  setTimeout(function() {
+    var targetLeft = ((windowWidth - targetWidth - 20)/2) * targetScale + 'px';
+    $(mapContent).css({left: '-10px'});
+  }, 200);
 }
+window.centerMapH = centerMapH;
+
 function centerMapV() {
-  var mapHeight = $('#map-content').height();
-  TweenMax.to($('#map-content'), 0.3, {
-    top: ($(window).height() - mapHeight)/2 + 'px',
-  });
+  var mapHeight = mapContent.height();
+  $(mapContent).css({top: ($(window).height() - mapHeight + 10)/2 + 'px'});
 }
 
 function createMapElements() {
   graphicsBlur.forEach(function(element, index) {
     setTimeout(function() {
       var elemStr = '<img class="graphic-element element-blur" src="graphics/map/blur/' + element + '.png" id="' + element + '"/>';
-      var newElement = $('#map-content').append($(elemStr));
+      var newElement = mapContent.append($(elemStr));
     }, index * 200);
   });
   graphicsClear.forEach(function(element, index) {
     setTimeout(function() {
       var elemStr = '<img class="graphic-element element-clear" src="graphics/map/clear/' + element + '.png" id="' + element + '"/>';
-      var newElement = $('#map-content').append($(elemStr));
+      var newElement = mapContent.append($(elemStr));
     }, index * 200);
   });
   markers.forEach(function(element, index) {
     setTimeout(function() {
-      var elemStr = '<img class="graphic-element element-marker-blur" src="graphics/map/blur/' + element + '.png" id="' + element + '-blur'+ '"/>';
-      var newElement = $('#map-content').append($(elemStr));
+      var elemStr = '<img class="marker element-marker-blur" src="graphics/map/blur/' + element.name + '.png" id="' + element.name + '-blur'+ '"/>';
+      var newElement = mapContent.append($(elemStr));
+      newElement.css({
+        left: element.left
+      });
+      newElement.attr({
+        'data-end-top': element.top,
+      })
     }, index * 200);
   });
-  markers.forEach(function(element, index) {
-    setTimeout(function() {
-      var elemStr = '<img class="graphic-element element-marker-clear" src="graphics/map/clear/' + element + '.png" id="' + element + '-clear' + '"/>';
-      var newElement = $('#map-content').append($(elemStr));
-    }, index * 200);
-  });
+  // markers.forEach(function(element, index) {
+  //   setTimeout(function() {
+  //     var elemStr = '<img class="graphic-element element-marker-clear" src="graphics/map/clear/' + element + '.png" id="' + element + '-clear' + '"/>';
+  //     var newElement = mapContent.append($(elemStr));
+  //   }, index * 200);
+  // });
 }
 
 function addSectionInteraction(instant) {
@@ -229,7 +219,7 @@ function startAnimation() {
                       'z-index': -1,
                       top: '0',
                     });
-                    $('#map-content').css({
+                    mapContent.css({
                       top: '100vh',
                     });
                     TweenMax.to(iswhatido, 1.5, {top: '45%', ease: Bounce.easeOut, onComplete: function() {
@@ -269,22 +259,20 @@ function startAnimation() {
 
 function showMap() {
   // showMapElements();
-  $('#map-content').css({opacity: 0});
+  mapContent.css({opacity: 0});
   $('.graphic-element').css({opacity: 0});
   centerMapV();
   setTimeout(function() {
-    TweenMax.to($('#map-content'), 0, {scale: 0.5});
+    TweenMax.to(mapContent, 0, {scale: 0.5});
     setTimeout(function() {
-      // $('#map-content').css({opacity: 1});
-      TweenMax.to($('#map-content'), 1, {scale: 1, ease: Elastic.easeOut, onComplete: function() {
+      // mapContent.css({opacity: 1});
+      TweenMax.to(mapContent, 1, {scale: crtScale, ease: Elastic.easeOut, onComplete: function() {
         $('.graphic-element').css({opacity: 1});
         showMapElements();
       }});
-      TweenMax.to($('#map-content'), 0.5, {opacity: 1});
+      TweenMax.to(mapContent, 0.5, {opacity: 1});
     });
   }, 350);
-
-
 }
 
 function showMapElements() {
@@ -295,6 +283,7 @@ function showMapElements() {
   var tweenEndTime = (blurElements.length-1) * 0.3;
   blurElements.each(function(index, element) {
     var delay = index * 0.3;
+    $(element).css({opacity: 1});
     TweenMax.to($(element), 0.8, {delay: delay, top: 0, ease: Strong.easeOut, onComplete: function() {
       var id = $(element).attr('id');
       var clearID = id.split('blur').join('clear');
@@ -306,12 +295,12 @@ function showMapElements() {
   setTimeout(function() {
     markerElements.each(function(index, element) {
       var delay = index * 0.1;
-      TweenMax.to($(element), 1.5, {delay: delay, top: 0, ease: Bounce.easeOut, onComplete: function() {
-        var id = $(element).attr('id');
-        var clearID = id.split('blur').join('clear');
-        $(element).hide();
-        $('#' + clearID).css({top: 0});
-      }});
+      // TweenMax.to($(element), 1.5, {delay: delay, top: $(element).attr('data-end-top'), ease: Bounce.easeOut, onComplete: function() {
+        // var id = $(element).attr('id');
+        // var clearID = id.split('blur').join('clear');
+        // $(element).hide();
+        // $('#' + clearID).css({top: 0});
+      // }});
     });
   }, tweenEndTime * 1000 + 1200);
 }
