@@ -20,7 +20,17 @@ var markers = [
     name: '1',
     left: '46%',
     top: '64%',
-  }
+  },
+  {
+    name: '2',
+    left: '56%',
+    top: '74%',
+  },
+  {
+    name: '3',
+    left: '57.5%',
+    top: '31%',
+  },
 ];
 
 openMap();
@@ -63,6 +73,7 @@ function centerMapH() {
     targetScale = windowHeight / initialMapHeight * 0.95;
   }
   crtScale = targetScale;
+  // TODO: fix vertical scaling responsiveness
 
   // mapContent.css({transform: 'scale('+targetScale+')'})
   var newScaleStr = 'translate(-33%, -92%) scale('+targetScale/1.96+')';
@@ -230,19 +241,7 @@ function showMapElements() {
     markerElements.each(function(index, element) {
       var delay = index * 0.1;
       var endTop = $(element).attr('data-end-top');
-      console.log('endTop: ', endTop);
-      console.log($(element));
-      TweenMax.to($(element), 1.5, {delay: delay, top: endTop, ease: Bounce.easeOut, onComplete: function() {
-        // var id = $(element).attr('id');
-        // var clearID = id.split('blur').join('clear');
-        // var clearElement = $('#' + clearID);
-        // $(element).hide();
-        // console.log('clearElement: ', clearElement);
-        // console.log('clearID: ', clearID);
-        // console.log('crtScale:', crtScale);
-        // // TweenMax.to(clearElement, 0, {scale: crtScale});
-        // clearElement.css({opacity: 1});
-      }});
+      TweenMax.to($(element), 1.5, {delay: delay, top: endTop, ease: Bounce.easeOut});
     });
   }, tweenEndTime * 1000 + 1200);
 }
