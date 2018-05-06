@@ -2,6 +2,8 @@ var initialMapWidth;
 var initialMapHeight;
 var crtScale = 0;
 var mapContent = $('#map-content');
+var jumpTween;
+var jumpTarget;
 
 var graphicsBlur = [
   'buildings_blur_sd',
@@ -104,22 +106,15 @@ function createMapElements() {
     }, index * 200);
   });
   markers.forEach(function(element, index) {
-    // setTimeout(function() {
-      // var elemStr = '<img class="marker element-marker-blur" src="graphics/map/blur/' + element.name + '.png" id="' + element.name + '-blur"/>';
-      // var newElement = $(elemStr);
-      // mapContent.append(newElement);
-      // $(newElement).css({left: element.left});
-      // $(newElement).attr({'data-end-top': element.top});
-
       var elemStrClear = '<img class="marker element-marker-clear" src="graphics/map/clear/' + element.name + '.png" id="' + element.name + '-clear"/>';
       var newElementClear = $(elemStrClear);
       mapContent.append(newElementClear);
       $(newElementClear).css({
         left: element.left,
-        // top: element.top
       });
       $(newElementClear).attr({'data-end-top': element.top});
-    // }, index * 200);
+      $(newElementClear).on('mouseenter', onMarkerHover);
+      $(newElementClear).on('mouseleave', onMarkerLeave);
   });
 }
 
@@ -244,4 +239,24 @@ function showMapElements() {
       TweenMax.to($(element), 1.5, {delay: delay, top: endTop, ease: Bounce.easeOut});
     });
   }, tweenEndTime * 1000 + 1200);
+}
+
+function onMarkerHover(e) {
+  resetJump();
+  jumpTarget = e.target;
+  jumpTween = TweenMax.fromTo($(jumpTarget), 0.5, {marginTop: 15}, {marginTop: -15, yoyo: true, repeat: 1000});
+}
+function onMarkerLeave(e) {
+  resetJump();
+}
+
+function resetJump() {
+  if(jumpTarget) {
+    TweenMax.to($(jumpTarget), 0.35, {marginTop: 15, ease: Strong.easeIn});
+    jumpTarget = null;
+  }
+  if(jumpTween) {
+    jumpTween.kill();
+    jumpTween = null;
+  }
 }
