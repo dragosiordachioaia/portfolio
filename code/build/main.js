@@ -4,6 +4,7 @@ var crtScale = 0;
 var mapContent = $('#map-content');
 var jumpTween;
 var jumpTarget;
+$(window).on('mousemove', doParallax);
 
 var graphicsBlur = [
   'buildings_blur_sd',
@@ -192,26 +193,22 @@ function startAnimation() {
 }
 
 function showMap() {
-  // showMapElements();
   mapContent.css({opacity: 0});
   $('.graphic-element').css({opacity: 0});
   centerMapV();
   setTimeout(function() {
-    // TweenMax.to(mapContent, 0, {scale: 0.5});
     mapContent.css({transform: 'scale(0.5)'})
-    setTimeout(function() {
-      // mapContent.css({opacity: 1});
-      var props = {
-        scale: 0.5,
-      };
-      TweenMax.to(props, 1, {scale: 1, ease: Elastic.easeOut, onComplete: function() {
+    var props = {scale: 0.5};
+    TweenMax.to(props, 1, {scale: 1, ease: Elastic.easeOut,
+      onComplete: function() {
         $('.graphic-element').css({opacity: 1});
         showMapElements();
-      },onUpdate: function() {
-        $(mapContent).css({transform: 'scale('+props.scale+')'})
-      }});
-      TweenMax.to(mapContent, 0.5, {opacity: 1});
+      },
+      onUpdate: function() {
+        $(mapContent).css({transform: 'scale('+props.scale+')'});
+      }
     });
+    TweenMax.to(mapContent, 0.5, {opacity: 1});
   }, 350);
 }
 
@@ -258,5 +255,32 @@ function resetJump() {
   if(jumpTween) {
     jumpTween.kill();
     jumpTween = null;
+  }
+}
+
+function doParallax(e) {
+  var clouds = $('#clouds_clear_sd');
+  var sun = $('#sun_clear_sd');
+  var mapContent = $('#map-content');
+
+  var offsetLeft = -(e.clientX - $(window).width()/2);
+  var offsetTop = -(e.clientY - $(window).height()/2);
+  if(sun) {
+    TweenMax.to(sun, 0.3, {
+      marginLeft: offsetLeft / 7,
+      marginTop: offsetTop / 7,
+    })
+  }
+  if(clouds) {
+    TweenMax.to(clouds, 0.3, {
+      marginLeft: offsetLeft / 13,
+      marginTop: offsetTop / 13,
+    })
+  }
+  if(mapContent) {
+    TweenMax.to(mapContent, 0.3, {
+      marginLeft: offsetLeft / 25,
+      marginTop: offsetTop / 25,
+    })
   }
 }
