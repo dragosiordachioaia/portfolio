@@ -1,0 +1,40 @@
+
+#header {
+  position: fixed;
+  left: 2vw;
+  top: -10vh;
+  color: white;
+  z-index: 1;
+  opacity: 0;
+  transition: all 500ms;
+
+  #menu-icon {
+    position: fixed;
+    right: 4vw;
+    top: 5vh;
+    cursor: pointer;
+    transition: all 500ms;
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  #menu-name {
+    font-size: 1.2em;
+    opacity: 0.8;
+    font-weight: 100;
+    text-transform: uppercase;
+    letter-spacing: 7px;
+    font-family: Averta;
+  }
+
+  #menu-profession {
+    font-size: 0.8em;
+    opacity: 0.8;
+    font-weight: 100;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    margin-top: 5px;
+    font-family: Averta;
+  }
+}
