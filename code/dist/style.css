@@ -1,13 +1,20 @@
-body, html {
+body,
+html {
   height: 100% !important;
   overflow-y: hidden;
   margin: 0; }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0; }
 
 body {
-  font-family: Helvetica, 'sans-serif';
+  font-family: Helvetica, "sans-serif";
   background-color: #fff; }
 
 #first-half {
@@ -109,6 +116,9 @@ body {
   z-index: 1;
   opacity: 0;
   transition: all 500ms; }
+  #header.shown {
+    opacity: 1;
+    top: 2vh; }
   #header #menu-icon {
     position: fixed;
     right: 4vw;
@@ -303,4 +313,115 @@ img.element-marker-clear {
           animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
           animation-direction: alternate; }
+
+#project-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  z-index: 2; }
+  #project-container #project-close {
+    position: absolute;
+    top: 2vh;
+    right: 2vh;
+    color: black; }
+  #project-container #project-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: #f6f5f8;
+    border: 20px solid #fff;
+    box-sizing: border-box;
+    text-align: center;
+    padding-top: 15vh; }
+    #project-container #project-content #project-count {
+      font-family: "Old Standard TT", serif;
+      color: #444;
+      margin-bottom: -4px;
+      letter-spacing: -1px; }
+    #project-container #project-content #project-count-separator {
+      width: 60px;
+      border: 0;
+      background-color: #e1e1e1;
+      height: 1px; }
+    #project-container #project-content #project-count-label {
+      font-family: Raleway;
+      color: #ccc;
+      text-align: center;
+      padding-top: 0px;
+      font-weight: 400;
+      font-size: 0.6em;
+      letter-spacing: 2px;
+      text-transform: uppercase; }
+    #project-container #project-content #project-title {
+      font-family: "Old Standard TT", serif;
+      font-family: Raleway;
+      color: #333;
+      text-align: center;
+      padding-top: 30px;
+      font-weight: 700;
+      font-size: 4em;
+      letter-spacing: 6px;
+      text-transform: capitalize;
+      text-shadow: 0px 2px 8px #ccc; }
+    #project-container #project-content #project-subtitle {
+      font-family: Raleway;
+      color: #ccc;
+      text-align: center;
+      padding-top: 20px;
+      font-weight: 400;
+      font-size: 0.75em;
+      letter-spacing: 3px;
+      text-transform: lowercase; }
+    #project-container #project-content #project-specs {
+      width: 50%;
+      margin-left: auto;
+      margin-right: auto;
+      list-style-type: none;
+      text-align: left;
+      font-family: Raleway;
+      font-weight: 700; }
+    #project-container #project-content #project-description {
+      font-family: Raleway;
+      position: relative;
+      margin-top: 150px;
+      line-height: 1.7;
+      text-align: justify;
+      padding-left: 10%;
+      padding-right: 10%;
+      font-weight: 100;
+      color: #888;
+      font-size: 0.9em;
+      letter-spacing: 1px; }
+      #project-container #project-content #project-description::before {
+        content: "";
+        position: absolute;
+        top: -30px;
+        left: 50px;
+        width: 70px;
+        height: 5px;
+        background-color: #e1e1e1; }
+      #project-container #project-content #project-description::first-letter {
+        font-size: 5.5em;
+        margin-right: 10px;
+        color: #333;
+        line-height: 0.7;
+        font-weight: 700;
+        float: left;
+        margin-top: 7px;
+        margin-bottom: -10px; }
+  #project-container #slice-container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%; }
+    #project-container #slice-container .slice {
+      position: absolute;
+      bottom: 0;
+      background-color: #f6f5f8;
+      transition: box-shadow 400ms; }
+      #project-container #slice-container .slice.with-shadow {
+        box-shadow: 13px 1px 30px -14px rgba(0, 0, 0, 0.09); }
 

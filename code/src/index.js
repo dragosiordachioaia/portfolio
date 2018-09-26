@@ -49,6 +49,20 @@ openMap();
 // });
 // setTimeout(showMap, 1000);
 startAnimation();
+createSlices();
+
+function createSlices() {
+  const SLICE_COUNT = 6;
+  for (let i = 0; i < SLICE_COUNT; i++) {
+    let newSlice = $(`<div id="slice-${i}" class="slice"></div>`);
+    newSlice.css({
+      left: (i / SLICE_COUNT) * 100 + "%",
+      width: 100 / SLICE_COUNT + "%",
+      "z-index": SLICE_COUNT - i,
+    });
+    $("#slice-container").append(newSlice);
+  }
+}
 
 function openMap() {
   $(window).resize(function() {
@@ -141,7 +155,30 @@ function createMapElements() {
     });
     $(newElementClear).attr({ "data-end-top": element.top });
     $(newElementClear).on("mouseenter", onMarkerHover);
+    $(newElementClear).on("click", e => openProject(index));
     $(newElementClear).on("mouseleave", onMarkerLeave);
+  });
+}
+
+function openProject(projectIndex) {
+  $("#project-container").show();
+  $("#header").removeClass("shown");
+  console.log("openProject() projectIndex = ", projectIndex);
+  $(".slice").each((index, sliceElement) => {
+    $(sliceElement).addClass("with-shadow");
+    TweenMax.to($(sliceElement), 1, {
+      height: "100%",
+      ease: Strong.easeInOut,
+      delay: index * 0.15,
+      onComplete: () => {
+        $(sliceElement).removeClass("with-shadow");
+      },
+    });
+    setTimeout(() => {
+      $("#project-content").show();
+      $("#slice-container").hide();
+      $(".slice").css({ height: 0 });
+    }, 2000);
   });
 }
 
@@ -325,10 +362,7 @@ function showMap() {
   $("#mouse").css({
     transform: "scale(1,1)",
   });
-  $("#header").css({
-    opacity: "1",
-    top: "2vh",
-  });
+  $("#header").addClass("shown");
   $("#sun, #moon").css({
     opacity: 1,
   });
