@@ -10,11 +10,33 @@ $project-bg-color: #f6f5f8;
   display: none;
   z-index: 2;
 
-  #project-close {
+  #project-close-button {
+    font-family: Raleway;
     position: absolute;
-    top: 2vh;
-    right: 2vh;
-    color: black;
+    top: 7vh;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%) scale(0);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+    font-size: 0.8em;
+    color: #000;
+    user-select: none;
+    cursor: pointer;
+    border: 2px dotted #000;
+    padding: 5px 10px;
+    transition: transform 500ms;
+
+    &.visible {
+      transform: translateX(-50%) translateY(-50%) scale(1);
+    }
+
+    &:hover {
+      background-color: #000;
+      border-style: solid;
+      color: white;
+    }
   }
 
   #project-content {
@@ -22,7 +44,26 @@ $project-bg-color: #f6f5f8;
     width: 100%;
     height: 100%;
     background-color: $project-bg-color;
-    border: 20px solid #fff;
+
+    #project-border {
+      position: absolute;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      box-sizing: border-box;
+      border-style: solid;
+      border-color: white;
+      border-width: 0;
+      transition: border-width 400ms;
+
+      &.visible {
+        border-width: 20px;
+      }
+    }
+
     box-sizing: border-box;
     text-align: center;
     padding-top: 15vh;
@@ -102,7 +143,7 @@ $project-bg-color: #f6f5f8;
         content: "";
         position: absolute;
         top: -30px;
-        left: 50px;
+        left: calc(10% - 1.5em);
         width: 70px;
         height: 5px;
         background-color: #e1e1e1;

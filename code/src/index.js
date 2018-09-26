@@ -41,14 +41,14 @@ var markers = [
 ];
 
 openMap();
-// $('#map').css({
-//   top: '0',
-// });
-// mapContent.css({
-//   top: '100vh',
-// });
-// setTimeout(showMap, 1000);
-startAnimation();
+$("#map").css({
+  top: "0",
+});
+mapContent.css({
+  top: "100vh",
+});
+setTimeout(showMap, 1000);
+// startAnimation();
 createSlices();
 
 function createSlices() {
@@ -174,12 +174,19 @@ function openProject(projectIndex) {
         $(sliceElement).removeClass("with-shadow");
       },
     });
-    setTimeout(() => {
-      $("#project-content").show();
-      $("#slice-container").hide();
-      $(".slice").css({ height: 0 });
-    }, 2000);
   });
+  setTimeout(() => {
+    $("#project-content").show();
+    $("#slice-container").hide();
+    $(".slice").css({ height: 0 });
+    setTimeout(() => {
+      $("#project-border").addClass("visible");
+    }, 2000);
+    setTimeout(() => {
+      console.log($("#project-close-button"));
+      $("#project-close-button").addClass("visible");
+    }, 3000);
+  }, 2000);
 }
 
 function startAnimation() {

@@ -322,20 +322,59 @@ img.element-marker-clear {
   height: 100vh;
   display: none;
   z-index: 2; }
-  #project-container #project-close {
+  #project-container #project-close-button {
+    font-family: Raleway;
     position: absolute;
-    top: 2vh;
-    right: 2vh;
-    color: black; }
+    top: 7vh;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%) scale(0);
+            transform: translateX(-50%) translateY(-50%) scale(0);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 700;
+    font-size: 0.8em;
+    color: #000;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    cursor: pointer;
+    border: 2px dotted #000;
+    padding: 5px 10px;
+    transition: -webkit-transform 500ms;
+    transition: transform 500ms;
+    transition: transform 500ms, -webkit-transform 500ms; }
+    #project-container #project-close-button.visible {
+      -webkit-transform: translateX(-50%) translateY(-50%) scale(1);
+              transform: translateX(-50%) translateY(-50%) scale(1); }
+    #project-container #project-close-button:hover {
+      background-color: #000;
+      border-style: solid;
+      color: white; }
   #project-container #project-content {
     display: none;
     width: 100%;
     height: 100%;
     background-color: #f6f5f8;
-    border: 20px solid #fff;
     box-sizing: border-box;
     text-align: center;
     padding-top: 15vh; }
+    #project-container #project-content #project-border {
+      position: absolute;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      box-sizing: border-box;
+      border-style: solid;
+      border-color: white;
+      border-width: 0;
+      transition: border-width 400ms; }
+      #project-container #project-content #project-border.visible {
+        border-width: 20px; }
     #project-container #project-content #project-count {
       font-family: "Old Standard TT", serif;
       color: #444;
@@ -399,7 +438,7 @@ img.element-marker-clear {
         content: "";
         position: absolute;
         top: -30px;
-        left: 50px;
+        left: calc(10% - 1.5em);
         width: 70px;
         height: 5px;
         background-color: #e1e1e1; }
