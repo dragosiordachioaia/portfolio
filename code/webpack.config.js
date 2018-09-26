@@ -47,6 +47,10 @@ module.exports = {
         from: 'src/graphics',
         to: 'graphics'
       }
-    ]),
-  ]
+    ])
+  ],
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 500
+  }
 };
