@@ -43,7 +43,6 @@ $project-bg-color: #f6f5f8;
     display: none;
     width: 100%;
     height: 100%;
-    background-color: $project-bg-color;
 
     #project-border {
       position: absolute;
@@ -68,18 +67,39 @@ $project-bg-color: #f6f5f8;
     text-align: center;
     padding-top: 15vh;
 
+    .animatable {
+      position: relative;
+      transition: all 700ms;
+      opacity: 0;
+
+      &.visible {
+        opacity: 1;
+      }
+    }
+
     #project-count {
       font-family: "Old Standard TT", serif;
       color: #444;
       margin-bottom: -4px;
       letter-spacing: -1px;
+      top: -50px;
+      transition-delay: 0ms;
+
+      &.visible {
+        top: 0;
+      }
     }
 
     #project-count-separator {
-      width: 60px;
       border: 0;
       background-color: #e1e1e1;
       height: 1px;
+      width: 0;
+      transition-delay: 300ms;
+
+      &.visible {
+        width: 60px;
+      }
     }
 
     #project-count-label {
@@ -91,6 +111,12 @@ $project-bg-color: #f6f5f8;
       font-size: 0.6em;
       letter-spacing: 2px;
       text-transform: uppercase;
+      top: 50px;
+      transition-delay: 0ms;
+
+      &.visible {
+        top: 0;
+      }
     }
 
     #project-title {
@@ -105,6 +131,7 @@ $project-bg-color: #f6f5f8;
       text-transform: capitalize;
       text-shadow: 0px 2px 8px #ccc;
     }
+
     #project-subtitle {
       font-family: Raleway;
       color: #ccc;
@@ -114,6 +141,13 @@ $project-bg-color: #f6f5f8;
       font-size: 0.75em;
       letter-spacing: 3px;
       text-transform: lowercase;
+      transform: translate(-50%, -50%) scale(0);
+      left: 50%;
+      transition-delay: 100ms;
+
+      &.visible {
+        transform: translate(-50%, -50%) scale(1);
+      }
     }
 
     #project-specs {
@@ -138,6 +172,12 @@ $project-bg-color: #f6f5f8;
       color: #888;
       font-size: 0.9em;
       letter-spacing: 1px;
+      top: 50px;
+      transition-delay: 150ms;
+
+      &.visible {
+        top: 0;
+      }
 
       &::before {
         content: "";
@@ -172,7 +212,14 @@ $project-bg-color: #f6f5f8;
       position: absolute;
       bottom: 0;
       background-color: $project-bg-color;
+      height: 0;
       transition: box-shadow 400ms;
+      //, height 700ms;
+      // transition-timing-function: ease-in-out;
+
+      // &.visible {
+      //   height: 100%;
+      // }
 
       &.with-shadow {
         box-shadow: 13px 1px 30px -14px rgba(0, 0, 0, 0.09);

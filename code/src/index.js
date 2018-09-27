@@ -22,6 +22,21 @@ var graphicsClear = [
   // 'sun_clear_sd',
 ];
 
+let projects = [
+  {
+    title: "New Project title",
+    roles: ["front-end", "back-end"],
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut gravida arcu. Curabitur dapibus dolor nisi. Pellentesque ex dolor, tristique ut magna vel, rhoncus laoreet purus. Vestibulum maximus arcu sed enim ultricies hendrerit. Aenean sit amet accumsan nibh. Nam dictum vulputate sem at iaculis. Morbi fermentum nunc vel aliquet feugiat. Vestibulum ac sapien cursus mi varius hendrerit. Nulla fermentum, metus ac vestibulum blandit, ipsum nisl pharetra odio, eu vestibulum tellus ipsum sagittis dolor. Mauris sit amet euismod neque, sed facilisis leo. Cras vitae lorem in magna varius venenatis. Vestibulum in porta mauris.",
+  },
+  {
+    title: "Project numero dos",
+    roles: ["back-end"],
+    description:
+      "Once upon a second time there was a lovely project, and it actually worked.",
+  },
+];
+
 var markers = [
   {
     name: "1",
@@ -41,27 +56,67 @@ var markers = [
 ];
 
 openMap();
-$("#map").css({
-  top: "0",
-});
-mapContent.css({
-  top: "100vh",
-});
-setTimeout(showMap, 1000);
-// startAnimation();
+// $("#map").css({
+//   top: "0",
+// });
+// mapContent.css({
+//   top: "100vh",
+// });
+// setTimeout(showMap, 1000);
+startAnimation();
 createSlices();
+$("#project-close-button").click(closeProject);
 
 function createSlices() {
   const SLICE_COUNT = 6;
   for (let i = 0; i < SLICE_COUNT; i++) {
     let newSlice = $(`<div id="slice-${i}" class="slice"></div>`);
     newSlice.css({
-      left: (i / SLICE_COUNT) * 100 + "%",
-      width: 100 / SLICE_COUNT + "%",
+      left: `${(i / SLICE_COUNT) * 100}%`,
+      width: `calc(${100 / SLICE_COUNT}% + 2px)`,
       "z-index": SLICE_COUNT - i,
     });
     $("#slice-container").append(newSlice);
   }
+}
+
+function splitText(elementSelector) {
+  let element = $(elementSelector);
+  let newText = element
+    .text()
+    .split("")
+    .map(convertLetterToElement);
+  element.html(newText);
+}
+
+function convertLetterToElement(letter, index) {
+  let isNewLine = false;
+  if (letter.charCodeAt(0) === 10) {
+    isNewLine = true;
+  }
+
+  if (isNewLine) {
+    return "<br />";
+  } else {
+    return `<span class='letter'>${letter}</span>`;
+  }
+}
+
+function revealSplitText(elementSelector) {
+  $(`${elementSelector} .letter`).each((index, element) => {
+    setTimeout(() => {
+      $(element).addClass("visible");
+    }, index * 30);
+  });
+}
+
+function hideSplitText(elementSelector) {
+  let count = $(`${elementSelector} .letter`).length;
+  $(`${elementSelector} .letter`).each((index, element) => {
+    setTimeout(() => {
+      $(element).removeClass("visible");
+    }, (count - index) * 30);
+  });
 }
 
 function openMap() {
@@ -92,10 +147,6 @@ function centerMapH() {
   }
 
   var targetScale = targetWidth / initialMapWidth;
-  // console.log('initialMapWidth: ', initialMapWidth);
-  // console.log('targetWidth: ', targetWidth);
-  // console.log('windowWidth: ', windowWidth);
-  // console.log('targetScale: ', targetScale);
   if (targetScale * initialMapHeight >= windowHeight * 0.95) {
     targetScale = (windowHeight / initialMapHeight) * 0.95;
   }
@@ -160,33 +211,90 @@ function createMapElements() {
   });
 }
 
+function closeProject() {
+  hideSplitText("#project-title");
+  $("#project-border").removeClass("visible");
+  $("#project-content .animatable").removeClass("visible");
+  $("#project-close-button").removeClass("visible");
+  setTimeout(hideSlices, 450);
+  setTimeout(() => $("#project-content").hide(), 800);
+  setTimeout(() => $("#project-container").hide(), 1500);
+}
+
 function openProject(projectIndex) {
+  let projectData = projects[projectIndex];
+
+  resetProjectScreen();
+  assignProjectData(projectData, projectIndex);
+
   $("#project-container").show();
   $("#header").removeClass("shown");
+
+  showSlices().then(animateProjectContent);
+}
+
+function resetProjectScreen() {
+  $("#project-title").html("");
+  $("#project-container .animatable").removeClass("visible");
+}
+
+function assignProjectData(projectData, projectIndex) {
+  $("#project-count").text("0" + projectIndex);
+  $("#project-title").html(projectData.title);
+  let rolesText = projectData.roles.join(" | ");
+  // rolesText = rolesText.substr(0, rolesText.length - 2);
+  $("#project-subtitle").text(rolesText);
+  $("#project-description").text(projectData.description);
+  splitText("#project-title");
   console.log("openProject() projectIndex = ", projectIndex);
-  $(".slice").each((index, sliceElement) => {
-    $(sliceElement).addClass("with-shadow");
-    TweenMax.to($(sliceElement), 1, {
-      height: "100%",
-      ease: Strong.easeInOut,
-      delay: index * 0.15,
-      onComplete: () => {
+}
+
+function showSlices() {
+  return new Promise((resolve, reject) => {
+    let count = $(".slice").length;
+    $(".slice").each((index, sliceElement) => {
+      $(sliceElement).addClass("with-shadow");
+      setTimeout(() => {
+        TweenMax.to($(sliceElement), 0.7, {
+          height: "100%",
+          ease: Power2.easeIn,
+        });
+      }, index * 100);
+      setTimeout(() => {
+        if (index === count - 1) {
+          resolve();
+        }
+      }, index * 100 + 500);
+      setTimeout(() => {
         $(sliceElement).removeClass("with-shadow");
-      },
+      }, index * 100 + 800);
     });
   });
+}
+
+function hideSlices() {
+  let count = $(".slice").length;
+  $(".slice").each((index, sliceElement) => {
+    $(sliceElement).addClass("with-shadow");
+    setTimeout(() => {
+      TweenMax.to($(sliceElement), 0.4, {
+        height: 0,
+        ease: Power1.easeIn,
+      });
+    }, (count - index) * 70);
+  });
+}
+
+function animateProjectContent() {
+  $("#project-content").show();
   setTimeout(() => {
-    $("#project-content").show();
-    $("#slice-container").hide();
-    $(".slice").css({ height: 0 });
-    setTimeout(() => {
-      $("#project-border").addClass("visible");
-    }, 2000);
-    setTimeout(() => {
-      console.log($("#project-close-button"));
-      $("#project-close-button").addClass("visible");
-    }, 3000);
-  }, 2000);
+    revealSplitText("#project-title");
+    $("#project-border").addClass("visible");
+    $("#project-container .animatable").addClass("visible");
+  }, 100);
+  setTimeout(() => {
+    $("#project-close-button").addClass("visible");
+  }, 1000);
 }
 
 function startAnimation() {
@@ -313,6 +421,8 @@ function showIsWhatIDo() {
   });
   $(iswhatido).css({
     "z-index": 2,
+    opacity: 0,
+    left: "80%",
   });
   $("#map").css({
     top: "0",
@@ -320,29 +430,72 @@ function showIsWhatIDo() {
   mapContent.css({
     top: "100vh",
   });
-  TweenMax.to(iswhatido, 1.5, {
-    top: "45%",
-    ease: Bounce.easeOut,
-    onComplete: function() {
-      thisElement.show();
-      TweenMax.to(iswhatido, 0.4, {
-        top: "145%",
-        delay: 0.25,
-        ease: Back.easeIn,
-        onComplete: function() {
-          TweenMax.to($("#first-half"), 0.4, {
-            opacity: 0,
-            delay: 0.05,
-            ease: Power2.easeIn,
-            onComplete: () => {
-              $("#first-half").hide();
-            },
-          });
-          showMap();
-        },
-      });
+  TweenMax.to(iswhatido, 0.1, {
+    skewX: "-30deg",
+    delay: 0.25,
+    onComplete: () => {
+      TweenMax.to(iswhatido, 0.3, { opacity: 1 });
+      TweenMax.to(iswhatido, 1, { left: "50%", ease: Elastic.easeOut });
+      TweenMax.to(iswhatido, 1, { skewX: "0deg", ease: Elastic.easeOut });
+      setTimeout(showSkillList, 1700);
     },
   });
+  // TweenMax.to(iswhatido, 1.5, {
+  //   top: "45%",
+  //   ease: Bounce.easeOut,
+  //   onComplete: function() {
+  //     thisElement.show();
+  //     TweenMax.to(iswhatido, 0.4, {
+  //       top: "145%",
+  //       delay: 0.25,
+  //       ease: Back.easeIn,
+  //       onComplete: function() {
+  //         TweenMax.to($("#first-half"), 0.4, {
+  //           opacity: 0,
+  //           delay: 0.05,
+  //           ease: Power2.easeIn,
+  //           onComplete: () => {
+  //             $("#first-half").hide();
+  //           },
+  //         });
+  //         // showMap();
+  //       },
+  //     });
+  //   },
+  // });
+}
+
+function showSkillList() {
+  deleteLetters(
+    ["web design", "front-end", "back-end", "mockups", "wireframes"],
+    0
+  );
+}
+
+function deleteLetters(skills, index) {
+  let iswhatido = $("#iswhatido");
+  let currentText = iswhatido.text();
+  if (currentText.length > 0) {
+    iswhatido.text(currentText.substr(0, currentText.length - 1));
+    setTimeout(() => deleteLetters(skills, index), 25);
+  } else {
+    showLetters(skills, index);
+  }
+}
+
+function showLetters(skills, index) {
+  let iswhatido = $("#iswhatido");
+  let currentText = iswhatido.text();
+  let newText = skills[index];
+  if (currentText.length < newText.length) {
+    iswhatido.text(newText.substr(0, currentText.length + 1));
+    setTimeout(() => showLetters(skills, index), 25);
+  } else {
+    if (index < skills.length - 1) {
+      setTimeout(() => deleteLetters(skills, index + 1), 600);
+    } else {
+    }
+  }
 }
 
 function showMap() {

@@ -23,7 +23,7 @@ body {
   right: 50%;
   width: 0;
   height: 100vh;
-  background-color: #7A62C4; }
+  background-color: #7a62c4; }
 
 #hi {
   color: #fff;
@@ -45,7 +45,7 @@ body {
   right: -0.22em; }
 
 #nice {
-  color: #7A62C4;
+  color: #7a62c4;
   position: absolute;
   bottom: 47.4%;
   left: 25%;
@@ -69,7 +69,7 @@ body {
   padding-right: 30px; }
 
 #andthis {
-  color: #E5A12B;
+  color: #e5a12b;
   position: fixed;
   right: 0;
   width: 50%;
@@ -87,8 +87,10 @@ body {
 #iswhatido {
   color: #fff;
   position: fixed;
-  top: -200px;
-  left: 0;
+  top: 50%;
+  left: 150vw;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   width: 100%;
   font-size: 5em;
   z-index: 0;
@@ -356,7 +358,6 @@ img.element-marker-clear {
     display: none;
     width: 100%;
     height: 100%;
-    background-color: #f6f5f8;
     box-sizing: border-box;
     text-align: center;
     padding-top: 15vh; }
@@ -375,16 +376,29 @@ img.element-marker-clear {
       transition: border-width 400ms; }
       #project-container #project-content #project-border.visible {
         border-width: 20px; }
+    #project-container #project-content .animatable {
+      position: relative;
+      transition: all 700ms;
+      opacity: 0; }
+      #project-container #project-content .animatable.visible {
+        opacity: 1; }
     #project-container #project-content #project-count {
       font-family: "Old Standard TT", serif;
       color: #444;
       margin-bottom: -4px;
-      letter-spacing: -1px; }
+      letter-spacing: -1px;
+      top: -50px;
+      transition-delay: 0ms; }
+      #project-container #project-content #project-count.visible {
+        top: 0; }
     #project-container #project-content #project-count-separator {
-      width: 60px;
       border: 0;
       background-color: #e1e1e1;
-      height: 1px; }
+      height: 1px;
+      width: 0;
+      transition-delay: 300ms; }
+      #project-container #project-content #project-count-separator.visible {
+        width: 60px; }
     #project-container #project-content #project-count-label {
       font-family: Raleway;
       color: #ccc;
@@ -393,7 +407,11 @@ img.element-marker-clear {
       font-weight: 400;
       font-size: 0.6em;
       letter-spacing: 2px;
-      text-transform: uppercase; }
+      text-transform: uppercase;
+      top: 50px;
+      transition-delay: 0ms; }
+      #project-container #project-content #project-count-label.visible {
+        top: 0; }
     #project-container #project-content #project-title {
       font-family: "Old Standard TT", serif;
       font-family: Raleway;
@@ -413,7 +431,14 @@ img.element-marker-clear {
       font-weight: 400;
       font-size: 0.75em;
       letter-spacing: 3px;
-      text-transform: lowercase; }
+      text-transform: lowercase;
+      -webkit-transform: translate(-50%, -50%) scale(0);
+              transform: translate(-50%, -50%) scale(0);
+      left: 50%;
+      transition-delay: 100ms; }
+      #project-container #project-content #project-subtitle.visible {
+        -webkit-transform: translate(-50%, -50%) scale(1);
+                transform: translate(-50%, -50%) scale(1); }
     #project-container #project-content #project-specs {
       width: 50%;
       margin-left: auto;
@@ -433,7 +458,11 @@ img.element-marker-clear {
       font-weight: 100;
       color: #888;
       font-size: 0.9em;
-      letter-spacing: 1px; }
+      letter-spacing: 1px;
+      top: 50px;
+      transition-delay: 150ms; }
+      #project-container #project-content #project-description.visible {
+        top: 0; }
       #project-container #project-content #project-description::before {
         content: "";
         position: absolute;
@@ -460,7 +489,20 @@ img.element-marker-clear {
       position: absolute;
       bottom: 0;
       background-color: #f6f5f8;
+      height: 0;
       transition: box-shadow 400ms; }
       #project-container #slice-container .slice.with-shadow {
         box-shadow: 13px 1px 30px -14px rgba(0, 0, 0, 0.09); }
+
+.letter {
+  min-width: 0.25em;
+  display: inline-block;
+  transition: all 350ms;
+  -webkit-transform: translateY(100%) scaleY(0);
+          transform: translateY(100%) scaleY(0);
+  opacity: 0; }
+  .letter.visible {
+    -webkit-transform: translateY(0) scaleY(1);
+            transform: translateY(0) scaleY(1);
+    opacity: 1; }
 
