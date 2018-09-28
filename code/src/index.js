@@ -26,8 +26,11 @@ let projects = [
   {
     title: "New Project title",
     roles: ["front-end", "back-end"],
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut gravida arcu. Curabitur dapibus dolor nisi. Pellentesque ex dolor, tristique ut magna vel, rhoncus laoreet purus. Vestibulum maximus arcu sed enim ultricies hendrerit. Aenean sit amet accumsan nibh. Nam dictum vulputate sem at iaculis. Morbi fermentum nunc vel aliquet feugiat. Vestibulum ac sapien cursus mi varius hendrerit. Nulla fermentum, metus ac vestibulum blandit, ipsum nisl pharetra odio, eu vestibulum tellus ipsum sagittis dolor. Mauris sit amet euismod neque, sed facilisis leo. Cras vitae lorem in magna varius venenatis. Vestibulum in porta mauris.",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut gravida arcu. Curabitur dapibus dolor nisi. Pellentesque ex dolor,
+      tristique ut magna vel, rhoncus laoreet purus. Vestibulum maximus arcu sed enim ultricies hendrerit. Aenean sit amet accumsan nibh.
+       Nam dictum vulputate sem at iaculis. Morbi fermentum nunc vel aliquet feugiat. Vestibulum ac sapien cursus mi varius hendrerit.
+       Nulla fermentum, metus ac vestibulum blandit, ipsum nisl pharetra odio, eu vestibulum tellus ipsum sagittis dolor. Mauris sit
+       amet euismod neque, sed facilisis leo. Cras vitae lorem in magna varius venenatis. Vestibulum in porta mauris.`,
   },
   {
     title: "Project numero dos",
@@ -438,62 +441,61 @@ function showIsWhatIDo() {
       TweenMax.to(iswhatido, 1, { left: "50%", ease: Elastic.easeOut });
       TweenMax.to(iswhatido, 1, { skewX: "0deg", ease: Elastic.easeOut });
       setTimeout(showSkillList, 1700);
+
+      // showMap();
     },
   });
-  // TweenMax.to(iswhatido, 1.5, {
-  //   top: "45%",
-  //   ease: Bounce.easeOut,
-  //   onComplete: function() {
-  //     thisElement.show();
-  //     TweenMax.to(iswhatido, 0.4, {
-  //       top: "145%",
-  //       delay: 0.25,
-  //       ease: Back.easeIn,
-  //       onComplete: function() {
-  //         TweenMax.to($("#first-half"), 0.4, {
-  //           opacity: 0,
-  //           delay: 0.05,
-  //           ease: Power2.easeIn,
-  //           onComplete: () => {
-  //             $("#first-half").hide();
-  //           },
-  //         });
-  //         // showMap();
-  //       },
-  //     });
-  //   },
-  // });
+}
+
+function hideSkillList() {
+  deleteLetters([], 0);
+  TweenMax.to($("#first-half"), 0.4, {
+    opacity: 0,
+    delay: 0.05,
+    ease: Power2.easeIn,
+    onComplete: () => {
+      $("#first-half").hide();
+      showMap();
+    },
+  });
 }
 
 function showSkillList() {
-  deleteLetters(
-    ["web design", "front-end", "back-end", "mockups", "wireframes"],
-    0
-  );
+  const skills = [
+    "web design",
+    "front-end",
+    "back-end",
+    "mockups",
+    "wireframes",
+  ];
+  deleteLetters(skills, 0, hideSkillList);
 }
 
-function deleteLetters(skills, index) {
+function deleteLetters(skills, index, cb) {
   let iswhatido = $("#iswhatido");
   let currentText = iswhatido.text();
   if (currentText.length > 0) {
     iswhatido.text(currentText.substr(0, currentText.length - 1));
-    setTimeout(() => deleteLetters(skills, index), 25);
+    setTimeout(() => deleteLetters(skills, index, cb), 25);
   } else {
-    showLetters(skills, index);
+    if (skills.length > 0 && index <= skills.length - 1) {
+      showLetters(skills, index, cb);
+    }
   }
 }
 
-function showLetters(skills, index) {
+function showLetters(skills, index, cb) {
   let iswhatido = $("#iswhatido");
   let currentText = iswhatido.text();
   let newText = skills[index];
   if (currentText.length < newText.length) {
     iswhatido.text(newText.substr(0, currentText.length + 1));
-    setTimeout(() => showLetters(skills, index), 25);
+    setTimeout(() => showLetters(skills, index, cb), 25);
   } else {
     if (index < skills.length - 1) {
-      setTimeout(() => deleteLetters(skills, index + 1), 600);
+      setTimeout(() => deleteLetters(skills, index + 1, cb), 600);
     } else {
+      setTimeout(cb, 600);
     }
   }
 }
