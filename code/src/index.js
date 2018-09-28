@@ -440,7 +440,7 @@ function showIsWhatIDo() {
       TweenMax.to(iswhatido, 0.3, { opacity: 1 });
       TweenMax.to(iswhatido, 1, { left: "50%", ease: Elastic.easeOut });
       TweenMax.to(iswhatido, 1, { skewX: "0deg", ease: Elastic.easeOut });
-      setTimeout(showSkillList, 1700);
+      setTimeout(showSkillList, 1300);
 
       // showMap();
     },
@@ -460,15 +460,187 @@ function hideSkillList() {
   });
 }
 
+function changeWord(words, index, cb) {
+  let iswhatido = $("#iswhatido");
+  let hasSpan = iswhatido.find("span").length > 0;
+  if (!hasSpan) {
+    let newSpanElement = $(`<span class="word">${iswhatido.text()}</span>`);
+    iswhatido.html(newSpanElement);
+  }
+  if (words.length > 0 && index <= words.length - 1) {
+    let secondSpanElement = $(
+      `<span class="word">${words[index].content}</span>`
+    );
+    secondSpanElement.css({ top: "110%" });
+    iswhatido.append(secondSpanElement);
+    let firstSpanElement = iswhatido.find(".word").first();
+    let duration = 0.7;
+    let ease = Linear.easeNone;
+
+    if (words[index].elastic) {
+      ease = Back.easeInOut;
+    }
+
+    if (
+      words[index].hasOwnProperty("duration") &&
+      !isNaN(words[index].duration) &&
+      words[index].duration >= 0
+    ) {
+      duration = words[index].duration / 1000;
+    }
+
+    TweenMax.to(firstSpanElement, duration, {
+      top: "-110%",
+      ease: Back.easeInOut,
+    });
+    TweenMax.to(secondSpanElement, duration, {
+      top: "0",
+      ease: Back.easeInOut,
+      onComplete: moveOn,
+    });
+  }
+
+  function moveOn() {
+    let firstSpanElement = iswhatido.find(".word").first();
+    firstSpanElement.remove();
+    let delay = 450;
+    if (
+      words[index].hasOwnProperty("delay") &&
+      !isNaN(words[index].delay) &&
+      words[index].delay >= 0
+    ) {
+      delay = words[index].delay;
+    }
+
+    if (index < words.length - 1) {
+      setTimeout(() => changeWord(words, index + 1, cb), delay);
+    } else {
+      if (cb && typeof cb === "function") {
+        setTimeout(cb, delay);
+      }
+    }
+  }
+}
+
 function showSkillList() {
   const skills = [
-    "web design",
-    "front-end",
-    "back-end",
-    "mockups",
-    "wireframes",
+    {
+      content: "web design",
+      duration: 700,
+      delay: 400,
+      elastic: true,
+    },
+    {
+      content: "front-end",
+      duration: 600,
+      delay: 400,
+      elastic: true,
+    },
+    {
+      content: "back-end",
+      duration: 450,
+      delay: 300,
+      elastic: true,
+    },
+    {
+      content: "mockups",
+      duration: 350,
+      delay: 220,
+      elastic: true,
+    },
+    {
+      content: "wireframes",
+      duration: 280,
+      delay: 120,
+      elastic: true,
+    },
+    {
+      content: "graphic design",
+      duration: 220,
+      delay: 30,
+      elastic: false,
+    },
+    {
+      content: "React",
+      duration: 200,
+      delay: 10,
+      elastic: false,
+    },
+    {
+      content: "Redux",
+      duration: 150,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "Python",
+      duration: 140,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "Node",
+      duration: 130,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "HTML5",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "Animation",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "Motion Design",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "UX",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "A/B testing",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "Sketch",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "Photoshop",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "but actually,",
+      duration: 120,
+      delay: 800,
+      elastic: true,
+    },
+    {
+      content: "let me show you some projects:",
+      duration: 700,
+      delay: 1200,
+      elastic: true,
+    },
   ];
-  deleteLetters(skills, 0, hideSkillList);
+  changeWord(skills, 0, hideSkillList);
+  // deleteLetters(skills, 0, hideSkillList);
 }
 
 function deleteLetters(skills, index, cb) {
