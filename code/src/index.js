@@ -618,31 +618,47 @@ function showMapElements() {
 
   setTimeout(function() {
     markerElements.each(function(index, element) {
-      let lastPos = element.getBoundingClientRect().top;
-      let crtPos = element.getBoundingClientRect().top;
-      let speed = 0;
-      let blurName = `blur-marker-${index}`;
-      let blurID = `#${blurName}`;
-      cloneBlurFilter(blurName, element);
-
-      var delay = index * 0.1;
-      var endTop = $(element).attr("data-end-top");
-      TweenMax.to($(element), 1.5, {
-        delay: delay,
-        top: endTop,
-        ease: Bounce.easeOut,
-        onUpdate: () => {
-          crtPos = element.getBoundingClientRect().top;
-          speed = crtPos - lastPos;
-          setBlur(blurID, speed / 2);
-          lastPos = crtPos;
-        },
-        onComplete: () => {
-          setBlur(blurID, 0);
+      animateWithBlur({
+        element,
+        blurName: `blur-marker-${index}`,
+        coordinate: "top",
+        duration: 1.5,
+        tweenParams: {
+          delay: index * 0.1,
+          top: $(element).attr("data-end-top"),
+          ease: Bounce.easeOut,
         },
       });
     });
   }, tweenEndTime * 1000 + 1200);
+}
+
+function animateWithBlur({
+  coordinate,
+  tweenParams,
+  element,
+  blurName,
+  duration,
+}) {
+  let lastPos = element.getBoundingClientRect()[coordinate];
+  let crtPos = element.getBoundingClientRect()[coordinate];
+  let speed = 0;
+  let blurID = `#${blurName}`;
+  cloneBlurFilter(blurName, element);
+
+  var endTop = $(element).attr("data-end-top");
+  TweenMax.to($(element), duration, {
+    ...tweenParams,
+    onUpdate: () => {
+      crtPos = element.getBoundingClientRect()[coordinate];
+      speed = crtPos - lastPos;
+      setBlur(blurID, speed / 2);
+      lastPos = crtPos;
+    },
+    onComplete: () => {
+      setBlur(blurID, 0);
+    },
+  });
 }
 
 function cloneBlurFilter(blurID, targetElement) {
