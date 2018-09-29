@@ -12,7 +12,8 @@ var mapContent = $("#map-content");
 var jumpTween;
 var jumpTarget;
 
-var graphicsClear = ["buildings_clear_sd", "clouds_clear_sd"];
+// var graphicsClear = ["buildings_clear_sd", "clouds_clear_sd"];
+var graphicsClear = ["buildings_clear_sd"];
 
 let projects = [
   {
@@ -51,9 +52,8 @@ var markers = [
 ];
 
 openMap();
-
-// setTimeout(showMap, 1000);
-startAnimation();
+setTimeout(showMap, 1000);
+// startAnimation();
 createSlices();
 $("#project-close-button").click(closeProject);
 
@@ -550,6 +550,7 @@ function showLetters(skills, index, cb) {
 }
 
 function showMap() {
+  $("#iamdragos").hide();
   $("#map").css({
     top: "0",
   });
@@ -571,11 +572,11 @@ function showMap() {
   TweenMax.to($("#bg-map"), 0.6, {
     opacity: 1,
     delay: 1.2,
-    onComplete: () => {
-      $(".graphic-element").css({ opacity: 1 });
-      showMapElements();
-    },
+    // onComplete: () => {
+    //   ();
+    // },
   });
+  setTimeout(showMapElements, 1100);
 
   $("#mouse").css({
     transform: "scale(1,1)",
@@ -588,44 +589,54 @@ function showMap() {
 }
 
 function showMapElements() {
+  $(".graphic-element").css({ opacity: 1 });
   var clearElements = $(".element-clear");
   var markerElements = $(".element-marker-clear");
 
   var tweenEndTime = (clearElements.length - 1) * 0.3;
   clearElements.each(function(index, element) {
-    let lastPos = element.getBoundingClientRect().top;
-    let crtPos = element.getBoundingClientRect().top;
-    let speed = 0;
-    let blurName = `blur-graphic-${index}`;
-    let blurID = `#${blurName}`;
-    cloneBlurFilter(blurName, element);
-    var delay = index * 0.3;
+    let elemID = $(element).attr("id");
+    let top;
+    if (elemID === "buildings_clear_sd") {
+      top = "5vh";
+    } else if (elemID === "clouds_clear_sd") {
+      top = "30vh";
+    }
     $(element).css({
-      opacity: 1,
+      opacity: 0,
+      top,
     });
-    TweenMax.to($(element), 0.8, {
-      delay: delay,
-      top: 0,
-      ease: Strong.easeOut,
-      onUpdate: () => {
-        crtPos = element.getBoundingClientRect().top;
-        speed = crtPos - lastPos;
-        setBlur(blurID, speed / 2);
-        lastPos = crtPos;
+
+    console.log();
+    animateWithBlur({
+      element,
+      blurName: `blur-graphic-${index}`,
+      coordinate: "top",
+      duration: 1,
+      tweenParams: {
+        top: 0,
+        opacity: 1,
+        delay: 0, //index * 0.3,
+        ease: Strong.easeInOut,
       },
     });
   });
 
   setTimeout(function() {
     markerElements.each(function(index, element) {
+      $(element).css({
+        opacity: 0,
+        top: "-30vh",
+      });
       animateWithBlur({
         element,
         blurName: `blur-marker-${index}`,
         coordinate: "top",
         duration: 1.5,
         tweenParams: {
-          delay: index * 0.1,
           top: $(element).attr("data-end-top"),
+          opacity: 1,
+          delay: index * 0.1,
           ease: Bounce.easeOut,
         },
       });
