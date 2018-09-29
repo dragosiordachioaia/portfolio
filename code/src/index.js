@@ -3,6 +3,8 @@ import { TweenMax } from "gsap";
 
 import "./less/main.less";
 
+import { skills } from "./skills";
+
 var initialMapWidth;
 var initialMapHeight;
 var crtScale = 0;
@@ -49,12 +51,7 @@ var markers = [
 ];
 
 openMap();
-// $("#map").css({
-//   top: "0",
-// });
-// mapContent.css({
-//   top: "100vh",
-// });
+
 // setTimeout(showMap, 1000);
 startAnimation();
 createSlices();
@@ -167,7 +164,6 @@ function createMapElements() {
     setTimeout(function() {
       var elemStr = `<img class="graphic-element element-clear" src="graphics/map/clear/${element}.png" id="${element}" />`;
       var newElement = mapContent.append($(elemStr));
-      console.log("elemStr = ", elemStr);
     }, index * 200);
   });
   markers.forEach(function(element, index) {
@@ -217,11 +213,9 @@ function assignProjectData(projectData, projectIndex) {
   $("#project-count").text("0" + projectIndex);
   $("#project-title").html(projectData.title);
   let rolesText = projectData.roles.join(" | ");
-  // rolesText = rolesText.substr(0, rolesText.length - 2);
   $("#project-subtitle").text(rolesText);
   $("#project-description").text(projectData.description);
   splitText("#project-title");
-  console.log("openProject() projectIndex = ", projectIndex);
 }
 
 function showSlices() {
@@ -399,12 +393,12 @@ function showIsWhatIDo() {
     opacity: 0,
     left: "80%",
   });
-  $("#map").css({
-    top: "0",
-  });
-  mapContent.css({
-    top: "100vh",
-  });
+  // $("#map").css({
+  //   top: "0",
+  // });
+  // mapContent.css({
+  //   top: "100vh",
+  // });
   TweenMax.to(iswhatido, 0.1, {
     skewX: "-30deg",
     delay: 0.25,
@@ -413,7 +407,6 @@ function showIsWhatIDo() {
       TweenMax.to(iswhatido, 1, { left: "50%", ease: Elastic.easeOut });
       TweenMax.to(iswhatido, 1, { skewX: "0deg", ease: Elastic.easeOut });
       setTimeout(showSkillList, 1300);
-      // showMap();
     },
   });
 }
@@ -433,18 +426,17 @@ function hideSkillList() {
 
 let filters = document.querySelector(".filters"); // the SVG that contains the filters
 let defs = filters.querySelector("defs"); // the  element inside the SVG
-let blur = defs.querySelector("#blur-filter"); // the blur filter
-let blurFilter = blur.firstElementChild; // the feGaussianBlur primitive
+let blurFilter = defs.querySelector("#blur-filter"); // the blur filter
 let filter = "url(#blur-filter)";
 let speed = 0;
 
-function setBlur(y) {
+function setBlur(blurID, y) {
+  let filterElement = document.querySelector(blurID).children[0];
   y = Math.floor(Math.abs(y));
-  blurFilter.setAttribute("stdDeviation", "0" + "," + y);
+  filterElement.setAttribute("stdDeviation", `0,${y}`);
 }
 
 function changeWord(words, index, cb) {
-  console.log("word: ", words[index].content);
   let iswhatido = $("#iswhatido");
   let hasSpan = iswhatido.find("span").length > 0;
   if (!hasSpan) {
@@ -497,7 +489,7 @@ function changeWord(words, index, cb) {
       crtPos = firstSpanElement[0].getBoundingClientRect().top;
       speed = crtPos - lastPos;
       lastPos = crtPos;
-      setBlur(speed / 2);
+      setBlur("#blur-filter", speed / 2);
     }
   }
 
@@ -524,158 +516,6 @@ function changeWord(words, index, cb) {
 }
 
 function showSkillList() {
-  const skills = [
-    {
-      content: "web design",
-      duration: 700,
-      delay: 400,
-      elastic: true,
-    },
-    {
-      content: "front-end",
-      duration: 550,
-      delay: 400,
-      elastic: true,
-    },
-    {
-      content: "back-end",
-      duration: 450,
-      delay: 300,
-      elastic: true,
-    },
-    {
-      content: "mockups",
-      duration: 370,
-      delay: 220,
-      elastic: true,
-    },
-    {
-      content: "wireframes",
-      duration: 310,
-      delay: 120,
-      elastic: true,
-    },
-    {
-      content: "React",
-      duration: 250,
-      delay: 10,
-      elastic: false,
-    },
-    {
-      content: "Redux",
-      duration: 190,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "Sketch",
-      duration: 160,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "Photoshop",
-      duration: 150,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "graphic design",
-      duration: 140,
-      delay: 30,
-      elastic: false,
-    },
-    {
-      content: "Python",
-      duration: 130,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "Node",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "HTML5",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "Animation",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "Motion Design",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "UX",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "SEO",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "dev-ops",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "aws",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "angular",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "data visualisation",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "responsive design",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "A/B testing",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "but actually,",
-      duration: 700,
-      delay: 800,
-      elastic: true,
-    },
-    {
-      content: "let me show you.",
-      duration: 700,
-      delay: 1200,
-      elastic: true,
-    },
-  ];
   changeWord(skills, 0, hideSkillList);
   // deleteLetters(skills, 0, hideSkillList);
 }
@@ -710,6 +550,13 @@ function showLetters(skills, index, cb) {
 }
 
 function showMap() {
+  $("#map").css({
+    top: "0",
+  });
+  mapContent.css({
+    top: "100vh",
+  });
+
   mapContent.css({ opacity: 1 });
   $("#bg-map").css({ opacity: 0 });
   $(".graphic-element").css({ opacity: 0 });
@@ -746,22 +593,28 @@ function showMapElements() {
 
   var tweenEndTime = (clearElements.length - 1) * 0.3;
   clearElements.each(function(index, element) {
-    console.log("element = ", element);
+    let lastPos = element.getBoundingClientRect().top;
+    let crtPos = element.getBoundingClientRect().top;
+    let speed = 0;
+    let blurName = `blur-graphic-${index}`;
+    let blurID = `#${blurName}`;
+    cloneBlurFilter(blurName, element);
     var delay = index * 0.3;
-    $(element).css({ opacity: 1 });
+    $(element).css({
+      opacity: 1,
+    });
     TweenMax.to($(element), 0.8, {
       delay: delay,
       top: 0,
       ease: Strong.easeOut,
+      onUpdate: () => {
+        crtPos = element.getBoundingClientRect().top;
+        speed = crtPos - lastPos;
+        setBlur(blurID, speed / 2);
+        lastPos = crtPos;
+      },
     });
   });
-
-  // onComplete: function() {
-  //   var id = $(element).attr("id");
-  //   var clearID = id.split("blur").join("clear");
-  //   $(element).hide();
-  //   $("#" + clearID).css({ top: 0 });
-  // },
 
   setTimeout(function() {
     markerElements.each(function(index, element) {
@@ -774,6 +627,21 @@ function showMapElements() {
       });
     });
   }, tweenEndTime * 1000 + 1200);
+}
+
+function cloneBlurFilter(blurID, targetElement) {
+  let blurClone = blurFilter.cloneNode(true);
+  // create and set a new ID so we can use the filter through CSS
+  blurClone.setAttribute("id", blurID);
+  let filterID = "url(#" + blurID + ")";
+  defs.appendChild(blurClone);
+
+  $(targetElement)
+    .css({
+      webkitFilter: filterID,
+      filter: filterID,
+    })
+    .attr("data-blur-id", blurID);
 }
 
 function onMarkerHover(e) {
