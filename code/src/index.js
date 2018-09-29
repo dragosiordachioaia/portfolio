@@ -10,17 +10,7 @@ var mapContent = $("#map-content");
 var jumpTween;
 var jumpTarget;
 
-var graphicsBlur = [
-  "buildings_blur_sd",
-  "clouds_blur_sd",
-  // 'sun_blur_sd',
-];
-
-var graphicsClear = [
-  "buildings_clear_sd",
-  "clouds_clear_sd",
-  // 'sun_clear_sd',
-];
+var graphicsClear = ["buildings_clear_sd", "clouds_clear_sd"];
 
 let projects = [
   {
@@ -173,35 +163,17 @@ function centerMapV() {
 }
 
 function createMapElements() {
-  graphicsBlur.forEach(function(element, index) {
-    setTimeout(function() {
-      var elemStr =
-        '<img class="graphic-element element-blur" src="graphics/map/blur/' +
-        element +
-        '.png" id="' +
-        element +
-        '"/>';
-      var newElement = mapContent.append($(elemStr));
-    }, index * 200);
-  });
   graphicsClear.forEach(function(element, index) {
     setTimeout(function() {
-      var elemStr =
-        '<img class="graphic-element element-clear" src="graphics/map/clear/' +
-        element +
-        '.png" id="' +
-        element +
-        '"/>';
+      var elemStr = `<img class="graphic-element element-clear" src="graphics/map/clear/${element}.png" id="${element}" />`;
       var newElement = mapContent.append($(elemStr));
+      console.log("elemStr = ", elemStr);
     }, index * 200);
   });
   markers.forEach(function(element, index) {
-    var elemStrClear =
-      '<img class="marker element-marker-clear" src="graphics/map/clear/' +
-      element.name +
-      '.png" id="' +
-      element.name +
-      '-clear"/>';
+    var elemStrClear = `<img class="marker element-marker-clear" src="graphics/map/clear/${
+      element.name
+    }.png" id="${element.name}-clear"/>`;
     var newElementClear = $(elemStrClear);
     mapContent.append(newElementClear);
     $(newElementClear).css({
@@ -508,13 +480,11 @@ function changeWord(words, index, cb) {
       webkitFilter: filter,
       filter: filter,
     });
-    // setBlur(0);
 
     TweenMax.to(firstSpanElement, duration, {
       top: "-110%",
       ease: Back.easeInOut,
       onUpdate: updateBlur,
-      // onComplete: () => updateBlur(true),
     });
 
     TweenMax.to(secondSpanElement, duration, {
@@ -524,16 +494,10 @@ function changeWord(words, index, cb) {
     });
 
     function updateBlur() {
-      // crtPos = parseInt($(firstSpanElement).css("top"));
       crtPos = firstSpanElement[0].getBoundingClientRect().top;
       speed = crtPos - lastPos;
       lastPos = crtPos;
-      // console.log("crtPos = ", crtPos);
       setBlur(speed / 2);
-    }
-
-    if (!words[index].elastic) {
-      // TweenMax.set(secondSpanElement,{'-webkit-filter':'blur(' + tlp + 'px' + ')','filter':'blur(' + tlp + 'px' + ')'});
     }
   }
 
@@ -777,26 +741,27 @@ function showMap() {
 }
 
 function showMapElements() {
-  var blurElements = $(".element-blur");
   var clearElements = $(".element-clear");
   var markerElements = $(".element-marker-clear");
 
-  var tweenEndTime = (blurElements.length - 1) * 0.3;
-  blurElements.each(function(index, element) {
+  var tweenEndTime = (clearElements.length - 1) * 0.3;
+  clearElements.each(function(index, element) {
+    console.log("element = ", element);
     var delay = index * 0.3;
     $(element).css({ opacity: 1 });
     TweenMax.to($(element), 0.8, {
       delay: delay,
       top: 0,
       ease: Strong.easeOut,
-      onComplete: function() {
-        var id = $(element).attr("id");
-        var clearID = id.split("blur").join("clear");
-        $(element).hide();
-        $("#" + clearID).css({ top: 0 });
-      },
     });
   });
+
+  // onComplete: function() {
+  //   var id = $(element).attr("id");
+  //   var clearID = id.split("blur").join("clear");
+  //   $(element).hide();
+  //   $("#" + clearID).css({ top: 0 });
+  // },
 
   setTimeout(function() {
     markerElements.each(function(index, element) {
