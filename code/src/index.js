@@ -441,7 +441,6 @@ function showIsWhatIDo() {
       TweenMax.to(iswhatido, 1, { left: "50%", ease: Elastic.easeOut });
       TweenMax.to(iswhatido, 1, { skewX: "0deg", ease: Elastic.easeOut });
       setTimeout(showSkillList, 1300);
-
       // showMap();
     },
   });
@@ -460,7 +459,20 @@ function hideSkillList() {
   });
 }
 
+let filters = document.querySelector(".filters"); // the SVG that contains the filters
+let defs = filters.querySelector("defs"); // the  element inside the SVG
+let blur = defs.querySelector("#blur-filter"); // the blur filter
+let blurFilter = blur.firstElementChild; // the feGaussianBlur primitive
+let filter = "url(#blur-filter)";
+let speed = 0;
+
+function setBlur(y) {
+  y = Math.floor(Math.abs(y));
+  blurFilter.setAttribute("stdDeviation", "0" + "," + y);
+}
+
 function changeWord(words, index, cb) {
+  console.log("word: ", words[index].content);
   let iswhatido = $("#iswhatido");
   let hasSpan = iswhatido.find("span").length > 0;
   if (!hasSpan) {
@@ -489,15 +501,40 @@ function changeWord(words, index, cb) {
       duration = words[index].duration / 1000;
     }
 
+    let lastPos = firstSpanElement[0].getBoundingClientRect().top;
+    let crtPos = firstSpanElement[0].getBoundingClientRect().top;
+
+    iswhatido.css({
+      webkitFilter: filter,
+      filter: filter,
+    });
+    // setBlur(0);
+
     TweenMax.to(firstSpanElement, duration, {
       top: "-110%",
       ease: Back.easeInOut,
+      onUpdate: updateBlur,
+      // onComplete: () => updateBlur(true),
     });
+
     TweenMax.to(secondSpanElement, duration, {
-      top: "0",
+      top: "0.4em",
       ease: Back.easeInOut,
       onComplete: moveOn,
     });
+
+    function updateBlur() {
+      // crtPos = parseInt($(firstSpanElement).css("top"));
+      crtPos = firstSpanElement[0].getBoundingClientRect().top;
+      speed = crtPos - lastPos;
+      lastPos = crtPos;
+      // console.log("crtPos = ", crtPos);
+      setBlur(speed / 2);
+    }
+
+    if (!words[index].elastic) {
+      // TweenMax.set(secondSpanElement,{'-webkit-filter':'blur(' + tlp + 'px' + ')','filter':'blur(' + tlp + 'px' + ')'});
+    }
   }
 
   function moveOn() {
@@ -532,7 +569,7 @@ function showSkillList() {
     },
     {
       content: "front-end",
-      duration: 600,
+      duration: 550,
       delay: 400,
       elastic: true,
     },
@@ -544,43 +581,55 @@ function showSkillList() {
     },
     {
       content: "mockups",
-      duration: 350,
+      duration: 370,
       delay: 220,
       elastic: true,
     },
     {
       content: "wireframes",
-      duration: 280,
+      duration: 310,
       delay: 120,
       elastic: true,
     },
     {
-      content: "graphic design",
-      duration: 220,
-      delay: 30,
-      elastic: false,
-    },
-    {
       content: "React",
-      duration: 200,
+      duration: 250,
       delay: 10,
       elastic: false,
     },
     {
       content: "Redux",
+      duration: 190,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "Sketch",
+      duration: 160,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "Photoshop",
       duration: 150,
       delay: 0,
       elastic: false,
     },
     {
-      content: "Python",
+      content: "graphic design",
       duration: 140,
+      delay: 30,
+      elastic: false,
+    },
+    {
+      content: "Python",
+      duration: 130,
       delay: 0,
       elastic: false,
     },
     {
       content: "Node",
-      duration: 130,
+      duration: 120,
       delay: 0,
       elastic: false,
     },
@@ -609,31 +658,55 @@ function showSkillList() {
       elastic: false,
     },
     {
+      content: "SEO",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "dev-ops",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "aws",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "angular",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "data visualisation",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
+      content: "responsive design",
+      duration: 120,
+      delay: 0,
+      elastic: false,
+    },
+    {
       content: "A/B testing",
       duration: 120,
       delay: 0,
       elastic: false,
     },
     {
-      content: "Sketch",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
-      content: "Photoshop",
-      duration: 120,
-      delay: 0,
-      elastic: false,
-    },
-    {
       content: "but actually,",
-      duration: 120,
+      duration: 700,
       delay: 800,
       elastic: true,
     },
     {
-      content: "let me show you some projects:",
+      content: "let me show you.",
       duration: 700,
       delay: 1200,
       elastic: true,
