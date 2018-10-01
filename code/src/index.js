@@ -12,6 +12,7 @@ var mapContent = $("#map-content");
 var jumpTween;
 var jumpTarget;
 let buildingsScale = 0;
+let selectedProject;
 
 // var buildings = ["buildings_clear_sd", "clouds_clear_sd"];
 let buildings = [
@@ -48,7 +49,7 @@ let buildings = [
 
 let projects = [
   {
-    title: "New Project title",
+    title: "The second project",
     roles: ["front-end", "back-end"],
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut gravida arcu. Curabitur dapibus dolor nisi. Pellentesque ex dolor,
       tristique ut magna vel, rhoncus laoreet purus. Vestibulum maximus arcu sed enim ultricies hendrerit. Aenean sit amet accumsan nibh.
@@ -57,10 +58,31 @@ let projects = [
        amet euismod neque, sed facilisis leo. Cras vitae lorem in magna varius venenatis. Vestibulum in porta mauris.`,
   },
   {
-    title: "Project numero dos",
+    title: "Seating Plan Editor",
     roles: ["back-end"],
+    demo: {
+      screenshot: "charts.png",
+    },
+    specs: [
+      {
+        label: "front-end",
+        values: ["jQuery", "LESS"],
+      },
+      {
+        label: "back-end",
+        values: ["Flask"],
+      },
+      {
+        label: "storage",
+        values: ["MySQL"],
+      },
+      {
+        label: "deployment",
+        values: ["CircleCI", "Kubernetes", "Google Cloud"],
+      },
+    ],
     description:
-      "Once upon a second time there was a lovely project, and it actually worked.",
+      "Sed a velit efficitur, cursus massa vitae, aliquam justo. Suspendisse lobortis pretium ligula ut laoreet. Cras eleifend aliquam enim, sed eleifend ipsum vulputate eu. Aliquam erat volutpat. Quisque venenatis vitae neque a vulputate. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin tincidunt vel purus in tincidunt. Maecenas sed erat elit. Proin imperdiet, diam nec congue cursus, lectus quam sollicitudin tortor, sit amet auctor justo ante nec sem. Vestibulum luctus dictum eros rutrum interdum. Integer laoreet accumsan felis et dignissim. Maecenas porttitor ipsum enim, in mattis nulla ultricies in. Duis sed venenatis purus. Aenean dapibus, ipsum non varius malesuada, lacus dui aliquam arcu, id aliquam massa ante eget odio. Suspendisse augue enim, tincidunt ac nunc sed, condimentum blandit eros.",
   },
 ];
 
@@ -76,9 +98,11 @@ let markers = [
   { name: 9, left: "77.5%", top: "29.5%" },
 ];
 
+$("#project-explore").click(showDemo);
+
 openMap();
-// setTimeout(showMap, 1000);
-startAnimation();
+setTimeout(showMap, 1000);
+// startAnimation();
 createSlices();
 $("#project-close-button").click(closeProject);
 
@@ -213,11 +237,14 @@ function createMapElements() {
       "data-left": parseFloat(element.left),
       "data-top": parseFloat(element.top),
     });
-    // $(newElem).on("mouseenter", onMarkerHover);
-    // $(newElem).on("click", e => openProject(index));
-    // $(newElem).on("mouseleave", onMarkerLeave);
+    $(newElem).on("mouseenter", onMarkerHover);
+    $(newElem).on("click", e => {
+      selectedProject = index;
+      openProject();
+    });
+    $(newElem).on("mouseleave", onMarkerLeave);
 
-    $(newElem).on("click", e => (selectedMarker = $(newElem)));
+    // $(newElem).on("click", e => (selectedMarker = $(newElem)));
   });
 }
 
@@ -286,11 +313,11 @@ function closeProject() {
   setTimeout(() => $("#project-container").hide(), 1500);
 }
 
-function openProject(projectIndex) {
-  let projectData = projects[projectIndex];
+function openProject() {
+  let projectData = projects[selectedProject];
 
   resetProjectScreen();
-  assignProjectData(projectData, projectIndex);
+  assignProjectData(projectData);
 
   $("#project-container").show();
   $("#header").removeClass("shown");
@@ -298,17 +325,52 @@ function openProject(projectIndex) {
   showSlices().then(animateProjectContent);
 }
 
+function showDemo() {
+  let projectData = projects[selectedProject];
+  TweenMax.to($("#project-explore"), 0.4, {
+    scale: 0,
+    onComplete: () => {},
+  });
+  $("#project-border").css({ "border-width": 0 });
+  $("#project-mockup").addClass("demo");
+  $("#project-content").addClass("demo");
+  $("#project-mockup-image").attr(
+    "src",
+    `graphics/portfolio/${projectData.demo.screenshot}`
+  );
+  setTimeout(() => {
+    // $("#project-mockup").removeClass("demo");
+    // $("#project-mockup").addClass("relative");
+  }, 720);
+}
+
 function resetProjectScreen() {
   $("#project-title").html("");
+  $("#project-specs").html("");
   $("#project-container .animatable").removeClass("visible");
 }
 
-function assignProjectData(projectData, projectIndex) {
-  $("#project-count").text("0" + projectIndex);
+function assignProjectData(projectData) {
+  $("#project-count").text("0" + selectedProject);
   $("#project-title").html(projectData.title);
   let rolesText = projectData.roles.join(" | ");
   $("#project-subtitle").text(rolesText);
   $("#project-description").text(projectData.description);
+  let specs = $("#project-specs");
+  projectData.specs.forEach(specData => {
+    let newSpecElement = $("<li></li>");
+    newSpecElement.append(
+      `<span class="project-spec-label">${specData.label}</span>`
+    );
+    newSpecElement.append(`<span class="project-spec-values"></span>`);
+    specData.values.forEach(valueText => {
+      let newSpecValueElement = $(
+        `<span class="project-spec-values-inside">${valueText}</span>`
+      );
+      newSpecElement.find(".project-spec-values").append(newSpecValueElement);
+    });
+    specs.append(newSpecElement);
+  });
   splitText("#project-title");
 }
 
@@ -708,7 +770,7 @@ function showMapElements() {
       top: 0,
       opacity: 1,
       ease: Strong.easeInOut,
-      delay: index * 0.3,
+      delay: index * 0.15,
     });
     // animateWithBlur({
     //   element: element[0],
