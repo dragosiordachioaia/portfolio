@@ -7,13 +7,44 @@ import { skills } from "./skills";
 
 var initialMapWidth;
 var initialMapHeight;
-var crtScale = 0;
+let crtScale = 0;
 var mapContent = $("#map-content");
 var jumpTween;
 var jumpTarget;
+let buildingsScale = 0;
 
-// var graphicsClear = ["buildings_clear_sd", "clouds_clear_sd"];
-var graphicsClear = ["buildings_clear_sd"];
+// var buildings = ["buildings_clear_sd", "clouds_clear_sd"];
+let buildings = [
+  // { name: "buildings_clear_sd" },
+  { name: "map_contents" },
+  { name: "clouds_clear_sd" },
+  // { name: "bat_signal" },
+  { name: "big_ship" },
+  // { name: "cars" },
+  // { name: "chairs" },
+  // { name: "clouds_clear_sd" },
+  { name: "container_ship" },
+  // { name: "fair" },
+  // { name: "fair_fence" },
+  // { name: "farm" },
+  // { name: "gameloft" },
+  // { name: "generic_building_1" },
+  // { name: "generic_building_2" },
+  // { name: "generic_tree_1" },
+  { name: "macbook" },
+  // { name: "mcdonalds" },
+  // { name: "mountain" },
+  // { name: "orchard" },
+  // { name: "people" },
+  // { name: "plexiled" },
+  // { name: "residential" },
+  // { name: "smokestacks" },
+  // { name: "stadium" },
+  // { name: "tennis" },
+  // { name: "theatre" },
+  // { name: "travel" },
+  // { name: "wind_turbines" },
+];
 
 let projects = [
   {
@@ -33,27 +64,21 @@ let projects = [
   },
 ];
 
-var markers = [
-  {
-    name: "1",
-    left: "46%",
-    top: "64%",
-  },
-  {
-    name: "2",
-    left: "56%",
-    top: "74%",
-  },
-  {
-    name: "3",
-    left: "57.5%",
-    top: "31%",
-  },
+let markers = [
+  { name: 1, left: "11.5%", top: "59%" },
+  { name: 2, left: "46%", top: "64.5%" },
+  { name: 3, left: "54%", top: "51.5%" },
+  { name: 4, left: "56%", top: "75%" },
+  { name: 5, left: "58%", top: "29.5%" },
+  { name: 7, left: "63.5%", top: "39%" },
+  { name: 6, left: "69%", top: "57%" },
+  { name: 8, left: "74.5%", top: "81.5%" },
+  { name: 9, left: "77.5%", top: "29.5%" },
 ];
 
 openMap();
-setTimeout(showMap, 1000);
-// startAnimation();
+// setTimeout(showMap, 1000);
+startAnimation();
 createSlices();
 $("#project-close-button").click(closeProject);
 
@@ -133,7 +158,7 @@ function centerMapH() {
   if (!initialMapWidth) {
     initialMapWidth = mapContent.width();
     initialMapHeight = mapContent.height();
-    mapContent.css({ width: "85%" });
+    mapContent.css({ width: "110%", left: "-2%" });
   }
 
   var targetScale = targetWidth / initialMapWidth;
@@ -144,13 +169,14 @@ function centerMapH() {
   // TODO: fix vertical scaling responsiveness
 
   // mapContent.css({transform: 'scale('+targetScale+')'})
-  var newScaleStr = "translate(-33%, -92%) scale(" + targetScale / 1.96 + ")";
-  $(".element-marker-clear").css("transform", newScaleStr);
-  setTimeout(function() {
-    var targetLeft =
-      ((windowWidth - targetWidth - 20) / 2) * targetScale + "px";
-    $(mapContent).css({ left: "5%" });
-  }, 200);
+  // var newScaleStr = "translate(-33%, -92%) scale(" + targetScale / 1.1 + ")";
+  // var newScaleStr = "translate(-33%, -92%)";
+  // $(".element-marker-clear").css("transform", newScaleStr);
+  // setTimeout(function() {
+  //   var targetLeft =
+  //     ((windowWidth - targetWidth - 20) / 2) * targetScale + "px";
+  //   $(mapContent).css({ left: "5%" });
+  // }, 200);
 }
 window.centerMapH = centerMapH;
 
@@ -160,26 +186,94 @@ function centerMapV() {
 }
 
 function createMapElements() {
-  graphicsClear.forEach(function(element, index) {
+  let crtMapSize = $("#bg-map").width();
+  buildingsScale = crtMapSize / 2000;
+
+  buildings.forEach(function(graphicData, index) {
     setTimeout(function() {
-      var elemStr = `<img class="graphic-element element-clear" src="graphics/map/clear/${element}.png" id="${element}" />`;
-      var newElement = mapContent.append($(elemStr));
+      let elem = $(
+        `<img class="building" src="graphics/map/clear/${
+          graphicData.name
+        }.png" id="graphics-${graphicData.name}" />`
+      );
+      let newElement = mapContent.append(elem);
     }, index * 200);
   });
   markers.forEach(function(element, index) {
-    var elemStrClear = `<img class="marker element-marker-clear" src="graphics/map/clear/${
-      element.name
-    }.png" id="${element.name}-clear"/>`;
-    var newElementClear = $(elemStrClear);
-    mapContent.append(newElementClear);
-    $(newElementClear).css({
+    let newElem = $(`<div class="marker" id="marker-${index}"></div>`);
+    newElem.append('<img src="graphics/map/clear/marker.png"/>');
+    newElem.append(`<p class="marker-label">${element.name} </p>`);
+    // var newElem = $(elemStr);
+    mapContent.append(newElem);
+    $(newElem).css({
       left: element.left,
     });
-    $(newElementClear).attr({ "data-end-top": element.top });
-    $(newElementClear).on("mouseenter", onMarkerHover);
-    $(newElementClear).on("click", e => openProject(index));
-    $(newElementClear).on("mouseleave", onMarkerLeave);
+    $(newElem).attr({
+      "data-end-top": element.top,
+      "data-left": parseFloat(element.left),
+      "data-top": parseFloat(element.top),
+    });
+    // $(newElem).on("mouseenter", onMarkerHover);
+    // $(newElem).on("click", e => openProject(index));
+    // $(newElem).on("mouseleave", onMarkerLeave);
+
+    $(newElem).on("click", e => (selectedMarker = $(newElem)));
   });
+}
+
+let selectedMarker;
+
+$(window).on("keydown", e => {
+  let code = e.keyCode;
+  switch (code) {
+    case 39:
+      moveMarker(1, 0);
+      break;
+    case 38:
+      moveMarker(0, -1);
+      break;
+    case 37:
+      moveMarker(-1, 0);
+      break;
+    case 40:
+      moveMarker(0, 1);
+      break;
+    case 80:
+      printMarkerPositions();
+      break;
+  }
+});
+
+function printMarkerPositions() {
+  let results = [];
+  $(".marker").each((index, element) => {
+    results.push({
+      name: index + 1,
+      left: $(element).data("left"),
+      top: $(element).data("top"),
+    });
+  });
+  console.log(results);
+  results.sort((a, b) => a.left - b.left);
+  console.log(results);
+  results = results.map(element => {
+    return {
+      name: element.name,
+      left: element.left + "%",
+      top: element.top + "%",
+    };
+  });
+  console.log(JSON.stringify(results));
+}
+
+function moveMarker(x, y) {
+  let crtLeft = parseFloat(selectedMarker.data("left"));
+  let crtTop = parseFloat(selectedMarker.data("top"));
+  let newLeft = crtLeft + x / 2;
+  let newTop = crtTop + y / 2;
+  console.log(newLeft, newTop);
+  selectedMarker.css({ left: newLeft + "%", top: newTop + "%" });
+  selectedMarker.data({ left: newLeft, top: newTop });
 }
 
 function closeProject() {
@@ -413,6 +507,7 @@ function showIsWhatIDo() {
 
 function hideSkillList() {
   deleteLetters([], 0);
+  TweenMax.to($("body"), 0.4, { backgroundColor: "#0e1b28" });
   TweenMax.to($("#first-half"), 0.4, {
     opacity: 0,
     delay: 0.05,
@@ -550,17 +645,18 @@ function showLetters(skills, index, cb) {
 }
 
 function showMap() {
-  $("#iamdragos").hide();
   $("#map").css({
     top: "0",
   });
   mapContent.css({
     top: "100vh",
   });
+  $("#iswhatido").hide();
+  $("#iamdragos").hide();
 
   mapContent.css({ opacity: 1 });
   $("#bg-map").css({ opacity: 0 });
-  $(".graphic-element").css({ opacity: 0 });
+  $(".building").css({ opacity: 0 });
 
   centerMapV();
   setTimeout(() => {
@@ -572,11 +668,9 @@ function showMap() {
   TweenMax.to($("#bg-map"), 0.6, {
     opacity: 1,
     delay: 1.2,
-    // onComplete: () => {
-    //   ();
-    // },
+    onComplete: showMapElements,
   });
-  setTimeout(showMapElements, 1100);
+  // setTimeout(showMapElements, 1900);
 
   $("#mouse").css({
     transform: "scale(1,1)",
@@ -589,37 +683,45 @@ function showMap() {
 }
 
 function showMapElements() {
-  $(".graphic-element").css({ opacity: 1 });
-  var clearElements = $(".element-clear");
-  var markerElements = $(".element-marker-clear");
+  $(".building").css({ opacity: 1 });
+  var markerElements = $(".marker");
 
-  var tweenEndTime = (clearElements.length - 1) * 0.3;
-  clearElements.each(function(index, element) {
-    let elemID = $(element).attr("id");
-    let top;
-    if (elemID === "buildings_clear_sd") {
-      top = "5vh";
-    } else if (elemID === "clouds_clear_sd") {
-      top = "30vh";
-    }
-    $(element).css({
+  var tweenEndTime = buildings.length * 0.1;
+  buildings.forEach((graphicData, index) => {
+    let element = $(`#graphics-${graphicData.name}`);
+
+    // clearElements.each(function(index, element) {
+    let elemID = element.attr("id");
+
+    element.css({
       opacity: 0,
-      top,
+      top: "5vh",
     });
-
-    console.log();
-    animateWithBlur({
-      element,
-      blurName: `blur-graphic-${index}`,
-      coordinate: "top",
-      duration: 1,
-      tweenParams: {
-        top: 0,
-        opacity: 1,
-        delay: 0, //index * 0.3,
-        ease: Strong.easeInOut,
-      },
+    // setTimeout(() => {
+    //   element.css({
+    //     opacity: 1,
+    //     // transform: `translate(-50%, -50%) scale(${buildingsScale})`,
+    //     transform: `translate(-50%, -40%) scale(${buildingsScale})`,
+    //   });
+    // }, index * 300);
+    TweenMax.to(element, 0.7, {
+      top: 0,
+      opacity: 1,
+      ease: Strong.easeInOut,
+      delay: index * 0.3,
     });
+    // animateWithBlur({
+    //   element: element[0],
+    //   blurName: `blur-graphic-${index}`,
+    //   coordinate: "top",
+    //   duration: 0.3,
+    //   tweenParams: {
+    //     top: 0,
+    //     opacity: 1,
+    //     delay: index * 0.1 + 0.2,
+    //     ease: Strong.easeInOut,
+    //   },
+    // });
   });
 
   setTimeout(function() {
@@ -713,7 +815,7 @@ function resetJump() {
 }
 
 function doParallax(e) {
-  const clouds = $("#clouds_clear_sd");
+  const clouds = $("#graphics-clouds_clear_sd");
   const sun = $("#sun");
   const moon = $("#moon");
   const mapContent = $("#map-content");
