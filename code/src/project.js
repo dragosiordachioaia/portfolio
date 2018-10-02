@@ -40,6 +40,7 @@ export function closeProject() {
   setTimeout(() => {
     $("#project-container").hide();
     $("#project-content").removeClass("demo");
+    $("#header").addClass("shown");
   }, 1500);
 }
 
