@@ -3,7 +3,10 @@ import { TweenMax } from "gsap";
 
 import "./less/main.less";
 
-import { skills } from "./skills";
+import { skills } from "./data/skills";
+import { buildings } from "./data/buildings";
+import { projects } from "./data/projects";
+import { markers } from "./data/markers";
 
 var initialMapWidth;
 var initialMapHeight;
@@ -13,103 +16,28 @@ var jumpTween;
 var jumpTarget;
 let buildingsScale = 0;
 let selectedProject;
+const SLICE_COUNT = 6;
 
-// var buildings = ["buildings_clear_sd", "clouds_clear_sd"];
-let buildings = [
-  // { name: "buildings_clear_sd" },
-  { name: "map_contents" },
-  { name: "clouds_clear_sd" },
-  // { name: "bat_signal" },
-  { name: "big_ship" },
-  // { name: "cars" },
-  // { name: "chairs" },
-  // { name: "clouds_clear_sd" },
-  { name: "container_ship" },
-  // { name: "fair" },
-  // { name: "fair_fence" },
-  // { name: "farm" },
-  // { name: "gameloft" },
-  // { name: "generic_building_1" },
-  // { name: "generic_building_2" },
-  // { name: "generic_tree_1" },
-  { name: "macbook" },
-  // { name: "mcdonalds" },
-  // { name: "mountain" },
-  // { name: "orchard" },
-  // { name: "people" },
-  // { name: "plexiled" },
-  // { name: "residential" },
-  // { name: "smokestacks" },
-  // { name: "stadium" },
-  // { name: "tennis" },
-  // { name: "theatre" },
-  // { name: "travel" },
-  // { name: "wind_turbines" },
-];
+init();
 
-let projects = [
-  {
-    title: "The second project",
-    roles: ["front-end", "back-end"],
-    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut gravida arcu. Curabitur dapibus dolor nisi. Pellentesque ex dolor,
-      tristique ut magna vel, rhoncus laoreet purus. Vestibulum maximus arcu sed enim ultricies hendrerit. Aenean sit amet accumsan nibh.
-       Nam dictum vulputate sem at iaculis. Morbi fermentum nunc vel aliquet feugiat. Vestibulum ac sapien cursus mi varius hendrerit.
-       Nulla fermentum, metus ac vestibulum blandit, ipsum nisl pharetra odio, eu vestibulum tellus ipsum sagittis dolor. Mauris sit
-       amet euismod neque, sed facilisis leo. Cras vitae lorem in magna varius venenatis. Vestibulum in porta mauris.`,
-  },
-  {
-    title: "Seating Plan Editor",
-    roles: ["back-end"],
-    demo: {
-      screenshot: "charts.png",
-      video:
-        '<iframe src="https://www.youtube-nocookie.com/embed/Z3DVf80p3uM?rel=0&amp;controls=0&amp;showinfo=0&amp;mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen=""></iframe>',
-    },
-    specs: [
-      {
-        label: "front-end",
-        values: ["jQuery", "LESS"],
-      },
-      {
-        label: "back-end",
-        values: ["Flask"],
-      },
-      {
-        label: "storage",
-        values: ["MySQL"],
-      },
-      {
-        label: "deployment",
-        values: ["CircleCI", "Kubernetes", "Google Cloud"],
-      },
-    ],
-    description:
-      "Sed a velit efficitur, cursus massa vitae, aliquam justo. Suspendisse lobortis pretium ligula ut laoreet. Cras eleifend aliquam enim, sed eleifend ipsum vulputate eu. Aliquam erat volutpat. Quisque venenatis vitae neque a vulputate. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin tincidunt vel purus in tincidunt. Maecenas sed erat elit. Proin imperdiet, diam nec congue cursus, lectus quam sollicitudin tortor, sit amet auctor justo ante nec sem. Vestibulum luctus dictum eros rutrum interdum. Integer laoreet accumsan felis et dignissim. Maecenas porttitor ipsum enim, in mattis nulla ultricies in. Duis sed venenatis purus. Aenean dapibus, ipsum non varius malesuada, lacus dui aliquam arcu, id aliquam massa ante eget odio. Suspendisse augue enim, tincidunt ac nunc sed, condimentum blandit eros.",
-  },
-];
+function init() {
+  addEventListeners();
+  createSlices();
 
-let markers = [
-  { name: 1, left: "11.5%", top: "59%" },
-  { name: 2, left: "46%", top: "64.5%" },
-  { name: 3, left: "54%", top: "51.5%" },
-  { name: 4, left: "56%", top: "75%" },
-  { name: 5, left: "58%", top: "29.5%" },
-  { name: 7, left: "63.5%", top: "39%" },
-  { name: 6, left: "69%", top: "57%" },
-  { name: 8, left: "74.5%", top: "81.5%" },
-  { name: 9, left: "77.5%", top: "29.5%" },
-];
+  // for getting the map immediately
+  openMap();
+  setTimeout(showMap, 1000);
 
-$("#project-explore").click(showDemo);
+  // for going through with the normal flow
+  // startAnimation();
+}
 
-openMap();
-setTimeout(showMap, 1000);
-// startAnimation();
-createSlices();
-$("#project-close-button").click(closeProject);
+function addEventListeners() {
+  $("#project-explore").click(showDemo);
+  $("#project-close-button").click(closeProject);
+}
 
 function createSlices() {
-  const SLICE_COUNT = 6;
   for (let i = 0; i < SLICE_COUNT; i++) {
     let newSlice = $(`<div id="slice-${i}" class="slice"></div>`);
     newSlice.css({
