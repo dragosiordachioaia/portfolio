@@ -7,6 +7,9 @@ import { skills } from "./data/skills";
 import { buildings } from "./data/buildings";
 import { projects } from "./data/projects";
 import { markers } from "./data/markers";
+import { openProject, closeProject } from "./project";
+import { animateWithBlur, setBlur } from "./blur";
+import { showDemo } from "./project";
 
 var initialMapWidth;
 var initialMapHeight;
@@ -15,7 +18,10 @@ var mapContent = $("#map-content");
 var jumpTween;
 var jumpTarget;
 let buildingsScale = 0;
-let selectedProject;
+
+window.selectedProject = 0;
+window.selectedMarker = 0;
+
 const SLICE_COUNT = 6;
 
 init();
@@ -23,13 +29,13 @@ init();
 function init() {
   addEventListeners();
   createSlices();
+  initialiseMap();
 
   // for getting the map immediately
-  openMap();
-  setTimeout(showMap, 1000);
+  // setTimeout(showMap, 1000);
 
   // for going through with the normal flow
-  // startAnimation();
+  startAnimation();
 }
 
 function addEventListeners() {
@@ -49,46 +55,7 @@ function createSlices() {
   }
 }
 
-function splitText(elementSelector) {
-  let element = $(elementSelector);
-  let newText = element
-    .text()
-    .split("")
-    .map(convertLetterToElement);
-  element.html(newText);
-}
-
-function convertLetterToElement(letter, index) {
-  let isNewLine = false;
-  if (letter.charCodeAt(0) === 10) {
-    isNewLine = true;
-  }
-
-  if (isNewLine) {
-    return "<br />";
-  } else {
-    return `<span class='letter'>${letter}</span>`;
-  }
-}
-
-function revealSplitText(elementSelector) {
-  $(`${elementSelector} .letter`).each((index, element) => {
-    setTimeout(() => {
-      $(element).addClass("visible");
-    }, index * 30);
-  });
-}
-
-function hideSplitText(elementSelector) {
-  let count = $(`${elementSelector} .letter`).length;
-  $(`${elementSelector} .letter`).each((index, element) => {
-    setTimeout(() => {
-      $(element).removeClass("visible");
-    }, (count - index) * 30);
-  });
-}
-
-function openMap() {
+function initialiseMap() {
   $(window).resize(function() {
     centerMapH();
     setTimeout(centerMapV, 200);
@@ -121,16 +88,6 @@ function centerMapH() {
   }
   crtScale = targetScale;
   // TODO: fix vertical scaling responsiveness
-
-  // mapContent.css({transform: 'scale('+targetScale+')'})
-  // var newScaleStr = "translate(-33%, -92%) scale(" + targetScale / 1.1 + ")";
-  // var newScaleStr = "translate(-33%, -92%)";
-  // $(".element-marker-clear").css("transform", newScaleStr);
-  // setTimeout(function() {
-  //   var targetLeft =
-  //     ((windowWidth - targetWidth - 20) / 2) * targetScale + "px";
-  //   $(mapContent).css({ left: "5%" });
-  // }, 200);
 }
 window.centerMapH = centerMapH;
 
@@ -174,231 +131,8 @@ function createMapElements() {
     });
     $(newElem).on("mouseleave", onMarkerLeave);
 
-    // $(newElem).on("click", e => (selectedMarker = $(newElem)));
+    // $(newElem).on("click", e => (window.selectedMarker = $(newElem)));
   });
-}
-
-let selectedMarker;
-
-$(window).on("keydown", e => {
-  let code = e.keyCode;
-  switch (code) {
-    case 39:
-      moveMarker(1, 0);
-      break;
-    case 38:
-      moveMarker(0, -1);
-      break;
-    case 37:
-      moveMarker(-1, 0);
-      break;
-    case 40:
-      moveMarker(0, 1);
-      break;
-    case 80:
-      printMarkerPositions();
-      break;
-  }
-});
-
-function printMarkerPositions() {
-  let results = [];
-  $(".marker").each((index, element) => {
-    results.push({
-      name: index + 1,
-      left: $(element).data("left"),
-      top: $(element).data("top"),
-    });
-  });
-  console.log(results);
-  results.sort((a, b) => a.left - b.left);
-  console.log(results);
-  results = results.map(element => {
-    return {
-      name: element.name,
-      left: element.left + "%",
-      top: element.top + "%",
-    };
-  });
-  console.log(JSON.stringify(results));
-}
-
-function moveMarker(x, y) {
-  let crtLeft = parseFloat(selectedMarker.data("left"));
-  let crtTop = parseFloat(selectedMarker.data("top"));
-  let newLeft = crtLeft + x / 2;
-  let newTop = crtTop + y / 2;
-  console.log(newLeft, newTop);
-  selectedMarker.css({ left: newLeft + "%", top: newTop + "%" });
-  selectedMarker.data({ left: newLeft, top: newTop });
-}
-
-function closeProject() {
-  hideSplitText("#project-title");
-  $("#project-border").removeClass("visible");
-  $("#project-content .animatable").removeClass("visible");
-  $("#project-close-button").removeClass("visible");
-  TweenMax.to($("#project-description, #project-mockup"), 0.7, {
-    top: "50px",
-    opacity: 0,
-    ease: Power1.easeInOut,
-    onComplete: () => {
-      $("#project-description, #project-mockup").hide();
-    },
-  });
-  TweenMax.to($("#project-explore"), 0.4, { scale: 0, delay: 0.2 });
-  $("#project-specs li").each((index, element) => {
-    setTimeout(() => {
-      $(element).removeClass("visible");
-    }, index * 100 + 50);
-  });
-  setTimeout(hideSlices, 450);
-  setTimeout(() => $("#project-content").hide(), 800);
-  setTimeout(() => {
-    $("#project-container").hide();
-    $("#project-content").removeClass("demo");
-  }, 1500);
-}
-
-function openProject() {
-  let projectData = projects[selectedProject];
-
-  resetProjectScreen();
-  assignProjectData(projectData);
-
-  $("#project-container").show();
-  $("#header").removeClass("shown");
-
-  showSlices().then(animateProjectContent);
-}
-
-function showDemo() {
-  let projectData = projects[selectedProject];
-  TweenMax.to($("#project-explore"), 0.4, { scale: 0 });
-  $("#project-border").css({ "border-width": 0 });
-  $("#project-mockup").addClass("relative");
-  let topPosition = $("#project-mockup")[0].getBoundingClientRect().top;
-  let difference = $(window).height() - topPosition;
-  console.log(topPosition, difference);
-  $("#project-content").addClass("demo");
-  if (projectData.demo.video) {
-    $("#project-mockup-image").hide();
-    $("#project-mockup-video").show();
-    $("#project-mockup-video").html(projectData.demo.video);
-  } else {
-    $("#project-mockup-video").hide();
-    $("#project-mockup-image").show();
-    $("#project-mockup-image").attr(
-      "src",
-      `graphics/portfolio/${projectData.demo.screenshot}`
-    );
-  }
-
-  setTimeout(() => {
-    $("#project-mockup, #project-description").css({
-      display: "block",
-      opacity: 0,
-      top: "-50px",
-    });
-    $("#project-mockup").css({ top: "50px" });
-    TweenMax.to($("#project-description"), 0.7, {
-      top: 0,
-      opacity: 1,
-      ease: Power1.easeInOut,
-    });
-    TweenMax.to($("#project-mockup"), 0.7, {
-      top: 0,
-      opacity: 1,
-      ease: Power1.easeInOut,
-      delay: 0.15,
-    });
-  }, 720);
-}
-
-function resetProjectScreen() {
-  $("#project-title").html("");
-  $("#project-specs").html("");
-  $("#project-container .animatable").removeClass("visible");
-  $("#project-content").removeClass("demo");
-  TweenMax.set($("#project-explore"), { scale: 0 });
-}
-
-function assignProjectData(projectData) {
-  $("#project-count").text("0" + selectedProject);
-  $("#project-title").html(projectData.title);
-  let rolesText = projectData.roles.join(" | ");
-  $("#project-subtitle").text(rolesText);
-  $("#project-description").text(projectData.description);
-  let specs = $("#project-specs");
-  projectData.specs.forEach(specData => {
-    let newSpecElement = $("<li></li>");
-    newSpecElement.append(
-      `<span class="project-spec-label">${specData.label}</span>`
-    );
-    newSpecElement.append(`<span class="project-spec-values"></span>`);
-    specData.values.forEach(valueText => {
-      let newSpecValueElement = $(
-        `<span class="project-spec-values-inside">${valueText}</span>`
-      );
-      newSpecElement.find(".project-spec-values").append(newSpecValueElement);
-    });
-    specs.append(newSpecElement);
-  });
-  splitText("#project-title");
-}
-
-function showSlices() {
-  return new Promise((resolve, reject) => {
-    let count = $(".slice").length;
-    $(".slice").each((index, sliceElement) => {
-      $(sliceElement).addClass("with-shadow");
-      setTimeout(() => {
-        TweenMax.to($(sliceElement), 0.7, {
-          height: "100%",
-          ease: Power2.easeIn,
-        });
-      }, index * 100);
-      setTimeout(() => {
-        if (index === count - 1) {
-          resolve();
-        }
-      }, index * 100 + 500);
-      setTimeout(() => {
-        $(sliceElement).removeClass("with-shadow");
-      }, index * 100 + 800);
-    });
-  });
-}
-
-function hideSlices() {
-  let count = $(".slice").length;
-  $(".slice").each((index, sliceElement) => {
-    $(sliceElement).addClass("with-shadow");
-    setTimeout(() => {
-      TweenMax.to($(sliceElement), 0.4, {
-        height: 0,
-        ease: Power1.easeIn,
-      });
-    }, (count - index) * 70);
-  });
-}
-
-function animateProjectContent() {
-  $("#project-content").show();
-  setTimeout(() => {
-    revealSplitText("#project-title");
-    $("#project-border").addClass("visible");
-    $("#project-container .animatable").addClass("visible");
-  }, 100);
-  $("#project-specs li").each((index, element) => {
-    setTimeout(() => {
-      $(element).addClass("visible");
-    }, index * 150 + 200);
-  });
-  setTimeout(() => {
-    $("#project-close-button").addClass("visible");
-    TweenMax.to($("#project-explore"), 0.4, { scale: 1 });
-  }, 1000);
 }
 
 function startAnimation() {
@@ -528,12 +262,7 @@ function showIsWhatIDo() {
     opacity: 0,
     left: "80%",
   });
-  // $("#map").css({
-  //   top: "0",
-  // });
-  // mapContent.css({
-  //   top: "100vh",
-  // });
+
   TweenMax.to(iswhatido, 0.1, {
     skewX: "-30deg",
     delay: 0.25,
@@ -558,18 +287,6 @@ function hideSkillList() {
       showMap();
     },
   });
-}
-
-let filters = document.querySelector(".filters"); // the SVG that contains the filters
-let defs = filters.querySelector("defs"); // the  element inside the SVG
-let blurFilter = defs.querySelector("#blur-filter"); // the blur filter
-let filter = "url(#blur-filter)";
-let speed = 0;
-
-function setBlur(blurID, y) {
-  let filterElement = document.querySelector(blurID).children[0];
-  y = Math.floor(Math.abs(y));
-  filterElement.setAttribute("stdDeviation", `0,${y}`);
 }
 
 function changeWord(words, index, cb) {
@@ -601,8 +318,35 @@ function changeWord(words, index, cb) {
       duration = words[index].duration / 1000;
     }
 
+    // animateWithBlur({
+    //   element: firstSpanElement[0],
+    //   coordinate: "top",
+    //   duration,
+    //   tweenParams: {
+    //     top: "-110%",
+    //     delay: index * 0.1,
+    //     ease: Back.easeInOut,
+    //   },
+    // });
+    // animateWithBlur({
+    //   element: secondSpanElement[0],
+    //   coordinate: "top",
+    //   duration,
+    //   tweenParams: {
+    //     top: "0.4em",
+    //     delay: index * 0.1,
+    //     ease: Back.easeInOut,
+    //     onComplete: () => {
+    //       moveOn(words, index, cb);
+    //     },
+    //   },
+    // });
+
     let lastPos = firstSpanElement[0].getBoundingClientRect().top;
     let crtPos = firstSpanElement[0].getBoundingClientRect().top;
+    let speed = 0;
+
+    let filter = "url(#blur-filter)";
 
     iswhatido.css({
       webkitFilter: filter,
@@ -618,7 +362,7 @@ function changeWord(words, index, cb) {
     TweenMax.to(secondSpanElement, duration, {
       top: "0.4em",
       ease: Back.easeInOut,
-      onComplete: moveOn,
+      onComplete: () => moveOn(words, index, cb),
     });
 
     function updateBlur() {
@@ -629,7 +373,7 @@ function changeWord(words, index, cb) {
     }
   }
 
-  function moveOn() {
+  function moveOn(words, index, cb) {
     let firstSpanElement = iswhatido.find(".word").first();
     firstSpanElement.remove();
     let delay = 450;
@@ -653,7 +397,6 @@ function changeWord(words, index, cb) {
 
 function showSkillList() {
   changeWord(skills, 0, hideSkillList);
-  // deleteLetters(skills, 0, hideSkillList);
 }
 
 function deleteLetters(skills, index, cb) {
@@ -706,11 +449,8 @@ function showMap() {
     $("#cloud-3").css({ left: "110vw" });
     $("#cloud-4").css({ left: "-100vw" });
   }, 200);
-  TweenMax.to($("#bg-map"), 0.6, {
-    opacity: 1,
-    delay: 1.2,
-    onComplete: showMapElements,
-  });
+  TweenMax.to($("#bg-map"), 0.6, { opacity: 1, delay: 1.2 });
+  setTimeout(showMapElements, 1200);
   // setTimeout(showMapElements, 1900);
 
   $("#mouse").css({
@@ -754,7 +494,6 @@ function showMapElements() {
       });
       animateWithBlur({
         element,
-        blurName: `blur-marker-${index}`,
         coordinate: "top",
         duration: 1.5,
         tweenParams: {
@@ -766,49 +505,6 @@ function showMapElements() {
       });
     });
   }, tweenEndTime * 1000 + 400);
-}
-
-function animateWithBlur({
-  coordinate,
-  tweenParams,
-  element,
-  blurName,
-  duration,
-}) {
-  let lastPos = element.getBoundingClientRect()[coordinate];
-  let crtPos = element.getBoundingClientRect()[coordinate];
-  let speed = 0;
-  let blurID = `#${blurName}`;
-  cloneBlurFilter(blurName, element);
-
-  var endTop = $(element).attr("data-end-top");
-  TweenMax.to($(element), duration, {
-    ...tweenParams,
-    onUpdate: () => {
-      crtPos = element.getBoundingClientRect()[coordinate];
-      speed = crtPos - lastPos;
-      setBlur(blurID, speed / 2);
-      lastPos = crtPos;
-    },
-    onComplete: () => {
-      setBlur(blurID, 0);
-    },
-  });
-}
-
-function cloneBlurFilter(blurID, targetElement) {
-  let blurClone = blurFilter.cloneNode(true);
-  // create and set a new ID so we can use the filter through CSS
-  blurClone.setAttribute("id", blurID);
-  let filterID = "url(#" + blurID + ")";
-  defs.appendChild(blurClone);
-
-  $(targetElement)
-    .css({
-      webkitFilter: filterID,
-      filter: filterID,
-    })
-    .attr("data-blur-id", blurID);
 }
 
 function onMarkerHover(markerElement) {
