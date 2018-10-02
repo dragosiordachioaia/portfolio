@@ -1,0 +1,17 @@
+.folding-list-container {
+  .folding-list {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+
+    & > li {
+      transform-origin: 50% 0%;
+      transform: perspective(250px) rotateX(-90deg);
+      transition: 0.2s linear 0s;
+
+      &.hover {
+        transform: perspective(350px) rotateX(0deg);
+      }
+    }
+  }
+}

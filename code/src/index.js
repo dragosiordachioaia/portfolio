@@ -32,15 +32,39 @@ function init() {
   initialiseMap();
 
   // for getting the map immediately
-  // setTimeout(showMap, 1000);
+  setTimeout(showMap, 1000);
 
   // for going through with the normal flow
-  startAnimation();
+  // startAnimation();
 }
 
 function addEventListeners() {
   $("#project-explore").click(showDemo);
   $("#project-close-button").click(closeProject);
+  $("#header-list").mouseenter(expandHeaderList);
+  $("#header-list").mouseleave(collapseHeaderList);
+}
+
+function expandHeaderList() {
+  $("#header-list").attr("data-hovered", "1");
+  let count = $("#header-list .folding-list > li").length;
+  $("#header-list .folding-list > li").each((index, element) => {
+    setTimeout(() => {
+      if ($("#header-list").attr("data-hovered") == 1) {
+        $(element).addClass("hover");
+      }
+    }, index * 200);
+  });
+}
+
+function collapseHeaderList() {
+  $("#header-list").attr("data-hovered", null);
+  let count = $("#header-list .folding-list > li").length;
+  $("#header-list .folding-list > li").each((index, element) => {
+    setTimeout(() => {
+      $(element).removeClass("hover");
+    }, (count - index) * 200);
+  });
 }
 
 function createSlices() {

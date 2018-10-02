@@ -41,4 +41,25 @@
     margin-top: 5px;
     font-family: Averta;
   }
+
+  #header-list {
+    width: 150px;
+    color: #333;
+    cursor: pointer;
+
+    .folding-list-header {
+      background-color: white;
+    }
+    .folding-list {
+      li {
+        padding: 10px;
+        &:nth-child(odd) {
+          background-color: #ddd;
+        }
+        &:nth-child(even) {
+          background-color: #eee;
+        }
+      }
+    }
+  }
 }
