@@ -12,17 +12,6 @@
     top: 2vh;
   }
 
-  #menu-icon {
-    position: fixed;
-    right: 4vw;
-    top: 5vh;
-    cursor: pointer;
-    transition: all 500ms;
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-
   #menu-name {
     font-size: 1.2em;
     opacity: 0.8;
@@ -42,23 +31,41 @@
     font-family: Averta;
   }
 
-  #header-list {
+  #menu {
+    position: fixed;
+    right: 0vw;
+    top: 1vh;
     width: 150px;
     color: #333;
     cursor: pointer;
+
+    #menu-trigger {
+      transition: all 500ms;
+      width: 100%;
+      text-align: center;
+      padding-bottom: 10px;
+      padding-top: 10px;
+    }
 
     .folding-list-header {
       background-color: white;
     }
     .folding-list {
+      width: 100%;
+
       li {
-        padding: 10px;
-        &:nth-child(odd) {
-          background-color: #ddd;
-        }
-        &:nth-child(even) {
-          background-color: #eee;
-        }
+        padding: 25px 10px;
+        text-align: center;
+        color: #444;
+        border-top: 1px solid #eee;
+        background-color: rgba(255, 255, 255, 1);
+
+        // &:nth-child(odd) {
+        //   background-color: #ddd;
+        // }
+        // &:nth-child(even) {
+        //   background-color: #eee;
+        // }
       }
     }
   }

@@ -41,26 +41,26 @@ function init() {
 function addEventListeners() {
   $("#project-explore").click(showDemo);
   $("#project-close-button").click(closeProject);
-  $("#header-list").mouseenter(expandHeaderList);
-  $("#header-list").mouseleave(collapseHeaderList);
+  $("#menu").mouseenter(expandMenu);
+  $("#menu").mouseleave(collapseMenu);
 }
 
-function expandHeaderList() {
-  $("#header-list").attr("data-hovered", "1");
-  let count = $("#header-list .folding-list > li").length;
-  $("#header-list .folding-list > li").each((index, element) => {
+function expandMenu() {
+  $("#menu").attr("data-hovered", "1");
+  let count = $("#menu .folding-list > li").length;
+  $("#menu .folding-list > li").each((index, element) => {
     setTimeout(() => {
-      if ($("#header-list").attr("data-hovered") == 1) {
+      if ($("#menu").attr("data-hovered") == 1) {
         $(element).addClass("hover");
       }
     }, index * 200);
   });
 }
 
-function collapseHeaderList() {
-  $("#header-list").attr("data-hovered", null);
-  let count = $("#header-list .folding-list > li").length;
-  $("#header-list .folding-list > li").each((index, element) => {
+function collapseMenu() {
+  $("#menu").attr("data-hovered", null);
+  let count = $("#menu .folding-list > li").length;
+  $("#menu .folding-list > li").each((index, element) => {
     setTimeout(() => {
       $(element).removeClass("hover");
     }, (count - index) * 200);
