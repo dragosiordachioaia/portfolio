@@ -62,6 +62,8 @@ let projects = [
     roles: ["back-end"],
     demo: {
       screenshot: "charts.png",
+      video:
+        '<iframe src="https://www.youtube-nocookie.com/embed/Z3DVf80p3uM?rel=0&amp;controls=0&amp;showinfo=0&amp;mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen=""></iframe>',
     },
     specs: [
       {
@@ -237,7 +239,7 @@ function createMapElements() {
       "data-left": parseFloat(element.left),
       "data-top": parseFloat(element.top),
     });
-    $(newElem).on("mouseenter", onMarkerHover);
+    $(newElem).on("mouseenter", e => onMarkerHover(newElem));
     $(newElem).on("click", e => {
       selectedProject = index;
       openProject();
@@ -308,9 +310,26 @@ function closeProject() {
   $("#project-border").removeClass("visible");
   $("#project-content .animatable").removeClass("visible");
   $("#project-close-button").removeClass("visible");
+  TweenMax.to($("#project-description, #project-mockup"), 0.7, {
+    top: "50px",
+    opacity: 0,
+    ease: Power1.easeInOut,
+    onComplete: () => {
+      $("#project-description, #project-mockup").hide();
+    },
+  });
+  TweenMax.to($("#project-explore"), 0.4, { scale: 0, delay: 0.2 });
+  $("#project-specs li").each((index, element) => {
+    setTimeout(() => {
+      $(element).removeClass("visible");
+    }, index * 100 + 50);
+  });
   setTimeout(hideSlices, 450);
   setTimeout(() => $("#project-content").hide(), 800);
-  setTimeout(() => $("#project-container").hide(), 1500);
+  setTimeout(() => {
+    $("#project-container").hide();
+    $("#project-content").removeClass("demo");
+  }, 1500);
 }
 
 function openProject() {
@@ -327,20 +346,44 @@ function openProject() {
 
 function showDemo() {
   let projectData = projects[selectedProject];
-  TweenMax.to($("#project-explore"), 0.4, {
-    scale: 0,
-    onComplete: () => {},
-  });
+  TweenMax.to($("#project-explore"), 0.4, { scale: 0 });
   $("#project-border").css({ "border-width": 0 });
-  $("#project-mockup").addClass("demo");
+  $("#project-mockup").addClass("relative");
+  let topPosition = $("#project-mockup")[0].getBoundingClientRect().top;
+  let difference = $(window).height() - topPosition;
+  console.log(topPosition, difference);
   $("#project-content").addClass("demo");
-  $("#project-mockup-image").attr(
-    "src",
-    `graphics/portfolio/${projectData.demo.screenshot}`
-  );
+  if (projectData.demo.video) {
+    $("#project-mockup-image").hide();
+    $("#project-mockup-video").show();
+    $("#project-mockup-video").html(projectData.demo.video);
+  } else {
+    $("#project-mockup-video").hide();
+    $("#project-mockup-image").show();
+    $("#project-mockup-image").attr(
+      "src",
+      `graphics/portfolio/${projectData.demo.screenshot}`
+    );
+  }
+
   setTimeout(() => {
-    // $("#project-mockup").removeClass("demo");
-    // $("#project-mockup").addClass("relative");
+    $("#project-mockup, #project-description").css({
+      display: "block",
+      opacity: 0,
+      top: "-50px",
+    });
+    $("#project-mockup").css({ top: "50px" });
+    TweenMax.to($("#project-description"), 0.7, {
+      top: 0,
+      opacity: 1,
+      ease: Power1.easeInOut,
+    });
+    TweenMax.to($("#project-mockup"), 0.7, {
+      top: 0,
+      opacity: 1,
+      ease: Power1.easeInOut,
+      delay: 0.15,
+    });
   }, 720);
 }
 
@@ -348,6 +391,8 @@ function resetProjectScreen() {
   $("#project-title").html("");
   $("#project-specs").html("");
   $("#project-container .animatable").removeClass("visible");
+  $("#project-content").removeClass("demo");
+  TweenMax.set($("#project-explore"), { scale: 0 });
 }
 
 function assignProjectData(projectData) {
@@ -417,8 +462,14 @@ function animateProjectContent() {
     $("#project-border").addClass("visible");
     $("#project-container .animatable").addClass("visible");
   }, 100);
+  $("#project-specs li").each((index, element) => {
+    setTimeout(() => {
+      $(element).addClass("visible");
+    }, index * 150 + 200);
+  });
   setTimeout(() => {
     $("#project-close-button").addClass("visible");
+    TweenMax.to($("#project-explore"), 0.4, { scale: 1 });
   }, 1000);
 }
 
@@ -759,31 +810,12 @@ function showMapElements() {
       opacity: 0,
       top: "5vh",
     });
-    // setTimeout(() => {
-    //   element.css({
-    //     opacity: 1,
-    //     // transform: `translate(-50%, -50%) scale(${buildingsScale})`,
-    //     transform: `translate(-50%, -40%) scale(${buildingsScale})`,
-    //   });
-    // }, index * 300);
     TweenMax.to(element, 0.7, {
       top: 0,
       opacity: 1,
       ease: Strong.easeInOut,
       delay: index * 0.15,
     });
-    // animateWithBlur({
-    //   element: element[0],
-    //   blurName: `blur-graphic-${index}`,
-    //   coordinate: "top",
-    //   duration: 0.3,
-    //   tweenParams: {
-    //     top: 0,
-    //     opacity: 1,
-    //     delay: index * 0.1 + 0.2,
-    //     ease: Strong.easeInOut,
-    //   },
-    // });
   });
 
   setTimeout(function() {
@@ -805,7 +837,7 @@ function showMapElements() {
         },
       });
     });
-  }, tweenEndTime * 1000 + 1200);
+  }, tweenEndTime * 1000 + 400);
 }
 
 function animateWithBlur({
@@ -851,9 +883,9 @@ function cloneBlurFilter(blurID, targetElement) {
     .attr("data-blur-id", blurID);
 }
 
-function onMarkerHover(e) {
+function onMarkerHover(markerElement) {
   resetJump();
-  jumpTarget = e.target;
+  jumpTarget = markerElement;
   jumpTween = TweenMax.fromTo(
     $(jumpTarget),
     0.5,
