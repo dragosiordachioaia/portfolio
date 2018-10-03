@@ -542,17 +542,17 @@ function doParallax(e) {
   }
 }
 
-setTimeout(() => {
-  let x = -$(window).width() * 0.1;
-  setInterval(() => {
-    x += 10;
-    if (x >= $(window).width() * 1.1) {
-      x = -$(window).width() * 0.2;
-      changeTimeOfDay(x, false);
-    }
-    changeTimeOfDay(x, true);
-  }, 300);
-}, 2000);
+// setTimeout(() => {
+//   let x = -$(window).width() * 0.1;
+//   setInterval(() => {
+//     x += 10;
+//     if (x >= $(window).width() * 1.1) {
+//       x = -$(window).width() * 0.2;
+//       changeTimeOfDay(x, false);
+//     }
+//     changeTimeOfDay(x, true);
+//   }, 300);
+// }, 2000);
 
 function changeTimeOfDay(clientX, animate) {
   // console.log("change: ", clientX);

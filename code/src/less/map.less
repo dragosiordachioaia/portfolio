@@ -38,9 +38,13 @@
   top: 50%;
   left: 50%;
   box-sizing: border-box;
-  width: 100%;
   opacity: 0;
   transition: opacity 700ms;
+  width: 100vw;
+
+  @media (min-aspect-ratio: 100/65) {
+    width: 175vh;
+  }
 }
 
 #bg-map {
@@ -135,13 +139,13 @@ img.building {
 
 #sun {
   top: 50vh;
-  left: 120vw;
+  left: -20vw;
   width: 200px;
 }
 
 #moon {
   top: 50vh;
-  left: -20vw;
+  left: -120vw;
   width: 100px;
 }
 
