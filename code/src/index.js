@@ -524,47 +524,80 @@ function resetJump() {
 
 function doParallax(e) {
   const clouds = $("#graphics-clouds_clear_sd");
-  const sun = $("#sun");
-  const moon = $("#moon");
   const mapContent = $("#map-content");
-  const bgDay = $("#bg-day");
 
   const offsetLeft = -(e.clientX - $(window).width() / 2);
   const offsetTop = -(e.clientY - $(window).height() / 2);
+  if (clouds) {
+    TweenMax.to(clouds, 0.3, {
+      marginLeft: offsetLeft / 16,
+      marginTop: offsetTop / 16,
+    });
+  }
+  if (mapContent) {
+    TweenMax.to(mapContent, 0.3, {
+      marginLeft: offsetLeft / 25,
+      marginTop: offsetTop / 25,
+    });
+  }
+}
 
+setTimeout(() => {
+  let x = -$(window).width() * 0.1;
+  setInterval(() => {
+    x += 10;
+    if (x >= $(window).width() * 1.1) {
+      x = -$(window).width() * 0.2;
+      changeTimeOfDay(x, false);
+    }
+    changeTimeOfDay(x, true);
+  }, 300);
+}, 2000);
+
+function changeTimeOfDay(clientX, animate) {
+  // console.log("change: ", clientX);
+  const sun = $("#sun");
+  const moon = $("#moon");
+  const bgDay = $("#bg-day");
+
+  const offsetLeft = -(clientX - $(window).width() / 2);
+  let duration = animate ? 0.3 : 0;
   if (sun) {
     let top;
-    let x = e.clientX * 2;
+    let x = clientX * 2;
     let leftPercentage = x / $(window).width();
     if (leftPercentage < 0.5) {
       top = 50 - leftPercentage * 50;
     } else {
       top = leftPercentage * 50;
     }
-    TweenMax.to(sun, 0.3, {
+
+    TweenMax.to(sun, duration, {
       left: x,
       top: top - 20 + "vh",
+      ease: Linear.easeNone,
     });
   }
 
   if (moon) {
     let top;
-    let x = e.clientX * 2 - $(window).width();
+    let x = clientX * 2 - $(window).width();
     let leftPercentage = x / $(window).width();
     if (leftPercentage < 0.5) {
       top = 50 - leftPercentage * 50;
     } else {
       top = leftPercentage * 50;
     }
-    TweenMax.to(moon, 0.3, {
+    TweenMax.to(moon, duration, {
       left: x,
       top: top - 20 + "vh",
+      ease: Linear.easeNone,
     });
   }
 
   if (bgDay) {
     let opacity = 0;
-    let x = e.clientX;
+    let x = clientX;
     let leftPercentage = x / $(window).width();
     if (leftPercentage < 0.25) {
       opacity = leftPercentage * 4 + 0.15;
@@ -577,18 +610,5 @@ function doParallax(e) {
     }
 
     bgDay.css({ opacity });
-  }
-
-  if (clouds) {
-    TweenMax.to(clouds, 0.3, {
-      marginLeft: offsetLeft / 16,
-      marginTop: offsetTop / 16,
-    });
-  }
-  if (mapContent) {
-    TweenMax.to(mapContent, 0.3, {
-      marginLeft: offsetLeft / 25,
-      marginTop: offsetTop / 25,
-    });
   }
 }
