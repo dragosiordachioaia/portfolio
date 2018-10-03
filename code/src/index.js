@@ -312,30 +312,6 @@ function changeWord(words, index, cb) {
       duration = words[index].duration / 1000;
     }
 
-    // animateWithBlur({
-    //   element: firstSpanElement[0],
-    //   coordinate: "top",
-    //   duration,
-    //   tweenParams: {
-    //     top: "-110%",
-    //     delay: index * 0.1,
-    //     ease: Back.easeInOut,
-    //   },
-    // });
-    // animateWithBlur({
-    //   element: secondSpanElement[0],
-    //   coordinate: "top",
-    //   duration,
-    //   tweenParams: {
-    //     top: "0.4em",
-    //     delay: index * 0.1,
-    //     ease: Back.easeInOut,
-    //     onComplete: () => {
-    //       moveOn(words, index, cb);
-    //     },
-    //   },
-    // });
-
     let lastPos = firstSpanElement[0].getBoundingClientRect().top;
     let crtPos = firstSpanElement[0].getBoundingClientRect().top;
     let speed = 0;
@@ -534,28 +510,27 @@ function doParallax(e) {
       marginTop: offsetTop / 16,
     });
   }
-  if (mapContent) {
-    TweenMax.to(mapContent, 0.3, {
-      marginLeft: offsetLeft / 25,
-      marginTop: offsetTop / 25,
-    });
-  }
+  // if (mapContent) {
+  //   TweenMax.to(mapContent, 0.3, {
+  //     marginLeft: offsetLeft / 25,
+  //     marginTop: offsetTop / 25,
+  //   });
+  // }
 }
 
-// setTimeout(() => {
-//   let x = -$(window).width() * 0.1;
-//   setInterval(() => {
-//     x += 10;
-//     if (x >= $(window).width() * 1.1) {
-//       x = -$(window).width() * 0.2;
-//       changeTimeOfDay(x, false);
-//     }
-//     changeTimeOfDay(x, true);
-//   }, 300);
-// }, 2000);
+setTimeout(() => {
+  let x = -$(window).width() * 0.1;
+  setInterval(() => {
+    x += 10;
+    if (x >= $(window).width() * 1.1) {
+      x = -$(window).width() * 0.2;
+      changeTimeOfDay(x, false);
+    }
+    changeTimeOfDay(x, true);
+  }, 300);
+}, 2000);
 
 function changeTimeOfDay(clientX, animate) {
-  // console.log("change: ", clientX);
   const sun = $("#sun");
   const moon = $("#moon");
   const bgDay = $("#bg-day");
