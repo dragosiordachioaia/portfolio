@@ -33,21 +33,14 @@
 }
 
 #map-content {
-  position: absolute;
-  top: -150vh;
-  left: 0;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  width: 100%;
   opacity: 0;
-  /* width: 100%; */
-  transform-origin: 50% 50%;
-  /* max-width: 1100px; */
-}
-
-#map #bg {
-  /* position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0; */
+  transition: opacity 700ms;
 }
 
 #bg-map {

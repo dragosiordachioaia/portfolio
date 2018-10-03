@@ -41,11 +41,16 @@ function init() {
 function addEventListeners() {
   $("#project-explore").click(showDemo);
   $("#project-close-button").click(closeProject);
-  $("#menu").mouseenter(expandMenu);
-  $("#menu").mouseleave(collapseMenu);
+  // let headerTop = $(
+  //   "#menu-trigger, #menu-name, #menu-profession, #header .folding-list > li.hover"
+  // );
+  // $("#header").mouseenter(expandMenu);
+  // $("#header").mouseleave(collapseMenu);
 }
 
 function expandMenu() {
+  // console.log("expand");
+  // return;
   $("#menu").attr("data-hovered", "1");
   let count = $("#menu .folding-list > li").length;
   $("#menu .folding-list > li").each((index, element) => {
@@ -53,17 +58,19 @@ function expandMenu() {
       if ($("#menu").attr("data-hovered") == 1) {
         $(element).addClass("hover");
       }
-    }, index * 200);
+    }, index * 150);
   });
 }
 
 function collapseMenu() {
+  // console.log("collapse");
+  // return;
   $("#menu").attr("data-hovered", null);
   let count = $("#menu .folding-list > li").length;
   $("#menu .folding-list > li").each((index, element) => {
     setTimeout(() => {
       $(element).removeClass("hover");
-    }, (count - index) * 200);
+    }, (count - index) * 150);
   });
 }
 
@@ -80,44 +87,7 @@ function createSlices() {
 }
 
 function initialiseMap() {
-  $(window).resize(function() {
-    centerMapH();
-    setTimeout(centerMapV, 200);
-  });
   createMapElements();
-  setTimeout(centerMapH, 500);
-
-  mapContent.css("opacity", 1);
-}
-
-function centerMapH() {
-  if ($("#bg-map").width() < 100) {
-    setTimeout(centerMapH, 100);
-    return;
-  }
-
-  var windowWidth = $(window).width();
-  var windowHeight = $(window).height();
-  var targetWidth = windowWidth; //Math.min(windowWidth, 1100);
-
-  if (!initialMapWidth) {
-    initialMapWidth = mapContent.width();
-    initialMapHeight = mapContent.height();
-    mapContent.css({ width: "110%", left: "-2%" });
-  }
-
-  var targetScale = targetWidth / initialMapWidth;
-  if (targetScale * initialMapHeight >= windowHeight * 0.95) {
-    targetScale = (windowHeight / initialMapHeight) * 0.95;
-  }
-  crtScale = targetScale;
-  // TODO: fix vertical scaling responsiveness
-}
-window.centerMapH = centerMapH;
-
-function centerMapV() {
-  var mapHeight = mapContent.height();
-  $(mapContent).css({ top: ($(window).height() - mapHeight + 10) / 2 + "px" });
 }
 
 function createMapElements() {
@@ -456,9 +426,6 @@ function showMap() {
   $("#map").css({
     top: "0",
   });
-  mapContent.css({
-    top: "100vh",
-  });
   $("#iswhatido").hide();
   $("#iamdragos").hide();
 
@@ -466,7 +433,6 @@ function showMap() {
   $("#bg-map").css({ opacity: 0 });
   $(".building").css({ opacity: 0 });
 
-  centerMapV();
   setTimeout(() => {
     $("#cloud-1").css({ left: "110vw" });
     $("#cloud-2").css({ left: "-100vw" });
