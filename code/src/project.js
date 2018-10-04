@@ -98,8 +98,6 @@ function showSlices() {
   return new Promise((resolve, reject) => {
     let count = $(".slice").length;
     let projectData = projects[window.selectedProject];
-    $(".slice").css({ "background-color": projectData.colors.primary });
-
     $(".slice").each((index, sliceElement) => {
       $(sliceElement).addClass("with-shadow");
       setTimeout(() => {
