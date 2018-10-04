@@ -6,7 +6,7 @@ import { splitText, revealSplitText, hideSplitText } from "./splitText";
 
 export function openProject() {
   let projectData = projects[window.selectedProject];
-
+  loadDemo();
   resetProjectScreen();
   assignProjectData(projectData);
 
@@ -49,6 +49,7 @@ function resetProjectScreen() {
   $("#project-specs").html("");
   $("#project-container .animatable").removeClass("visible");
   $("#project-content").removeClass("demo");
+  $("#project-mockup-image").css("opacity", 0);
   TweenMax.set($("#project-explore"), { scale: 0 });
 }
 
@@ -150,7 +151,7 @@ function animateProjectContent() {
   $("#project-specs li").each((index, element) => {
     setTimeout(() => {
       $(element).addClass("visible");
-    }, index * 150 + 500);
+    }, index * 50 + 500);
   });
   setTimeout(() => {
     $("#project-close-button").addClass("visible");
@@ -167,7 +168,7 @@ function animateProjectContent() {
       top: 0,
       opacity: 1,
       ease: Power1.easeInOut,
-      onComplete: () => setTimeout(loadDemo, 1500),
+      // onComplete: () => setTimeout(loadDemo, 1500),
     });
     TweenMax.to($("#project-mockup"), 0.7, {
       top: 0,
@@ -187,7 +188,12 @@ function loadDemo() {
   } else {
     // $("#project-mockup-video").hide();
     // $("#project-mockup-image").show();
-    $("#project-mockup-image").attr(
+    let imageElement = $("#project-mockup-image");
+
+    imageElement.on("load", () => {
+      TweenMax.to(imageElement, 0.4, { opacity: 1 });
+    });
+    imageElement.attr(
       "src",
       `graphics/portfolio/${projectData.demo.screenshot}`
     );

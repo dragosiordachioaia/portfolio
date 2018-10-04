@@ -135,7 +135,7 @@ $project-bg-color: #f6f5f8;
       li {
         display: inline-block;
         position: relative;
-        transition: all 550ms;
+        transition: all 450ms;
         transition-timing-function: ease-in-out;
         opacity: 0;
         background-color: #fff;
@@ -177,11 +177,12 @@ $project-bg-color: #f6f5f8;
         content: "";
         position: absolute;
         top: -20px;
-        left: calc(10% - 1.5em);
-        width: 65px;
+        left: 3.6%;
+        width: 5em;
         height: 5px;
         background-color: #fff;
       }
+
       &::first-letter {
         font-size: 5.5em;
         margin-right: 10px;
@@ -217,8 +218,8 @@ $project-bg-color: #f6f5f8;
 
   #project-mockup {
     height: auto;
-    width: 90%;
-    max-width: 1000px;
+    width: 90vh;
+    max-width: 90%;
     display: none;
     position: relative;
     margin-left: auto;
@@ -235,6 +236,12 @@ $project-bg-color: #f6f5f8;
       left: 0;
       transform: none;
       margin-bottom: 50px;
+    }
+
+    #project-mockup-inner {
+      // max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
     }
 
     #macbook-mockup {
