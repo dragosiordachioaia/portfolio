@@ -128,6 +128,42 @@ function animateProjectContent() {
     $("#project-close-button").addClass("visible");
     TweenMax.to($("#project-explore"), 0.4, { scale: 1 });
   }, 1000);
+  setTimeout(() => {
+    $("#project-mockup, #project-description").css({
+      display: "block",
+      opacity: 0,
+      top: "-50px",
+    });
+    $("#project-mockup").css({ top: "50px" });
+    TweenMax.to($("#project-description"), 0.7, {
+      top: 0,
+      opacity: 1,
+      ease: Power1.easeInOut,
+      onComplete: () => setTimeout(loadDemo, 1500),
+    });
+    TweenMax.to($("#project-mockup"), 0.7, {
+      top: 0,
+      opacity: 1,
+      ease: Power1.easeInOut,
+      delay: 0.15,
+    });
+  }, 720);
+}
+
+function loadDemo() {
+  let projectData = projects[window.selectedProject];
+  if (projectData.demo.video) {
+    // $("#project-mockup-image").hide();
+    // $("#project-mockup-video").show();
+    $("#project-mockup-video").html(projectData.demo.video);
+  } else {
+    // $("#project-mockup-video").hide();
+    // $("#project-mockup-image").show();
+    $("#project-mockup-image").attr(
+      "src",
+      `graphics/portfolio/${projectData.demo.screenshot}`
+    );
+  }
 }
 
 export function showDemo() {
@@ -139,18 +175,6 @@ export function showDemo() {
   let difference = $(window).height() - topPosition;
   console.log(topPosition, difference);
   $("#project-content").addClass("demo");
-  if (projectData.demo.video) {
-    $("#project-mockup-image").hide();
-    $("#project-mockup-video").show();
-    $("#project-mockup-video").html(projectData.demo.video);
-  } else {
-    $("#project-mockup-video").hide();
-    $("#project-mockup-image").show();
-    $("#project-mockup-image").attr(
-      "src",
-      `graphics/portfolio/${projectData.demo.screenshot}`
-    );
-  }
 
   setTimeout(() => {
     $("#project-mockup, #project-description").css({

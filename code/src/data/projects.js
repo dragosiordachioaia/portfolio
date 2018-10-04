@@ -12,9 +12,7 @@ export const projects = [
     title: "Seating Plan Editor",
     roles: ["back-end"],
     demo: {
-      screenshot: "charts.png",
-      video:
-        '<iframe src="https://www.youtube-nocookie.com/embed/Z3DVf80p3uM?rel=0&amp;controls=0&amp;showinfo=0&amp;mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen=""></iframe>',
+      screenshot: "charts_2.png",
     },
     specs: [
       {
