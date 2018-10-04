@@ -10,6 +10,7 @@ import { markers } from "./data/markers";
 import { openProject, closeProject } from "./project";
 import { animateWithBlur, setBlur } from "./blur";
 import { showDemo } from "./project";
+// import { printMarkerPositions } from "./markers";
 
 var initialMapWidth;
 var initialMapHeight;
@@ -119,12 +120,12 @@ function createMapElements() {
       "data-top": parseFloat(element.top),
     });
     $(newElem).on("mouseenter", e => onMarkerHover(newElem));
+    $(newElem).on("mouseleave", onMarkerLeave);
+
     $(newElem).on("click", e => {
       selectedProject = index;
       openProject();
     });
-    $(newElem).on("mouseleave", onMarkerLeave);
-
     // $(newElem).on("click", e => (window.selectedMarker = $(newElem)));
   });
 }
@@ -423,10 +424,10 @@ function showMap() {
     transform: "scale(1,1)",
   });
   $("#header").addClass("shown");
-  $("#sun, #moon").css({
-    opacity: 1,
-  });
-  $(window).on("mousemove", doParallax);
+  // $("#sun, #moon").css({
+  //   opacity: 1,
+  // });
+  // $(window).on("mousemove", doParallax);
 }
 
 function showMapElements() {
@@ -456,7 +457,7 @@ function showMapElements() {
     markerElements.each(function(index, element) {
       $(element).css({
         opacity: 0,
-        top: "-30vh",
+        top: "-10vh",
       });
       animateWithBlur({
         element,
@@ -470,7 +471,7 @@ function showMapElements() {
         },
       });
     });
-  }, tweenEndTime * 1000 + 400);
+  }, tweenEndTime * 1000 + 900);
 }
 
 function onMarkerHover(markerElement) {
@@ -518,72 +519,72 @@ function doParallax(e) {
   // }
 }
 
-setTimeout(() => {
-  let x = -$(window).width() * 0.1;
-  setInterval(() => {
-    x += 10;
-    if (x >= $(window).width() * 1.1) {
-      x = -$(window).width() * 0.2;
-      changeTimeOfDay(x, false);
-    }
-    changeTimeOfDay(x, true);
-  }, 300);
-}, 2000);
+// setTimeout(() => {
+//   let x = -$(window).width() * 0.1;
+//   setInterval(() => {
+//     x += 10;
+//     if (x >= $(window).width() * 1.1) {
+//       x = -$(window).width() * 0.2;
+//       changeTimeOfDay(x, false);
+//     }
+//     changeTimeOfDay(x, true);
+//   }, 300);
+// }, 2000);
 
-function changeTimeOfDay(clientX, animate) {
-  const sun = $("#sun");
-  const moon = $("#moon");
-  const bgDay = $("#bg-day");
-
-  const offsetLeft = -(clientX - $(window).width() / 2);
-  let duration = animate ? 0.3 : 0;
-  if (sun) {
-    let top;
-    let x = clientX * 2;
-    let leftPercentage = x / $(window).width();
-    if (leftPercentage < 0.5) {
-      top = 50 - leftPercentage * 50;
-    } else {
-      top = leftPercentage * 50;
-    }
-
-    TweenMax.to(sun, duration, {
-      left: x,
-      top: top - 20 + "vh",
-      ease: Linear.easeNone,
-    });
-  }
-
-  if (moon) {
-    let top;
-    let x = clientX * 2 - $(window).width();
-    let leftPercentage = x / $(window).width();
-    if (leftPercentage < 0.5) {
-      top = 50 - leftPercentage * 50;
-    } else {
-      top = leftPercentage * 50;
-    }
-    TweenMax.to(moon, duration, {
-      left: x,
-      top: top - 20 + "vh",
-      ease: Linear.easeNone,
-    });
-  }
-
-  if (bgDay) {
-    let opacity = 0;
-    let x = clientX;
-    let leftPercentage = x / $(window).width();
-    if (leftPercentage < 0.25) {
-      opacity = leftPercentage * 4 + 0.15;
-    } else if (leftPercentage < 0.4) {
-      opacity = 1;
-    } else if (leftPercentage < 0.6) {
-      opacity = 1 - (leftPercentage - 0.4) * 5;
-    } else {
-      opacity = 0;
-    }
-
-    bgDay.css({ opacity });
-  }
-}
+// function changeTimeOfDay(clientX, animate) {
+//   const sun = $("#sun");
+//   const moon = $("#moon");
+//   const bgDay = $("#bg-day");
+//
+//   const offsetLeft = -(clientX - $(window).width() / 2);
+//   let duration = animate ? 0.3 : 0;
+//   if (sun) {
+//     let top;
+//     let x = clientX * 2;
+//     let leftPercentage = x / $(window).width();
+//     if (leftPercentage < 0.5) {
+//       top = 50 - leftPercentage * 50;
+//     } else {
+//       top = leftPercentage * 50;
+//     }
+//
+//     TweenMax.to(sun, duration, {
+//       left: x,
+//       top: top - 20 + "vh",
+//       ease: Linear.easeNone,
+//     });
+//   }
+//
+//   if (moon) {
+//     let top;
+//     let x = clientX * 2 - $(window).width();
+//     let leftPercentage = x / $(window).width();
+//     if (leftPercentage < 0.5) {
+//       top = 50 - leftPercentage * 50;
+//     } else {
+//       top = leftPercentage * 50;
+//     }
+//     TweenMax.to(moon, duration, {
+//       left: x,
+//       top: top - 20 + "vh",
+//       ease: Linear.easeNone,
+//     });
+//   }
+//
+//   if (bgDay) {
+//     let opacity = 0;
+//     let x = clientX;
+//     let leftPercentage = x / $(window).width();
+//     if (leftPercentage < 0.25) {
+//       opacity = leftPercentage * 4 + 0.15;
+//     } else if (leftPercentage < 0.4) {
+//       opacity = 1;
+//     } else if (leftPercentage < 0.6) {
+//       opacity = 1 - (leftPercentage - 0.4) * 5;
+//     } else {
+//       opacity = 0;
+//     }
+//
+//     bgDay.css({ opacity });
+//   }
+// }

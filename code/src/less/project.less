@@ -175,7 +175,30 @@ $project-bg-color: #f6f5f8;
       display: none;
       font-family: Averta;
       position: relative;
-      margin-top: -90px;
+      margin-top: -5vh;
+
+      @media (min-aspect-ratio: 9/16) {
+        margin-top: -5vh;
+      }
+      @media (min-aspect-ratio: 11/16) {
+        margin-top: -9vh;
+      }
+      @media (min-aspect-ratio: 14/16) {
+        margin-top: -13vh;
+      }
+      @media (min-aspect-ratio: 20/15) {
+        margin-top: -14.5vh;
+      }
+      @media (min-aspect-ratio: 22/15) {
+        margin-top: -15vh;
+      }
+      @media (min-aspect-ratio: 11/7) {
+        margin-top: -16vh;
+      }
+      @media (min-aspect-ratio: 11/7) {
+        margin-top: -18vh;
+      }
+
       line-height: 1.7;
       text-align: justify;
       padding-left: 5%;
@@ -260,12 +283,17 @@ $project-bg-color: #f6f5f8;
       width: 100%;
     }
 
-    #project-mockup-image {
+    #project-mockup-image-container {
       position: absolute;
-      top: 10.2%;
-      left: 12.2%;
-      width: calc(100% - (12.3% * 2));
+      top: 10.1%;
+      left: 12.1%;
+      width: calc(100% - (12.1% * 2));
       height: 59.3%;
+      overflow-y: auto;
+
+      img {
+        width: 100%;
+      }
     }
   }
 }

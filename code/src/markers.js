@@ -1,5 +1,7 @@
+import $ from "jquery";
+
 /**
- This stuff is only to help with repositioning markers and is normally 
+ This stuff is only to help with repositioning markers and is normally
  activated by un-commenting the corresponding event listener for clicks
  on markers
 **/
@@ -25,7 +27,7 @@ $(window).on("keydown", e => {
   }
 });
 
-function printMarkerPositions() {
+export function printMarkerPositions() {
   let results = [];
   $(".marker").each((index, element) => {
     results.push({

@@ -98,7 +98,7 @@ function showSlices() {
   return new Promise((resolve, reject) => {
     let count = $(".slice").length;
     let projectData = projects[window.selectedProject];
-    $(".slice").css({ "background-color": projectData.colors.primary });
+    $(".slice").css({ "background-color": projectData.colors.light });
     $(".slice").each((index, sliceElement) => {
       $(sliceElement).addClass("with-shadow");
       setTimeout(() => {
@@ -139,10 +139,10 @@ function animateProjectContent() {
     revealSplitText("#project-title");
 
     $("#project-border").css({
-      "border-color": projectData.colors.primaryDark,
+      "border-color": projectData.colors.medium,
     });
     $("#project-specs li").css({
-      color: projectData.colors.primary,
+      color: projectData.colors.dark,
     });
     $("#project-border").addClass("visible");
     $("#project-container .animatable").addClass("visible");
