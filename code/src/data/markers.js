@@ -4,7 +4,7 @@ export const markers = [
   { name: 10, left: "28.5%", top: "29%", id: "charts" },
   { name: 2, left: "46%", top: "62.5%", id: "plexiled" },
   { name: 3, left: "54%", top: "51.5%", id: "ftbo" },
-  { name: 4, left: "54.5%", top: "74.5%", id: "batman" },
+  { name: 4, left: "57.5%", top: "74.5%", id: "batman" },
   { name: 5, left: "58%", top: "29.5%", id: "fifa" },
   { name: 7, left: "63.5%", top: "39%", id: "acrelec" },
   { name: 6, left: "69%", top: "57%", id: "totalConquest" },
