@@ -5,10 +5,9 @@ import { projects } from "./data/projects";
 import { splitText, revealSplitText, hideSplitText } from "./splitText";
 
 export function openProject() {
-  let projectData = projects[window.selectedProject];
   loadDemo();
   resetProjectScreen();
-  assignProjectData(projectData);
+  assignProjectData(selectedProject);
 
   $("#project-container").show();
   $("#header").removeClass("shown");
@@ -53,22 +52,22 @@ function resetProjectScreen() {
   TweenMax.set($("#project-explore"), { scale: 0 });
 }
 
-function assignProjectData(projectData) {
+function assignProjectData(selectedProject) {
   $("#project-count").text("0" + window.selectedProject);
-  $("#project-title").html(projectData.title);
-  let rolesText = projectData.roles.join(", ");
-  let rolesLabel = `my role${projectData.roles.length > 1 ? "s" : ""}`;
+  $("#project-title").html(selectedProject.title);
+  let rolesText = selectedProject.roles.join(", ");
+  let rolesLabel = `my role${selectedProject.roles.length > 1 ? "s" : ""}`;
   $("#project-subtitle").text(`${rolesLabel}: ${rolesText}`);
-  $("#project-description").text(projectData.description);
+  $("#project-description").text(selectedProject.description);
 
-  // addProjectSpecs(projectData);
-  addProjectTags(projectData);
+  // addProjectSpecs(selectedProject);
+  addProjectTags(selectedProject);
   splitText("#project-title");
 }
 
-function addProjectSpecs(projectData) {
+function addProjectSpecs(selectedProject) {
   let specs = $("#project-specs");
-  projectData.specs.forEach(specData => {
+  selectedProject.specs.forEach(specData => {
     let newSpecElement = $("<li></li>");
     newSpecElement.append(
       `<span class="project-spec-label">${specData.label}</span>`
@@ -84,9 +83,9 @@ function addProjectSpecs(projectData) {
   });
 }
 
-function addProjectTags(projectData) {
+function addProjectTags(selectedProject) {
   let specs = $("#project-specs");
-  projectData.specs.forEach(specData => {
+  selectedProject.specs.forEach(specData => {
     specData.values.forEach(valueText => {
       let newSpecElement = $(`<li>${valueText}</li>`);
       specs.append(newSpecElement);
@@ -97,8 +96,7 @@ function addProjectTags(projectData) {
 function showSlices() {
   return new Promise((resolve, reject) => {
     let count = $(".slice").length;
-    let projectData = projects[window.selectedProject];
-    $(".slice").css({ "background-color": projectData.colors.light });
+    $(".slice").css({ "background-color": selectedProject.colors.light });
     $(".slice").each((index, sliceElement) => {
       $(sliceElement).addClass("with-shadow");
       setTimeout(() => {
@@ -134,15 +132,14 @@ function hideSlices() {
 
 function animateProjectContent() {
   $("#project-content").show();
-  let projectData = projects[window.selectedProject];
   setTimeout(() => {
     revealSplitText("#project-title");
 
     $("#project-border").css({
-      "border-color": projectData.colors.medium,
+      "border-color": selectedProject.colors.medium,
     });
     $("#project-specs li").css({
-      color: projectData.colors.dark,
+      color: selectedProject.colors.dark,
     });
     $("#project-border").addClass("visible");
     $("#project-container .animatable").addClass("visible");
@@ -179,11 +176,10 @@ function animateProjectContent() {
 }
 
 function loadDemo() {
-  let projectData = projects[window.selectedProject];
-  if (projectData.demo.video) {
+  if (selectedProject.demo.video) {
     // $("#project-mockup-image").hide();
     // $("#project-mockup-video").show();
-    $("#project-mockup-video").html(projectData.demo.video);
+    $("#project-mockup-video").html(selectedProject.demo.video);
   } else {
     // $("#project-mockup-video").hide();
     // $("#project-mockup-image").show();
@@ -194,13 +190,12 @@ function loadDemo() {
     });
     imageElement.attr(
       "src",
-      `graphics/portfolio/${projectData.demo.screenshot}`
+      `graphics/portfolio/${selectedProject.demo.screenshot}`
     );
   }
 }
 
 export function showDemo() {
-  let projectData = projects[window.selectedProject];
   TweenMax.to($("#project-explore"), 0.4, { scale: 0 });
   $("#project-border").css({ "border-width": 0 });
   $("#project-mockup").addClass("relative");

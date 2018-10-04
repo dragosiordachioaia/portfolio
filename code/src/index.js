@@ -20,7 +20,7 @@ var jumpTween;
 var jumpTarget;
 let buildingsScale = 0;
 
-window.selectedProject = 0;
+window.selectedProject = null;
 window.selectedMarker = 0;
 
 const SLICE_COUNT = 6;
@@ -123,7 +123,9 @@ function createMapElements() {
     $(newElem).on("mouseleave", onMarkerLeave);
 
     $(newElem).on("click", e => {
-      selectedProject = index;
+      window.selectedProject = projects.filter(
+        project => project.id === element.id
+      )[0];
       openProject();
     });
     // $(newElem).on("click", e => (window.selectedMarker = $(newElem)));
