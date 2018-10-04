@@ -176,13 +176,18 @@ function animateProjectContent() {
 }
 
 function loadDemo() {
-  if (selectedProject.demo.video) {
-    // $("#project-mockup-image").hide();
-    // $("#project-mockup-video").show();
-    $("#project-mockup-video").html(selectedProject.demo.video);
+  if (selectedProject.demo.iframe) {
+    $("#project-mockup-image").hide();
+    $("#project-mockup-iframe").show();
+    $("#project-mockup-iframe").html(selectedProject.demo.iframe);
   } else {
-    // $("#project-mockup-video").hide();
-    // $("#project-mockup-image").show();
+    $("#project-mockup-iframe").hide();
+    $("#project-mockup-image").show();
+    if (selectedProject.demo.scrollable) {
+      $("#project-mockup-image-container").addClass("scrollable");
+    } else {
+      $("#project-mockup-image-container").removeClass("scrollable");
+    }
     let imageElement = $("#project-mockup-image");
 
     imageElement.on("load", () => {

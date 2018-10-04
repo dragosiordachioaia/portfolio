@@ -15,6 +15,7 @@ export const projects = [
     },
     demo: {
       screenshot: "plexiled.png",
+      scrollable: false,
     },
     specs: [
       {
@@ -46,6 +47,7 @@ export const projects = [
     roles: ["design", "front-end", "back-end"],
     demo: {
       screenshot: "charts_2.png",
+      scrollable: false,
     },
     specs: [
       {
@@ -84,6 +86,7 @@ export const projects = [
     },
     demo: {
       screenshot: "edelweiss_home.jpg",
+      scrollable: true,
     },
     specs: [
       {
@@ -120,11 +123,50 @@ export const projects = [
     },
     demo: {
       screenshot: "thema_home.jpg",
+      scrollable: true,
     },
     specs: [
       {
         label: "front-end",
         values: ["jQuery", "LESS"],
+      },
+      {
+        label: "back-end",
+        values: ["PHP", "WordPress"],
+      },
+      {
+        label: "storage",
+        values: ["MySQL"],
+      },
+      {
+        label: "deployment",
+        values: [],
+      },
+    ],
+  },
+  {
+    id: "feather",
+    title: "feather",
+    roles: ["design", "front-end"],
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut gravida arcu. Curabitur dapibus dolor nisi. Pellentesque ex dolor,
+      tristique ut magna vel, rhoncus laoreet purus. Vestibulum maximus arcu sed enim ultricies hendrerit. Aenean sit amet accumsan nibh.
+       Nam dictum vulputate sem at iaculis. Morbi fermentum nunc vel aliquet feugiat. Vestibulum ac sapien cursus mi varius hendrerit.
+       Nulla fermentum, metus ac vestibulum blandit, ipsum nisl pharetra odio, eu vestibulum tellus ipsum sagittis dolor. Mauris sit
+       amet euismod neque, sed facilisis leo. Cras vitae lorem in magna varius venenatis. Vestibulum in porta mauris.`,
+    colors: {
+      light: "#d1aa7e",
+      medium: "#b78f63",
+      dark: "#90693f",
+    },
+    demo: {
+      screenshot: "feather.png",
+      scrollable: false,
+      // iframe: '<iframe src="https://ingresso-group.github.io/feather-demo/" />',
+    },
+    specs: [
+      {
+        label: "front-end",
+        values: ["Angular.js (1.6)", "canvas"],
       },
       {
         label: "back-end",
