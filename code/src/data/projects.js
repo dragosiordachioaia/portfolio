@@ -10,7 +10,11 @@ export const projects = [
   },
   {
     title: "Seating Plan Editor",
-    roles: ["back-end"],
+    colors: {
+      primary: "#405a65",
+      primaryDark: "#3c545f",
+    },
+    roles: ["design", "front-end", "back-end"],
     demo: {
       screenshot: "charts_2.png",
     },

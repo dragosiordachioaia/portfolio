@@ -33,9 +33,9 @@ export function closeProject() {
   $("#project-specs li").each((index, element) => {
     setTimeout(() => {
       $(element).removeClass("visible");
-    }, index * 100 + 50);
+    }, index * 50 + 50);
   });
-  setTimeout(hideSlices, 450);
+  setTimeout(hideSlices, 650);
   setTimeout(() => $("#project-content").hide(), 800);
   setTimeout(() => {
     $("#project-container").hide();
@@ -55,9 +55,17 @@ function resetProjectScreen() {
 function assignProjectData(projectData) {
   $("#project-count").text("0" + window.selectedProject);
   $("#project-title").html(projectData.title);
-  let rolesText = projectData.roles.join(" | ");
-  $("#project-subtitle").text(rolesText);
+  let rolesText = projectData.roles.join(", ");
+  let rolesLabel = `my role${projectData.roles.length > 1 ? "s" : ""}`;
+  $("#project-subtitle").text(`${rolesLabel}: ${rolesText}`);
   $("#project-description").text(projectData.description);
+
+  // addProjectSpecs(projectData);
+  addProjectTags(projectData);
+  splitText("#project-title");
+}
+
+function addProjectSpecs(projectData) {
   let specs = $("#project-specs");
   projectData.specs.forEach(specData => {
     let newSpecElement = $("<li></li>");
@@ -73,12 +81,24 @@ function assignProjectData(projectData) {
     });
     specs.append(newSpecElement);
   });
-  splitText("#project-title");
+}
+
+function addProjectTags(projectData) {
+  let specs = $("#project-specs");
+  projectData.specs.forEach(specData => {
+    specData.values.forEach(valueText => {
+      let newSpecElement = $(`<li>${valueText}</li>`);
+      specs.append(newSpecElement);
+    });
+  });
 }
 
 function showSlices() {
   return new Promise((resolve, reject) => {
     let count = $(".slice").length;
+    let projectData = projects[window.selectedProject];
+    $(".slice").css({ "background-color": projectData.colors.primary });
+
     $(".slice").each((index, sliceElement) => {
       $(sliceElement).addClass("with-shadow");
       setTimeout(() => {
@@ -114,15 +134,23 @@ function hideSlices() {
 
 function animateProjectContent() {
   $("#project-content").show();
+  let projectData = projects[window.selectedProject];
   setTimeout(() => {
     revealSplitText("#project-title");
+
+    $("#project-border").css({
+      "border-color": projectData.colors.primaryDark,
+    });
+    $("#project-specs li").css({
+      color: projectData.colors.primary,
+    });
     $("#project-border").addClass("visible");
     $("#project-container .animatable").addClass("visible");
   }, 100);
   $("#project-specs li").each((index, element) => {
     setTimeout(() => {
       $(element).addClass("visible");
-    }, index * 150 + 200);
+    }, index * 150 + 500);
   });
   setTimeout(() => {
     $("#project-close-button").addClass("visible");
