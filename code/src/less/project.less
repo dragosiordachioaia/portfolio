@@ -113,9 +113,22 @@ $project-bg-color: #f6f5f8;
       text-transform: lowercase;
       transform: translate(-50%, 50%);
       left: 50%;
-      transition-delay: 0ms;
+      transition-delay: 300ms;
+      line-height: 0;
+      overflow: hidden;
+
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0;
+      width: 50%;
+
+      margin-top: 20px;
+      margin-bottom: 15px;
 
       &.visible {
+        margin-top: 35px;
+        margin-bottom: -20px;
+        line-height: 3;
         transform: translate(-50%, -50%);
       }
     }
