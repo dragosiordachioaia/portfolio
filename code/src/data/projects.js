@@ -14,7 +14,7 @@ export const projects = [
       dark: "#611714",
     },
     demo: {
-      screenshot: "plexiled.png",
+      screenshots: ["plexiled.jpg"],
       scrollable: false,
     },
     specs: [
@@ -46,7 +46,7 @@ export const projects = [
     },
     roles: ["design", "front-end", "back-end"],
     demo: {
-      screenshot: "charts_2.png",
+      screenshots: ["charts.jpg"],
       scrollable: false,
     },
     specs: [
@@ -85,7 +85,7 @@ export const projects = [
       dark: "#490018",
     },
     demo: {
-      screenshot: "edelweiss_home.jpg",
+      screenshots: ["edelweiss_home.jpg"],
       scrollable: true,
     },
     specs: [
@@ -122,7 +122,7 @@ export const projects = [
       dark: "#90693f",
     },
     demo: {
-      screenshot: "thema_home.jpg",
+      screenshots: ["thema_home.jpg"],
       scrollable: true,
     },
     specs: [
@@ -159,26 +159,18 @@ export const projects = [
       dark: "#90693f",
     },
     demo: {
-      screenshot: "feather.png",
+      screenshots: ["feather.jpg"],
       scrollable: false,
       // iframe: '<iframe src="https://ingresso-group.github.io/feather-demo/" />',
     },
     specs: [
       {
         label: "front-end",
-        values: ["Angular.js (1.6)", "canvas"],
-      },
-      {
-        label: "back-end",
-        values: ["PHP", "WordPress"],
-      },
-      {
-        label: "storage",
-        values: ["MySQL"],
+        values: ["Angular.js (1.6)", "canvas", "iframe"],
       },
       {
         label: "deployment",
-        values: [],
+        values: ["AWS"],
       },
     ],
   },

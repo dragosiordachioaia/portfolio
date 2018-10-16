@@ -1,7 +1,7 @@
 import $ from "jquery";
 import { TweenMax } from "gsap";
 
-import "./less/main.less";
+import "./less/main.scss";
 
 import { skills } from "./data/skills";
 import { buildings } from "./data/buildings";
@@ -98,7 +98,7 @@ function createMapElements() {
   buildings.forEach(function(graphicData, index) {
     setTimeout(function() {
       let elem = $(
-        `<img class="building" src="graphics/map/clear/${
+        `<img class="building" src="graphics/map/${
           graphicData.name
         }.png" id="graphics-${graphicData.name}" />`
       );
@@ -107,7 +107,7 @@ function createMapElements() {
   });
   markers.forEach(function(element, index) {
     let newElem = $(`<div class="marker" id="marker-${index}"></div>`);
-    newElem.append('<img src="graphics/map/clear/marker.png"/>');
+    newElem.append('<img src="graphics/map/marker.png"/>');
     newElem.append(`<p class="marker-label">${element.name} </p>`);
     // var newElem = $(elemStr);
     mapContent.append(newElem);

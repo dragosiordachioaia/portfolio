@@ -1,0 +1,12 @@
+.letter {
+  min-width: 0.25em;
+  display: inline-block;
+  transition: all 350ms;
+  transform: translateY(100%) scaleY(0);
+  opacity: 0;
+
+  &.visible {
+    transform: translateY(0) scaleY(1);
+    opacity: 1;
+  }
+}

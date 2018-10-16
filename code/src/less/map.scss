@@ -1,0 +1,181 @@
+#map {
+  width: 100vw;
+  height: 100vh;
+
+  /* The image used */
+  /* background-image: url("./graphics/map/bg.jpg"); */
+  /* background-color: #37c5c7; */
+  /* background-color: #37aac7; */
+  background-color: #0e1b28;
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  top: 100vh;
+  position: fixed;
+  top: -100vh;
+  /* z-index: -1; */
+  /* transition: top 1000ms; */
+
+  #bg-day {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    // background-color: #3D76AF;
+    background-color: #37aac7;
+    opacity: 0;
+    transition: opacity 650ms;
+  }
+}
+
+#map-content {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 700ms;
+  width: 100vw;
+
+  @media (min-aspect-ratio: 100/65) {
+    width: 175vh;
+  }
+}
+
+#bg-map {
+  position: relative !important;
+  filter: none;
+  top: 0%;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  left: 0;
+  opacity: 1;
+}
+
+img.graphic-element {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: -200vh;
+  left: 0;
+  opacity: 0;
+}
+
+img.building {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  // opacity: 0;
+  // transition: transform 500ms;
+  // transition-timing-function: ease-out;
+}
+
+.marker {
+  position: absolute;
+  top: -200vh;
+  opacity: 1;
+  transform-origin: 37% 84%;
+  transform: translate(-37%, -84%);
+  z-index: 1;
+  cursor: pointer;
+  padding: 30px;
+  margin-top: 15px;
+  margin-left: -6px;
+  width: 60px;
+  user-select: none;
+
+  .marker-label {
+    position: absolute;
+    top: 34%;
+    left: 31%;
+    color: #444;
+    transform: skewY(-25deg);
+    font-weight: 700;
+    font-family: Averta;
+    text-align: center;
+    width: 30px;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+#sun {
+  /* animation-name: pulse;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; */
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+#sun,
+#moon {
+  position: fixed;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 400ms;
+  z-index: 1;
+}
+
+#sun {
+  top: 50vh;
+  left: -20vw;
+  width: 200px;
+}
+
+#moon {
+  top: 50vh;
+  left: -120vw;
+  width: 100px;
+}
+
+.cloud-big {
+  position: absolute;
+  width: 70vw;
+  z-index: 1;
+  transition: all 3000ms;
+}
+
+#cloud-1 {
+  z-index: 2;
+  bottom: -10%;
+  left: -100vw;
+}
+
+#cloud-2 {
+  z-index: 2;
+  bottom: -15%;
+  left: 100vw;
+}
+
+#cloud-3 {
+  z-index: 1;
+  top: 0;
+  left: -100vw;
+}
+
+#cloud-4 {
+  z-index: 1;
+  top: -10%;
+  left: 200vw;
+}

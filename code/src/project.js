@@ -195,7 +195,7 @@ function loadDemo() {
     });
     imageElement.attr(
       "src",
-      `graphics/portfolio/${selectedProject.demo.screenshot}`
+      `graphics/portfolio/${selectedProject.demo.screenshots[0]}`
     );
   }
 }
