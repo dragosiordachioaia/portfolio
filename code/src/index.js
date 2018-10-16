@@ -33,10 +33,10 @@ function init() {
   initialiseMap();
 
   // for getting the map immediately
-  setTimeout(showMap, 1000);
+  // setTimeout(showMap, 1000);
 
   // for going through with the normal flow
-  // startAnimation();
+  startAnimation();
 }
 
 function addEventListeners() {
