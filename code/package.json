@@ -5,10 +5,12 @@
   "main": "src/index.js",
   "scripts": {
     "watch": "webpack --config webpack.config.js --watch --mode=production",
-    "build": "webpack --config webpack.config.js --mode=production"
+    "build": "webpack --config webpack.config.js --mode=production",
+    "deploy": "gh-pages -d dist"
   },
   "author": "Dragos Iordachioaia",
   "license": "ISC",
+  "homepage": "https://dragosiordachioaia.github.io/portfolio/",
   "dependencies": {
     "autoprefixer": "^8.6.3",
     "babel-core": "^6.26.3",
@@ -40,6 +42,7 @@
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "copy-webpack-plugin": "^4.5.2",
+    "gh-pages": "^2.0.1",
     "less": "^3.8.1",
     "less-loader": "^4.1.0"
   }
