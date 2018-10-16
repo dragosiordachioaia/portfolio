@@ -28,6 +28,7 @@ const SLICE_COUNT = 6;
 init();
 
 function init() {
+  $("body").css("opacity", "1");
   addEventListeners();
   createSlices();
   initialiseMap();
