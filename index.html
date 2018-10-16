@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Dragos Iordachioaia</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT:400,700|Raleway:300,400,700" rel="stylesheet">
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="filters">
+    	<defs>
+    		<filter id="blur-filter">
+    			<feGaussianBlur in="SourceGraphic" stdDeviation="0,0" />
+    		</filter>
+    	</defs>
+    </svg>
+    <div id="first-half"></div>
+    <h1 id="hi">Hi<span id="hi-dot">.</span></h1>
+    <h1 id="nice">Nice to meet you.</h1>
+    <h1 id="iamdragos"><span class="inside">I am Dragos</span></h1>
+    <h1 id="andthis"><span class="inside">and this</span></h1>
+    <h1 id="iswhatido">is what I do:</h1>
+    <h1 id="this">this</h1>
+
+    <div id="header">
+      <div id="header-top">
+        <p id="menu-name">Dragos Iordachioaia</p>
+        <p id="menu-profession">Web Developer</p>
+      </div>
+      <div id="menu" class="folding-list-container">
+        <div id="menu-trigger">
+          <img src="graphics/menu-icon.svg" id="menu-icon"/>
+        </div>
+        <ul class="folding-list">
+          <li><span>About me<span></li>
+          <li><span>Contact<span></li>
+          <li><span>Commercial projects<span></li>
+          <li><span>Personal projects<span></li>
+          <li><span>Mock-ups<span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div id="map">
+      <div id="bg-day"></div>
+      <img src="graphics/mouse.png" id="mouse"/>
+
+      <div id="map-content">
+        <img src="graphics/map/map_landscape.png" id="bg-map"/>
+        <img src="graphics/map/cloud.png" id="cloud-1" class="cloud-big"/>
+        <img src="graphics/map/cloud.png" id="cloud-2" class="cloud-big"/>
+        <img src="graphics/map/cloud.png" id="cloud-3" class="cloud-big"/>
+        <img src="graphics/map/cloud.png" id="cloud-4" class="cloud-big"/>
+      </div>
+
+      <aside id="project-container">
+        <div id="slice-container"></div>
+        <div id="project-content">
+          <div id="bg"></div>
+          <aside id="project-border"></aside>
+          <span id="project-close-button"><img src="graphics/left-chevron-icon.svg"></span>
+          <h1 id="project-title"></h1>
+
+          <h2 id="project-subtitle" class="animatable"></h2>
+          <ul id="project-specs"></ul>
+
+          <div id="project-mockup">
+            <i class="fa fa-chevron-left project-arrow" id="project-arrow-left"></i>
+            <div id="project-mockup-inner">
+              <img src="graphics/macbook_light.png" id="macbook-mockup"/>
+              <div id="project-mockup-image-container">
+                <img id="project-mockup-image" src="" />
+                <div id="project-mockup-iframe"></div>
+              </div>
+            </div>
+            <div class="fa fa-chevron-right project-arrow" id="project-arrow-right"></div>
+          </div>
+          <p id="project-description" class=""></p>
+
+        </div>
+      </aside>
+    </div>
+
+    <script src="main.min.js"></script>
+  </body>
+</html>
